@@ -42,3 +42,4 @@ next-env.d.ts
 
 #backend
 .venv/
+project1/share-recipe-frontend/media/
