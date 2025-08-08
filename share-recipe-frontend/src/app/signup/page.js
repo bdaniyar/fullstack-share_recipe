@@ -19,6 +19,10 @@ import { Input } from "@/components/ui/input.jsx";
 import { Label } from "@/components/ui/label.jsx";
 
 import Logo from "@/assets/logo.svg"; // Adjust the path as necessary'
+import { API_BASE_URL } from "@/lib/config";
+
+const USERNAME_RE = /^[A-Za-z0-9._]{3,20}$/;
+const STRONG_PW_RE = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -41,28 +45,36 @@ export default function SignUpPage() {
     });
   };
 
+  const validateClient = () => {
+    if (!USERNAME_RE.test(formData.username)) {
+      return "Username must be 3–20 chars, only letters, digits, dots and underscores.";
+    }
+    if (!STRONG_PW_RE.test(formData.password)) {
+      return "Password must be at least 8 chars and include an uppercase letter, a digit, and a special character.";
+    }
+    if (formData.password !== formData.password2) {
+      return "Passwords do not match";
+    }
+    return "";
+  };
+
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setSuccessMsg("");
 
-    // Create a new object to avoid direct state mutation
-    const signupData = {
-      ...formData,
-      username: formData.email.split("@")[0],
-    };
-
-    // Client-side password match check
-    if (formData.password !== formData.password2) {
-      setError("Passwords do not match");
+    const validationMsg = validateClient();
+    if (validationMsg) {
+      setError(validationMsg);
       setLoading(false);
       return;
     }
 
+    const signupData = { ...formData };
+
     try {
-      console.log("Sending data:", signupData);
-      const res = await fetch("http://localhost:8000/api/user/signup/", {
+      const res = await fetch(`${API_BASE_URL}/api/user/signup/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -72,20 +84,17 @@ export default function SignUpPage() {
 
       if (res.ok) {
         setSuccessMsg("Signup successful! You can now login.");
-        console.log("Signup successful:", signupData);
-        // Optionally redirect to login page
-        setTimeout(() => { 
+        setTimeout(() => {
           router.push("/signin");
-        }, 2000); // Redirect after 2 seconds
+        }, 2000);
       } else {
         const data = await res.json();
         if (Array.isArray(data.detail)) {
-          const messages = data.detail.map(err => err.msg).join(" | ");
+          const messages = data.detail.map((err) => err.msg).join(" | ");
           setError(messages);
         } else {
           setError(data.detail || "Signup failed. Please check your details.");
         }
-        console.error("Signup error:", data);
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
@@ -111,7 +120,7 @@ export default function SignUpPage() {
         <CardHeader>
           <CardTitle>Sign Up to your account</CardTitle>
           <CardDescription>
-            Enter your email below to login to your account
+            Enter your details below to create your account
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -131,6 +140,21 @@ export default function SignUpPage() {
                 />
               </div>
               <div className="grid gap-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  name="username"
+                  id="username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  placeholder="your_username"
+                  autoComplete="new-username"
+                  required
+                />
+                <span className="text-xs text-gray-500">
+                  Allowed: letters, digits, "." and "_", length 3–20.
+                </span>
+              </div>
+              <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
@@ -143,6 +167,9 @@ export default function SignUpPage() {
                   required
                   autoComplete="new-password"
                 />
+                <span className="text-xs text-gray-500">
+                  Min 8 chars, include uppercase, digit, and special character.
+                </span>
               </div>
               <div className="grid gap-2">
                 <div className="flex items-center">

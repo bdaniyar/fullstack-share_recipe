@@ -1,15 +1,23 @@
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/config";
 
-const BASE_URL = "http://localhost:8000/api/recipes/list/";
+const BASE_URL = `${API_BASE_URL}/api/recipes/list/`;
+
+function authHeaders() {
+  if (typeof window === "undefined") return {};
+  const token = localStorage.getItem("access");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 export async function fetchRecipes() {
-  const res = await axios.get(BASE_URL);
+  const res = await axios.get(BASE_URL, { headers: { ...authHeaders() } });
   return res.data;
 }
 
 export async function searchRecipes(searchTerm) {
   const res = await axios.get(BASE_URL, {
     params: { search: searchTerm },
+    headers: { ...authHeaders() },
   });
   return res.data;
 }
@@ -35,7 +43,103 @@ export async function filterRecipes(filters) {
     }
   }
 
-  const res = await axios.get(BASE_URL, { params });
-  return res.data;  
+  const res = await axios.get(BASE_URL, { params, headers: { ...authHeaders() } });
+  return res.data;
+}
+
+export async function getRecipe(id) {
+  const res = await axios.get(`${API_BASE_URL}/api/recipes/recipe/${id}/`, {
+    headers: { ...authHeaders() },
+  });
+  return res.data;
+}
+
+export async function createRecipe(data) {
+  const token = localStorage.getItem("access");
+  const res = await axios.post(`${API_BASE_URL}/api/recipes/create/`, data, {
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+  return res.data;
+}
+
+export async function updateRecipe(id, data) {
+  const token = localStorage.getItem("access");
+  const res = await axios.patch(`${API_BASE_URL}/api/recipes/recipe/${id}/`, data, {
+    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+  });
+  return res.data;
+}
+
+export async function deleteRecipe(id) {
+  const token = localStorage.getItem("access");
+  const res = await axios.delete(`${API_BASE_URL}/api/recipes/recipe/${id}/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function uploadRecipeImage(id, file) {
+  const token = localStorage.getItem("access");
+  const form = new FormData();
+  form.append("file", file);
+  const res = await axios.post(`${API_BASE_URL}/api/recipes/recipe/${id}/image/`, form, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function likeRecipe(id) {
+  const token = localStorage.getItem("access");
+  const res = await axios.post(`${API_BASE_URL}/api/recipes/recipe/${id}/like/`, {}, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data; // { likes }
+}
+
+export async function unlikeRecipe(id) {
+  const token = localStorage.getItem("access");
+  const res = await axios.delete(`${API_BASE_URL}/api/recipes/recipe/${id}/like/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data; // { likes }
+}
+
+export async function saveRecipe(id) {
+  const token = localStorage.getItem("access");
+  const res = await axios.post(`${API_BASE_URL}/api/recipes/recipe/${id}/save/`, {}, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data; // { saved: true }
+}
+
+export async function unsaveRecipe(id) {
+  const token = localStorage.getItem("access");
+  const res = await axios.delete(`${API_BASE_URL}/api/recipes/recipe/${id}/save/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data; // { saved: false }
+}
+
+export async function listSavedRecipes() {
+  const token = localStorage.getItem("access");
+  const res = await axios.get(`${API_BASE_URL}/api/recipes/saved/`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return res.data;
+}
+
+export async function getComments(recipeId) {
+  const res = await axios.get(`${API_BASE_URL}/api/recipes/recipe/${recipeId}/comments/`);
+  return res.data;
+}
+
+export async function addComment(recipeId, content) {
+  const token = localStorage.getItem("access");
+  const res = await axios.post(
+    `${API_BASE_URL}/api/recipes/recipe/${recipeId}/comments/`,
+    { content },
+    { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+  );
+  return res.data;
 }
 

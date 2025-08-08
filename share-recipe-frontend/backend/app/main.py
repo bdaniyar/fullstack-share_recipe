@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import token 
 from app.api.user import router as user_router
 from fastapi.staticfiles import StaticFiles
+from app.api import recipe as recipe_router
 import os
 app = FastAPI()
 
@@ -13,10 +14,11 @@ app.mount("/media", StaticFiles(directory=MEDIA_DIR), name="media")
 
 app.include_router(user.router)
 app.include_router(token.router)
+app.include_router(recipe_router.router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5174"],  # или ["*"] на время разработки
+    allow_origins=["http://localhost:3000"],  # или ["*"] на время разработки
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

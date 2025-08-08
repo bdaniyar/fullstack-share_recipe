@@ -1,6 +1,6 @@
 # app/routes/user.py
 
-from fastapi import APIRouter, HTTPException, Depends, UploadFile, File
+from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.user import UserProfile, UserSignIn, UserSignup, UserUpdate
 from app.db.dao.dao import UserDAO
@@ -12,27 +12,36 @@ from app.db.session import async_session_maker
 import os
 import uuid
 from fastapi.responses import JSONResponse
+import re
+from datetime import datetime, timedelta
+
+# Cooldown for username changes (e.g., 14 days)
+USERNAME_CHANGE_COOLDOWN_DAYS = 14
 
 router = APIRouter(prefix="/api/user", tags=["User"])
 
 
 @router.post("/signup/")
 async def signup(user_data: UserSignup, session: AsyncSession = Depends(get_async_session)):
-    # Проверка по email
+    # Email uniqueness
     existing_user = await UserDAO.get_user_by_email(session, user_data.email)
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
 
-    # Проверка по username
+    # Username policy and uniqueness
+    if not re.fullmatch(r"^[A-Za-z0-9._]{3,20}$", user_data.username):
+        raise HTTPException(status_code=400, detail="Username must be 3-20 chars: letters, digits, dots, underscores.")
     existing_user = await UserDAO.get_user_by_username(session, user_data.username)
     if existing_user:
         raise HTTPException(status_code=400, detail="Username already taken")
 
-    # Проверка совпадения паролей
+    # Password match and strength
     if user_data.password != user_data.password2:
         raise HTTPException(status_code=400, detail="Passwords do not match")
+    if not re.search(r"[A-Z]", user_data.password) or not re.search(r"[0-9]", user_data.password) or not re.search(r"[^A-Za-z0-9]", user_data.password) or len(user_data.password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 chars and include an uppercase letter, a digit, and a special character.")
 
-    # Создание пользователя через DAO (теперь передаём данные, а не объект User)
+    # Create user
     user = await UserDAO.create_user(
         session,
         username=user_data.username,
@@ -74,7 +83,45 @@ async def update_profile(
     current_user: User = Depends(get_current_user),
     session: AsyncSession = Depends(get_async_session)
 ):
-    for field, value in user_update.model_dump(exclude_unset=True).items():
+    # Validate first and last names: 2-20 letters (spaces/hyphens allowed), capitalized
+    def _valid_name(name: str) -> bool:
+        return bool(re.fullmatch(r"[A-Za-zА-Яа-яЁё\-\s]{2,20}", name))
+
+    updates = user_update.model_dump(exclude_unset=True)
+
+    if "first_name" in updates and updates["first_name"] is not None:
+        if not _valid_name(updates["first_name"]):
+            raise HTTPException(status_code=400, detail="First name must be 2-20 letters and may include spaces or hyphens.")
+        if not updates["first_name"][0].isupper():
+            raise HTTPException(status_code=400, detail="First name must start with a capital letter.")
+
+    if "last_name" in updates and updates["last_name"] is not None:
+        if not _valid_name(updates["last_name"]):
+            raise HTTPException(status_code=400, detail="Last name must be 2-20 letters and may include spaces or hyphens.")
+        if not updates["last_name"][0].isupper():
+            raise HTTPException(status_code=400, detail="Last name must start with a capital letter.")
+
+    # Username changes: regex, uniqueness, cooldown
+    if "username" in updates and updates["username"] and updates["username"] != current_user.username:
+        new_username = updates["username"]
+        if not re.fullmatch(r"^[A-Za-z0-9._]{3,20}$", new_username):
+            raise HTTPException(status_code=400, detail="Username must be 3-20 chars: letters, digits, dots, underscores.")
+        # Cooldown check (assumes we store last change date; if not present, allow and set now)
+        last_changed = getattr(current_user, "username_changed_at", None)
+        if last_changed and isinstance(last_changed, datetime):
+            if datetime.utcnow() - last_changed < timedelta(days=USERNAME_CHANGE_COOLDOWN_DAYS):
+                raise HTTPException(status_code=400, detail=f"Username can be changed once every {USERNAME_CHANGE_COOLDOWN_DAYS} days.")
+        # Uniqueness
+        existing_user = await UserDAO.get_user_by_username(session, new_username)
+        # Ensure we compare ids only when an existing user is found and it's not the current user
+        if existing_user is not None and getattr(existing_user, 'id', None) != getattr(current_user, 'id', None):
+            raise HTTPException(status_code=400, detail="Username already taken")
+        # Apply and stamp change time
+        setattr(current_user, "username", new_username)
+        setattr(current_user, "username_changed_at", datetime.utcnow())
+        updates.pop("username", None)
+
+    for field, value in updates.items():
         setattr(current_user, field, value)
 
     session.add(current_user)
@@ -84,9 +131,10 @@ async def update_profile(
 
 @router.post("/profile/photo/")
 async def upload_profile_photo(
+    request: Request,
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user),
-    session: AsyncSession = Depends(get_async_session)
+    session: AsyncSession = Depends(get_async_session),
 ):
     # Валидация типа файла (только изображения)
     if not file.content_type or not file.content_type.startswith("image/"):
@@ -107,8 +155,10 @@ async def upload_profile_photo(
     session.add(current_user)
     await session.commit()
     await session.refresh(current_user)
-    base_url = "http://localhost:8000"  # или можно вынести в настройки
-    return {"photo_url": f"{base_url}{current_user.photo_url}"}
+    # Build absolute URL from request
+    base_url = str(request.base_url).rstrip("/")
+    absolute_url = f"{base_url}{current_user.photo_url}"
+    return {"photo_url": absolute_url}
 
 @router.delete("/profile/photo/")
 async def delete_profile_photo(

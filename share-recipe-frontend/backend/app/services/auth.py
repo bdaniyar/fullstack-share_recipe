@@ -4,8 +4,11 @@ from jose import JWTError, jwt
 from datetime import datetime, timezone
 from app.db.dao.dao import UserDAO
 from app.config.config import settings
+from typing import Optional
 
 oauth2_scheme = HTTPBearer()
+# Optional bearer that does not raise when header is missing
+oauth2_scheme_optional = HTTPBearer(auto_error=False)
 
 async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(oauth2_scheme)):
     if credentials is None:
@@ -38,6 +41,25 @@ async def get_current_user(credentials: HTTPAuthorizationCredentials = Depends(o
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found")
 
     return user
+
+async def get_optional_user(credentials: Optional[HTTPAuthorizationCredentials] = Depends(oauth2_scheme_optional)):
+    if not credentials:
+        return None
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        sub = payload.get("sub")
+        if sub is None:
+            return None
+        try:
+            user_id = int(sub)
+        except (TypeError, ValueError):
+            return None
+        user = await UserDAO.get_by_id(user_id)
+        return user
+    except JWTError:
+        return None
+
 
 def verify_refresh_token(refresh_token: str) -> int | None:
     try:

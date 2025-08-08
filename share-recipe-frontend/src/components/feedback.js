@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "@/lib/config";
 
 export default function FeedbackForm() {
   const [email, setEmail] = useState("");
@@ -14,7 +15,7 @@ export default function FeedbackForm() {
 
     try {
       // Use your backend URL
-      await axios.post("http://localhost:8000/api/recipes/feedback/", {
+      await axios.post(`${API_BASE_URL}/api/recipes/feedback/`, {
         email,
         message,
       });

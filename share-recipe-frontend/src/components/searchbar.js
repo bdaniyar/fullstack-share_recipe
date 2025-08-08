@@ -25,9 +25,14 @@ export default function SearchBar() {
 
   const handleSearch = (e) => {
     e.preventDefault();
+    const term = (search || "").trim();
+    if (!term) return;
     localStorage.removeItem("filters"); // reset filters
-    localStorage.setItem("search", JSON.stringify(search)); // save search
-    router.push(`/recipes?search=${encodeURIComponent(search)}`);
+    // navigate with term
+    router.push(`/recipes?search=${encodeURIComponent(term)}`);
+    // clear persisted search and input after navigation
+    localStorage.removeItem("search");
+    setSearch("");
   };
 
   return (

@@ -10,6 +10,8 @@ const initialState = {
   joined: "",
   role: "",
   isAuthenticated: false,
+  photo_url: "",
+  is_active: false,
 };
 
 export const userSlice = createSlice({
@@ -26,6 +28,8 @@ export const userSlice = createSlice({
       state.joined = payload.joined || "";
       state.role = payload.role || "";
       state.isAuthenticated = true;
+      state.photo_url = payload.photo_url || "";
+      state.is_active = payload.is_active ?? false;
     },
     clearUser(state) {
       Object.assign(state, initialState);

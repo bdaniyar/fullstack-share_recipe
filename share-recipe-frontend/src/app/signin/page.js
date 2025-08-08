@@ -21,6 +21,7 @@ import { Label } from "@/components/ui/label.jsx";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
 import { fetchProfile } from "@/lib/api/profile";
+import { API_BASE_URL } from "@/lib/config";
 
 export default function SignInPage() {
   const dispatch = useDispatch();
@@ -49,7 +50,7 @@ export default function SignInPage() {
     setSuccessMsg("");
 
     try {
-      const res = await fetch("http://localhost:8000/api/user/signin/", {
+      const res = await fetch(`${API_BASE_URL}/api/user/signin/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -64,15 +65,15 @@ export default function SignInPage() {
         localStorage.setItem("refresh", data.refresh);
 
         setSuccessMsg("Signin successful!");
-        
+
         try {
           const profile = await fetchProfile();
           dispatch(setUser(profile));
           console.log("Fetched profile:", profile);
           if (!profile) {
-            throw new Error("Profile not found.");  
+            throw new Error("Profile not found.");
           }
-          
+
           setError("");
           setTimeout(() => {
             router.push("/user/my-kitchen");

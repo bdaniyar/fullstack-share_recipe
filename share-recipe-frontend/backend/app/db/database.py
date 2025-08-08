@@ -1,6 +1,7 @@
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from datetime import datetime
 from app.db.base import Base  
+from sqlalchemy.orm import relationship
 # таблица базы данных для пользователей
 class User(Base):
     __tablename__ = "users"
@@ -14,4 +15,8 @@ class User(Base):
     last_name = Column(String, nullable=True)
     joined = Column(DateTime, default=datetime.utcnow, nullable=False)
     photo_url = Column(String, nullable=True)
+    username_changed_at = Column(DateTime, nullable=True)
+    recipes = relationship("Recipe", back_populates="user")
+
+
 

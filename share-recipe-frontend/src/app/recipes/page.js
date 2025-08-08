@@ -18,6 +18,7 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Heart, User } from "lucide-react";
+import { API_BASE_URL } from "@/lib/config";
 
 export default function RecipePage() {
   const dispatch = useDispatch();
@@ -90,42 +91,47 @@ export default function RecipePage() {
         </div>
       ) : recipes.length ? (
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {recipes.map((recipe) => (
-            <Link key={recipe.id} href={`/recipes/${recipe.id}`}>
-              <Card
-                key={recipe.id}
-                className="transition-all hover:scale-[1.02] hover:shadow-xl"
-              >
-                <div className="h-48 overflow-hidden rounded-t-lg">
-                  <img
-                    src={recipe.image || "/home-image.jpg"}
-                    alt={recipe.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                <CardHeader>
-                  <CardTitle className="text-xl font-semibold">
-                    {recipe.title}
-                  </CardTitle>
-                  <CardDescription>{recipe.description}</CardDescription>
-                </CardHeader>
-
-                <CardContent>
-                  <div className="flex justify-between items-center text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4" />
-                      <span>{recipe.author}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <span>{recipe.likes}</span>
-                      <Heart className="w-4 h-4 text-red-500" />
-                    </div>
+          {recipes.map((recipe) => {
+            const imgSrc = recipe.image_url
+              ? (recipe.image_url.startsWith("http") ? recipe.image_url : `${API_BASE_URL}${recipe.image_url}`)
+              : "/home-image.jpg";
+            return (
+              <Link key={recipe.id} href={`/recipes/${recipe.id}`}>
+                <Card
+                  key={recipe.id}
+                  className="transition-all hover:scale-[1.02] hover:shadow-xl"
+                >
+                  <div className="h-48 overflow-hidden rounded-t-lg">
+                    <img
+                      src={imgSrc}
+                      alt={recipe.title}
+                      className="w-full h-full object-cover"
+                    />
                   </div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+
+                  <CardHeader>
+                    <CardTitle className="text-xl font-semibold">
+                      {recipe.title}
+                    </CardTitle>
+                    <CardDescription>{recipe.description}</CardDescription>
+                  </CardHeader>
+
+                  <CardContent>
+                    <div className="flex justify-between items-center text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2">
+                        <User className="w-4 h-4" />
+                        <span>{recipe.author}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <span>{recipe.likes}</span>
+                        <Heart className="w-4 h-4 text-red-500" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       ) : (
         <div className="flex items-center justify-center min-h-screen">

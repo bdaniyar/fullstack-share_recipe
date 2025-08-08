@@ -7,7 +7,8 @@ from sqlalchemy import pool
 from alembic import context
 from app.db.base import Base 
 from app.db.database import User
- # если Base содержит все модели
+from app.db.recipes import Recipe
+from app.db.social import RecipeLike, SavedRecipe, Comment # если Base содержит все модели
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

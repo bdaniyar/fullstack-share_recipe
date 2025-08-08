@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSearchParams, useRouter } from "next/navigation";
 import { X } from "lucide-react";
+import { API_BASE_URL } from "@/lib/config";
 
 export default function Filters() {
   const searchParams = useSearchParams();
@@ -17,7 +18,7 @@ export default function Filters() {
   // Load options for mapping IDs to names
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/recipes/filters/")
+      .get(`${API_BASE_URL}/api/recipes/options/`)
       .then((res) => {
         setOptions(res.data);
       })

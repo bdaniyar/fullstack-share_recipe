@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
 import { fetchProfile, updateProfile } from "@/lib/api/profile";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/config";
 import {
   Card,
   CardContent,
@@ -15,6 +16,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import ErrorPage from "@/components/error";
+
+const NAME_RE = /^[A-Za-zА-Яа-яЁё\-\s]{2,20}$/;
+const USERNAME_RE = /^[A-Za-z0-9._]{3,20}$/;
 
 export default function KitchenDashboard() {
   const dispatch = useDispatch();
@@ -90,7 +94,7 @@ export default function KitchenDashboard() {
     const formData = new FormData();
     formData.append("file", selectedPhoto); // исправлено: было "photo"
     try {
-      await fetch("http://localhost:8000/api/user/profile/photo/", {
+      await fetch(`${API_BASE_URL}/api/user/profile/photo/`, {
         method: "POST",
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
         body: formData,
@@ -106,7 +110,7 @@ export default function KitchenDashboard() {
 
   const handlePhotoDelete = async () => {
     try {
-      await fetch("http://localhost:8000/api/user/profile/photo/", {
+      await fetch(`${API_BASE_URL}/api/user/profile/photo/`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${localStorage.getItem("access")}` },
       });
@@ -134,6 +138,7 @@ export default function KitchenDashboard() {
   }
 
   console.log("User data in KitchenDashboard:", user);
+  console.log("Photo URL:", user?.photo_url);
   if (!user) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
@@ -143,146 +148,192 @@ export default function KitchenDashboard() {
   }
 
   return (
-    <div className="flex min-h-screen">
-      <div className="w-full">
-        {/* Header section */}
-        <div className="flex flex-col items-center py-6 px-6 border-b">
-          <div className="relative h-24 w-24 rounded-full bg-yellow-500 flex items-center justify-center text-3xl font-bold text-white cursor-pointer group" onClick={() => setShowPhotoModal(true)}>
-            {user.photo_url ? (
-              <img
-                src={user.photo_url + "?t=" + Date.now()} // добавлен query-параметр для обхода кэша
-                alt="Profile"
-                className="h-24 w-24 rounded-full object-cover"
-              />
-            ) : (
-              user.username ? user.username[0].toUpperCase() : "U"
-            )}
-            {/* Кружок статуса */}
-            <span
-              className={`absolute bottom-2 right-2 h-6 w-6 rounded-full border-2 border-white ${user.is_active ? "bg-green-500" : "bg-red-500"}`}
-              title={user.is_active ? "Online" : "Offline"}
-            />
-            {/* Иконка загрузки/удаления фото */}
-            <span className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-30 opacity-0 group-hover:opacity-100 rounded-full transition-opacity">
-              <svg className="h-8 w-8 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-              </svg>
-            </span>
-          </div>
-          {/* Модалка для загрузки/удаления фото */}
-          {showPhotoModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center gap-4">
-                <h3 className="text-lg font-bold mb-2">Изменить фото профиля</h3>
-                <input type="file" accept="image/*" onChange={handlePhotoChange} />
-                {user.photo_url && (
-                  <button className="text-red-600" onClick={handlePhotoDelete}>Удалить фото</button>
+    <div className="min-h-screen bg-gray-50">
+      <div className="max-w-5xl mx-auto px-4 py-8">
+        {/* Header Card */}
+        <Card className="overflow-hidden border rounded-2xl shadow-sm">
+          <div className="relative">
+            <div className="h-24 w-full bg-gradient-to-r from-yellow-400 via-yellow-500 to-amber-500" />
+            <div className="px-6 pb-6 -mt-12 flex flex-col items-center">
+              <div className="relative h-28 w-28 md:h-32 md:w-32 rounded-full ring-2 ring-yellow-500 ring-offset-2 shadow bg-gray-200 flex items-center justify-center text-3xl font-bold text-white">
+                {user.photo_url ? (
+                  <img
+                    src={`${API_BASE_URL}${user.photo_url}?t=${Date.now()}`}
+                    alt="Profile"
+                    className="h-full w-full rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="text-4xl text-yellow-900">
+                    {user.username ? user.username[0].toUpperCase() : "U"}
+                  </span>
                 )}
-                <div className="flex gap-4 mt-2">
-                  <button className="bg-blue-600 text-white px-4 py-2 rounded" onClick={handlePhotoUpload}>Сохранить</button>
-                  <button className="bg-gray-300 px-4 py-2 rounded" onClick={() => setShowPhotoModal(false)}>Отмена</button>
+                <span
+                  className={`absolute -bottom-1 -right-1 h-5 w-5 rounded-full border-2 border-white ${user.is_active ? "bg-green-500" : "bg-red-500"}`}
+                  title={user.is_active ? "Online" : "Offline"}
+                />
+                {editing && (
+                  <label className="absolute inset-0 flex flex-col items-center justify-center bg-black/35 rounded-full cursor-pointer transition hover:bg-black/45">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handlePhotoChange}
+                    />
+                    <svg className="h-7 w-7 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span className="text-xs text-white mt-1">Change</span>
+                  </label>
+                )}
+              </div>
+
+              <h2 className="mt-4 text-2xl md:text-3xl font-bold tracking-tight">{user.username}</h2>
+              <p className="text-gray-500">{user.email}</p>
+              <Badge className="mt-2 bg-yellow-100 text-yellow-800 border border-yellow-300">{user.role}</Badge>
+
+              {editing && (
+                <div className="flex flex-col items-center gap-3 mt-3">
+                  {selectedPhoto && (
+                    <div className="text-xs text-gray-600">Selected: {selectedPhoto.name}</div>
+                  )}
+                  <div className="flex gap-3">
+                    {selectedPhoto && (
+                      <button
+                        className="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-4 py-2 rounded-md shadow-sm transition"
+                        onClick={handlePhotoUpload}
+                      >
+                        Save Photo
+                      </button>
+                    )}
+                    {user.photo_url && (
+                      <button
+                        className="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white font-medium px-4 py-2 rounded-md shadow-sm transition"
+                        onClick={() => {
+                          if (confirm("Are you sure you want to delete your profile photo? This action cannot be undone.")) {
+                            handlePhotoDelete();
+                          }
+                        }}
+                      >
+                        Delete Photo
+                      </button>
+                    )}
+                  </div>
                 </div>
+              )}
+            </div>
+          </div>
+        </Card>
+
+        {/* Info Card */}
+        <Card className="mt-6 rounded-2xl shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-xl">Profile details</CardTitle>
+            <CardDescription>Manage your personal information</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-5">
+              <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-3 border-b pb-4">
+                <span className="text-sm text-gray-500">Username</span>
+                {editing ? (
+                  <input
+                    type="text"
+                    value={formData.username}
+                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                    className="md:col-span-2 w-full md:w-80 border rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none"
+                  />
+                ) : (
+                  <span className="md:col-span-2 font-medium">{user.username || "N/A"}</span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-3 border-b pb-4">
+                <span className="text-sm text-gray-500">First name</span>
+                {editing ? (
+                  <input
+                    type="text"
+                    value={formData.first_name}
+                    onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                    className="md:col-span-2 w-full md:w-80 border rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none"
+                  />
+                ) : (
+                  <span className="md:col-span-2 font-medium">{user.first_name || "N/A"}</span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-3 border-b pb-4">
+                <span className="text-sm text-gray-500">Last name</span>
+                {editing ? (
+                  <input
+                    type="text"
+                    value={formData.last_name}
+                    onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                    className="md:col-span-2 w-full md:w-80 border rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none"
+                  />
+                ) : (
+                  <span className="md:col-span-2 font-medium">{user.last_name || "N/A"}</span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-3">
+                <span className="text-sm text-gray-500">Joined</span>
+                <span className="md:col-span-2 font-medium">
+                  {user.joined ? new Date(user.joined).toLocaleDateString() : "N/A"}
+                </span>
               </div>
             </div>
-          )}
-          <h2 className="mt-4 text-2xl font-bold">{user.username}</h2>
-          <p className="text-gray-500">{user.email}</p>
-          <Badge className="mt-2 bg-yellow-500 text-black">{user.role}</Badge>
-        </div>
+          </CardContent>
 
-        {/* Info section */}
-        <div className="px-6 py-6 space-y-4">
-          <div className="flex gap-10 border-b pb-2">
-            <span className="font-medium">Username</span>
+          {/* Bottom actions */}
+          <div className="px-6 py-4 border-t flex justify-between items-center bg-white/50 rounded-b-2xl">
+            <p className="text-sm text-gray-500">Keep sharing your amazing recipes!</p>
             {editing ? (
-              <input
-                type="text"
-                value={formData.username}
-                onChange={(e) =>
-                  setFormData({ ...formData, username: e.target.value })
-                }
-                className="border px-2 py-1 rounded"
-              />
-            ) : (
-              <span>{user.username || "N/A"}</span>
-            )}
-          </div>
-          <div className="flex gap-10 border-b pb-2">
-            <span className="font-medium">First Name</span>
-            {editing ? (
-              <input
-                type="text"
-                value={formData.first_name}
-                onChange={(e) =>
-                  setFormData({ ...formData, first_name: e.target.value })
-                }
-                className="border px-2 py-1 rounded"
-              />
-            ) : (
-              <span>{user.first_name || "N/A"}</span>
-            )}
-          </div>
-          <div className="flex gap-10 border-b pb-2">
-            <span className="font-medium">Last Name </span>
-            {editing ? (
-              <input
-                type="text"
-                value={formData.last_name}
-                onChange={(e) =>
-                  setFormData({ ...formData, last_name: e.target.value })
-                }
-                className="border px-2 py-1 rounded"
-              />
-            ) : (
-              <span>{user.last_name || "N/A"}</span>
-            )}
-          </div>
-          <div className="flex gap-10 border-b pb-2">
-            <span className="font-medium">Joined</span>
-            <span>
-              {user.joined ? new Date(user.joined).toLocaleDateString() : "N/A"}
-            </span>
-          </div>
-        </div>
+              <div className="flex gap-3">
+                <button
+                  className="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-4 py-2 rounded-md shadow-sm transition"
+                  onClick={async () => {
+                    try {
+                      // Client-side validations
+                      if (formData.first_name && (!NAME_RE.test(formData.first_name) || formData.first_name[0] !== formData.first_name[0].toUpperCase())) {
+                        alert("First name must be 2–20 letters (spaces/hyphens allowed) and start with a capital letter.");
+                        return;
+                      }
+                      if (formData.last_name && (!NAME_RE.test(formData.last_name) || formData.last_name[0] !== formData.last_name[0].toUpperCase())) {
+                        alert("Last name must be 2–20 letters (spaces/hyphens allowed) and start with a capital letter.");
+                        return;
+                      }
+                      if (formData.username && !USERNAME_RE.test(formData.username)) {
+                        alert("Username must be 3–20 chars: letters, digits, dots, underscores.");
+                        return;
+                      }
 
-        {/* Bottom actions or summary (optional) */}
-        <div className="px-6 py-4 border-t flex justify-between items-center">
-          <p className="text-sm text-gray-500">
-            Keep sharing your amazing recipes!
-          </p>
-          {editing ? (
-            <div className="flex gap-4">
+                      await updateProfile(formData);
+                      const updated = await fetchProfile();
+                      dispatch(setUser(updated));
+                      setEditing(false);
+                    } catch (err) {
+                      alert(err?.message || "Failed to update profile");
+                    }
+                  }}
+                >
+                  Save
+                </button>
+                <button
+                  className="inline-flex items-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-md shadow-sm transition"
+                  onClick={() => setEditing(false)}
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
               <button
-                className="text-green-600 hover:underline font-medium"
-                onClick={async () => {
-                  try {
-                    await updateProfile(formData); // импорт уже есть
-                    const updated = await fetchProfile();
-                    dispatch(setUser(updated));
-                    setEditing(false);
-                  } catch (err) {
-                    alert("Failed to update profile");
-                  }
-                }}
+                className="inline-flex items-center bg-yellow-500 hover:bg-yellow-600 text-black font-medium px-4 py-2 rounded-md shadow-sm transition"
+                onClick={() => setEditing(true)}
               >
-                Save
+                Edit Profile
               </button>
-              <button
-                className="text-gray-500 hover:underline font-medium"
-                onClick={() => setEditing(false)}
-              >
-                Cancel
-              </button>
-            </div>
-          ) : (
-            <button
-              className="text-yellow-500 hover:underline font-medium"
-              onClick={() => setEditing(true)}
-            >
-              Edit Profile
-            </button>
-          )}
-        </div>
+            )}
+          </div>
+        </Card>
       </div>
     </div>
   );

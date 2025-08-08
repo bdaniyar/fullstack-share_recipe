@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Router } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/config";
 
 export default function FilterForm() {
   const route = useRouter();
@@ -34,7 +35,7 @@ export default function FilterForm() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/recipes/filters/")
+      .get(`${API_BASE_URL}/api/recipes/options/`)
       .then((res) => {
         setOptions(res.data);
       })
@@ -136,11 +137,10 @@ export default function FilterForm() {
                   type="button"
                   onClick={() => setFormData({ ...formData, type: t.id })}
                   className={`px-3 py-1 rounded-md border transition-all
-        ${
-          formData.type === t.id
-            ? "bg-yellow-500 text-white border-yellow-500"
-            : "border-yellow-500 text-yellow-500 hover:bg-yellow-100"
-        }
+        ${formData.type === t.id
+                      ? "bg-yellow-500 text-white border-yellow-500"
+                      : "border-yellow-500 text-yellow-500 hover:bg-yellow-100"
+                    }
       `}
                 >
                   {t.name}

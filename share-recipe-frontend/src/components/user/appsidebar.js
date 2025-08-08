@@ -6,10 +6,11 @@ import {
   ListTodo,
   UserCheck,
   Users,
-  House, 
-  Soup, 
+  House,
+  Soup,
   Settings,
   LogOut,
+  Bookmark,
 } from "lucide-react";
 
 import {
@@ -35,9 +36,9 @@ const userKitchenItems = [
     icon: BookOpen,
   },
   {
-    title: "My Lists",
-    url: "/user/my-lists",
-    icon: ListTodo,
+    title: "Saved Recipes",
+    url: "/recipes/saved",
+    icon: Bookmark,
   },
   {
     title: "My Community Posts",
@@ -62,7 +63,7 @@ const userNavigation = [
     url: "/recipes",
     icon: Soup,
   },
-  
+
 ];
 
 export default function AppSidebar() {
@@ -143,28 +144,28 @@ export default function AppSidebar() {
           </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-                <SidebarMenuItem key="Settings">
-                  <SidebarMenuButton asChild>
-                    <a
-                      href="user/settings"
-                      className="flex items-center gap-3 hover:text-yellow-500 transition"
-                    >
-                      <Settings className="w-5 h-5" />
-                      <span>Settings</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-                <SidebarMenuItem key="Sign Out">
-                  <SidebarMenuButton asChild>
-                    <button
-                      onClick={handleSignout}
-                      className="flex items-center gap-3 hover:text-yellow-500 transition"
-                    >
-                      <LogOut className="w-5 h-5" />
-                      <span>Sign Out</span>
-                    </button>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+              <SidebarMenuItem key="Settings">
+                <SidebarMenuButton asChild>
+                  <a
+                    href="/user/settings"
+                    className="flex items-center gap-3 hover:text-yellow-500 transition"
+                  >
+                    <Settings className="w-5 h-5" />
+                    <span>Settings</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem key="Sign Out">
+                <SidebarMenuButton asChild>
+                  <button
+                    onClick={handleSignout}
+                    className="flex items-center gap-3 hover:text-yellow-500 transition"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span>Sign Out</span>
+                  </button>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
