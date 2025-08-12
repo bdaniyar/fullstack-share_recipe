@@ -92,3 +92,19 @@ export async function updateProfile(data) {
 
   return res.json();
 }
+
+export async function fetchPublicProfile(username) {
+  const access = localStorage.getItem("access");
+  const headers = access ? { Authorization: `Bearer ${access}` } : {};
+  const res = await fetch(
+    `${API_BASE_URL}/api/user/public/${encodeURIComponent(username)}`,
+    { headers }
+  );
+  if (res.status === 404) {
+    throw new Error("User not found");
+  }
+  if (!res.ok) {
+    throw new Error("Failed to load profile");
+  }
+  return res.json();
+}

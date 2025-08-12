@@ -1,4 +1,11 @@
 import os
+import sys
+# Ensure backend root is on sys.path so that 'app' package is importable when running Alembic directly
+CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+BACKEND_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, os.pardir))
+if BACKEND_ROOT not in sys.path:
+    sys.path.insert(0, BACKEND_ROOT)
+
 from sqlalchemy.engine.url import make_url
 from dotenv import load_dotenv
 from logging.config import fileConfig

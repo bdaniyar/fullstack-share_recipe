@@ -12,6 +12,7 @@ const initialState = {
   isAuthenticated: false,
   photo_url: "",
   is_active: false,
+  bio: "",
 };
 
 export const userSlice = createSlice({
@@ -30,6 +31,7 @@ export const userSlice = createSlice({
       state.isAuthenticated = true;
       state.photo_url = payload.photo_url || "";
       state.is_active = payload.is_active ?? false;
+      state.bio = payload.bio || "";
     },
     clearUser(state) {
       Object.assign(state, initialState);

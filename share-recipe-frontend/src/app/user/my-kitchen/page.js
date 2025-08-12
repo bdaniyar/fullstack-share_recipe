@@ -31,9 +31,48 @@ export default function KitchenDashboard() {
     username: user?.username || "",
     first_name: user?.first_name || "",
     last_name: user?.last_name || "",
+    bio: user?.bio || "",
   });
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  // Bio helpers moved above any early returns to keep Hooks order stable
+  const BIO_LIMIT = 300;
+  const [bioCollapsed, setBioCollapsed] = useState(true);
+  const renderTextWithLinks = (text) => {
+    if (!text) return null;
+    // Fix duplicate link rendering: remove capturing group so offset arg is correct
+    const urlRegex = /https?:\/\/[^\s]+/g;
+    const parts = [];
+    let lastIndex = 0;
+    text.replace(urlRegex, (match, offset) => {
+      const preceding = text.slice(lastIndex, offset);
+      if (preceding) {
+        // handle newlines
+        const lines = preceding.split("\n");
+        lines.forEach((line, i) => {
+          parts.push(<span key={`${offset}-t-${lastIndex}-${i}`}>{line}</span>);
+          if (i < lines.length - 1) parts.push(<br key={`${offset}-br-${lastIndex}-${i}`} />);
+        });
+      }
+      parts.push(
+        <a key={`${offset}-a`} href={match} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline break-all">
+          {match}
+        </a>
+      );
+      lastIndex = offset + match.length;
+      return match;
+    });
+    const tail = text.slice(lastIndex);
+    if (tail) {
+      const lines = tail.split("\n");
+      lines.forEach((line, i) => {
+        parts.push(<span key={`tail-${lastIndex}-${i}`}>{line}</span>);
+        if (i < lines.length - 1) parts.push(<br key={`tail-br-${lastIndex}-${i}`} />);
+      });
+    }
+    return parts;
+  };
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access");
@@ -62,6 +101,7 @@ export default function KitchenDashboard() {
         username: user.username || "",
         first_name: user.first_name || "",
         last_name: user.last_name || "",
+        bio: user.bio || "",
       });
     }
   }, [user]);
@@ -190,6 +230,50 @@ export default function KitchenDashboard() {
               <h2 className="mt-4 text-2xl md:text-3xl font-bold tracking-tight">{user.username}</h2>
               <p className="text-gray-500">{user.email}</p>
               <Badge className="mt-2 bg-yellow-100 text-yellow-800 border border-yellow-300">{user.role}</Badge>
+
+              {/* BIO area under avatar */}
+              <div className="mt-4 w-full max-w-2xl">
+                {editing ? (
+                  <div className="w-full">
+                    <label className="block text-sm text-gray-700 mb-1">Био</label>
+                    <textarea
+                      value={formData.bio || ""}
+                      onChange={(e) => {
+                        const val = e.target.value.slice(0, BIO_LIMIT);
+                        setFormData({ ...formData, bio: val });
+                      }}
+                      maxLength={BIO_LIMIT}
+                      rows={4}
+                      placeholder="Расскажите немного о себе: интересы, опыт, увлечения"
+                      className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none"
+                    />
+                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                      <span>Можно использовать эмодзи. Ссылки распознаются.</span>
+                      <span>{(formData.bio?.length || 0)} / {BIO_LIMIT}</span>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="text-sm text-gray-700 leading-relaxed break-words">
+                    {user.bio ? (
+                      <div>
+                        <div className={`${bioCollapsed ? "line-clamp-3" : ""}`}>
+                          {renderTextWithLinks(user.bio)}
+                        </div>
+                        {user.bio.length > 120 && (
+                          <button
+                            className="mt-2 text-yellow-600 hover:text-yellow-700 text-sm"
+                            onClick={() => setBioCollapsed((v) => !v)}
+                          >
+                            {bioCollapsed ? "Читать дальше" : "Свернуть"}
+                          </button>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-gray-400">Пользователь пока ничего о себе не рассказал</span>
+                    )}
+                  </div>
+                )}
+              </div>
 
               {editing && (
                 <div className="flex flex-col items-center gap-3 mt-3">

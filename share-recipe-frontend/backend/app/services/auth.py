@@ -73,3 +73,16 @@ def verify_refresh_token(refresh_token: str) -> int | None:
         return None
     except JWTError:
         return None
+
+
+async def get_email_verified(credentials: Optional[HTTPAuthorizationCredentials] = Depends(oauth2_scheme_optional)):
+    if not credentials:
+        return None
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        if payload.get("type") != "email":
+            return None
+        return payload.get("sub")  # email
+    except JWTError:
+        return None

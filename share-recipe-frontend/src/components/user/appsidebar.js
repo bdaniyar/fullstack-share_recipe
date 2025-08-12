@@ -63,17 +63,15 @@ const userNavigation = [
     url: "/recipes",
     icon: Soup,
   },
-
 ];
 
 export default function AppSidebar() {
-
   const handleSignout = () => {
     // Handle sign out logic here
     localStorage.removeItem("access");
     localStorage.removeItem("refresh");
     window.location.href = "/signin"; // Redirect to sign-in page
-  }
+  };
   return (
     <Sidebar className="min-h-screen border-r border-gray-200 bg-white dark:bg-gray-950">
       <SidebarContent>

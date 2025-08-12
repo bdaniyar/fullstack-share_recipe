@@ -120,7 +120,18 @@ export default function RecipePage() {
                     <div className="flex justify-between items-center text-sm text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <User className="w-4 h-4" />
-                        <span>{recipe.author}</span>
+                        {recipe.author_username ? (
+                          // Replaced nested <a> (causing anchor-in-anchor) with button to avoid hydration error
+                          <button
+                            type="button"
+                            onClick={(e) => { e.stopPropagation(); router.push(`/user/${encodeURIComponent(recipe.author_username)}`); }}
+                            className="hover:underline text-yellow-600 bg-transparent p-0 m-0 border-0 cursor-pointer focus:outline-none focus:ring-0"
+                          >
+                            {recipe.author_username}
+                          </button>
+                        ) : (
+                          <span>Unknown</span>
+                        )}
                       </div>
                       <div className="flex items-center gap-1">
                         <span>{recipe.likes}</span>

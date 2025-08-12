@@ -30,6 +30,8 @@ class RecipeResponse(BaseModel):
     saved: Optional[bool] = None
     # Permissions
     can_delete: Optional[bool] = None
+    # Author info
+    author_username: Optional[str] = None
 
     class Config:
         from_attributes = True
@@ -43,6 +45,9 @@ class CommentResponse(BaseModel):
     created_at: datetime
     user_id: int
     recipe_id: int
+    parent_id: Optional[int] = None  # added for replies
+    # Enriched author field
+    username: Optional[str] = None
 
     class Config:
         from_attributes = True

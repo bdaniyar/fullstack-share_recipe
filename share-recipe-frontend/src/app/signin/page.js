@@ -22,6 +22,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
 import { fetchProfile } from "@/lib/api/profile";
 import { API_BASE_URL } from "@/lib/config";
+import GoogleIcon from "@/assets/google.svg";
 
 export default function SignInPage() {
   const dispatch = useDispatch();
@@ -81,7 +82,6 @@ export default function SignInPage() {
         } catch (profileErr) {
           setError(profileErr.message || "Failed to load profile.");
         }
-
       } else {
         setError(data.detail || "Signin failed. Please check your details.");
       }
@@ -90,6 +90,14 @@ export default function SignInPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleSignin = () => {
+    // Redirect to backend OAuth login with optional next URL back to frontend
+    const nextUrl = `${window.location.origin}/oauth/google`;
+    window.location.href = `${API_BASE_URL}/api/user/oauth/google/login?next=${encodeURIComponent(
+      nextUrl
+    )}`;
   };
 
   return (
@@ -160,7 +168,12 @@ export default function SignInPage() {
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button variant="outline" className="w-full">
+          <Button
+            variant="outline"
+            className="w-full flex items-center justify-center gap-2"
+            onClick={handleGoogleSignin}
+          >
+            <GoogleIcon className="w-5 h-5" />
             Signin with Google
           </Button>
           <div className="mt-4 text-center text-sm">

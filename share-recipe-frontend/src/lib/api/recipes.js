@@ -10,13 +10,15 @@ function authHeaders() {
 }
 
 export async function fetchRecipes() {
-  const res = await axios.get(BASE_URL, { headers: { ...authHeaders() } });
+  const authed = typeof window !== "undefined" && !!localStorage.getItem("access");
+  const res = await axios.get(BASE_URL, { params: { include_self: authed ? true : false }, headers: { ...authHeaders() } });
   return res.data;
 }
 
 export async function searchRecipes(searchTerm) {
+  const authed = typeof window !== "undefined" && !!localStorage.getItem("access");
   const res = await axios.get(BASE_URL, {
-    params: { search: searchTerm },
+    params: { search: searchTerm, include_self: authed ? true : false },
     headers: { ...authHeaders() },
   });
   return res.data;
@@ -42,6 +44,8 @@ export async function filterRecipes(filters) {
       params.ingredients = filters.ingredients.join(",");
     }
   }
+  const authed = typeof window !== "undefined" && !!localStorage.getItem("access");
+  params.include_self = authed ? true : false;
 
   const res = await axios.get(BASE_URL, { params, headers: { ...authHeaders() } });
   return res.data;
@@ -133,11 +137,13 @@ export async function getComments(recipeId) {
   return res.data;
 }
 
-export async function addComment(recipeId, content) {
+export async function addComment(recipeId, content, parentId = null) {
   const token = localStorage.getItem("access");
+  const payload = { content };
+  if (parentId) payload.parent_id = parentId;
   const res = await axios.post(
     `${API_BASE_URL}/api/recipes/recipe/${recipeId}/comments/`,
-    { content },
+    payload,
     { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
   );
   return res.data;

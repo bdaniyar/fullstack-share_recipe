@@ -19,7 +19,7 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    op.add_column('users', sa.Column('username_changed_at', sa.DateTime(), nullable=True))
+    op.add_column('users', sa.Column('username_changed_at', sa.DateTime(timezone=True), nullable=True))
 
 
 def downgrade() -> None:

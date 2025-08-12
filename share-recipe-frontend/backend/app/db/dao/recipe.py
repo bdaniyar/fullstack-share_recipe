@@ -7,6 +7,7 @@ from app.db.database import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.social import RecipeLike, SavedRecipe, Comment
 from sqlalchemy import and_, func, delete
+from sqlalchemy.orm import joinedload
 
 # Helper to attach social fields
 async def _attach_social_fields(db: AsyncSession, recipe: Recipe, user: Optional[User] = None):
@@ -15,6 +16,15 @@ async def _attach_social_fields(db: AsyncSession, recipe: Recipe, user: Optional
         select(func.count()).select_from(RecipeLike).where(RecipeLike.recipe_id == recipe.id)
     )
     likes = int(cnt_res.scalar_one() or 0)
+    # Author username
+    try:
+        if getattr(recipe, "user", None) and getattr(recipe.user, "username", None):
+            author_username = recipe.user.username
+        else:
+            ures = await db.execute(select(User.username).where(User.id == recipe.user_id))
+            author_username = ures.scalar_one_or_none()
+    except Exception:
+        author_username = None
     liked = None
     saved = None
     can_delete = None
@@ -33,6 +43,7 @@ async def _attach_social_fields(db: AsyncSession, recipe: Recipe, user: Optional
     setattr(recipe, "liked", liked)
     setattr(recipe, "saved", saved)
     setattr(recipe, "can_delete", can_delete)
+    setattr(recipe, "author_username", author_username)
     return recipe
 
 # Create
@@ -45,19 +56,22 @@ async def create_recipe(recipe_data: RecipeCreate, user: User, db: AsyncSession)
 
 # Retrieve by id
 async def get_recipe_by_id(recipe_id: int, db: AsyncSession, user: Optional[User] = None) -> Optional[Recipe]:
-    res = await db.execute(select(Recipe).where(Recipe.id == recipe_id))
+    res = await db.execute(select(Recipe).options(joinedload(Recipe.user)).where(Recipe.id == recipe_id))
     recipe = res.scalar_one_or_none()
     if recipe:
         await _attach_social_fields(db, recipe, user)
     return recipe
 
 # List recipes (public)
-async def list_recipes(db: AsyncSession, search: Optional[str] = None, user: Optional[User] = None) -> Sequence[Recipe]:
-    stmt = select(Recipe).order_by(Recipe.created_at.desc())
+async def list_recipes(db: AsyncSession, search: Optional[str] = None, user: Optional[User] = None, include_self: bool = False) -> Sequence[Recipe]:
+    stmt = select(Recipe).options(joinedload(Recipe.user)).order_by(Recipe.created_at.desc())
     if search:
         # basic title search
         from sqlalchemy import or_, func
         stmt = stmt.where(func.lower(Recipe.title).like(f"%{search.lower()}%"))
+    # Exclude the current user's own posts in public listing when authenticated unless include_self is True
+    if user is not None and getattr(user, "id", None) is not None and not include_self:
+        stmt = stmt.where(Recipe.user_id != getattr(user, "id"))
     res = await db.execute(stmt)
     recipes = res.scalars().all()
     # attach social counts for each; omit liked/saved unless user provided
@@ -163,13 +177,19 @@ async def list_saved(user: User, db: AsyncSession):
 # Comments
 async def list_comments(recipe_id: int, db: AsyncSession):
     res = await db.execute(
-        select(Comment).where(Comment.recipe_id == recipe_id).order_by(Comment.created_at.asc())
+        select(Comment, User.username).join(User, User.id == Comment.user_id).where(Comment.recipe_id == recipe_id).order_by(Comment.created_at.asc())
     )
-    return res.scalars().all()
+    items = []
+    for c, username in res.all():
+        obj = c
+        setattr(obj, "username", username)
+        items.append(obj)
+    return items
 
-async def add_comment(recipe_id: int, content: str, user: User, db: AsyncSession):
-    comment = Comment(recipe_id=recipe_id, user_id=user.id, content=content)
+async def add_comment(recipe_id: int, content: str, user: User, db: AsyncSession, parent_id: Optional[int] = None):
+    comment = Comment(recipe_id=recipe_id, user_id=user.id, content=content, parent_id=parent_id)
     db.add(comment)
     await db.commit()
     await db.refresh(comment)
+    setattr(comment, "username", user.username)
     return comment

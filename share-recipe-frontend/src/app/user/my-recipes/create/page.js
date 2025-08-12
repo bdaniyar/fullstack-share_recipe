@@ -120,8 +120,25 @@ export default function MyRecipeCreate({ initialData = {} }) {
     try {
       // Backend currently expects: title, description, instructions (JSON)
       const instructions = (steps || [])
-        .map((s, idx) => (typeof s === "string" ? s : s?.text || `Step ${idx + 1}`))
+        .map((s) => {
+          const instruction = (typeof s === "string" ? s : (s?.instruction || "")).trim();
+          if (!instruction) return null; // skip empty steps
+          const rawTimer = typeof s !== "string" ? s?.timer : "";
+          const unitRaw = typeof s !== "string" ? (s?.timerUnit || "min") : "";
+          let timerPart = "";
+          const hasTimer = rawTimer !== undefined && rawTimer !== null && String(rawTimer).trim() !== "";
+          if (hasTimer) {
+            const val = Number(rawTimer);
+            if (!Number.isNaN(val) && val > 0) {
+              const unitLabel = unitRaw === "sec" ? "sec" : unitRaw === "hr" ? "hr" : "min";
+              timerPart = ` (⏱ ${val} ${unitLabel})`;
+            }
+          }
+          return `${instruction}${timerPart}`;
+        })
         .filter(Boolean)
+        // Number the steps after filtering empties
+        .map((line, idx) => `${idx + 1}. ${line}`)
         .join("\n\n");
 
       const payload = {

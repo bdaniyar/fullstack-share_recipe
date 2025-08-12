@@ -1,7 +1,7 @@
 # db/recipe.py
 from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, Boolean
 from sqlalchemy.orm import relationship
-from datetime import datetime
+from datetime import datetime, timezone
 from app.db.base import Base
 
 class Recipe(Base):
@@ -13,7 +13,7 @@ class Recipe(Base):
     instructions = Column(Text)
     image_url = Column(String, nullable=True)
     is_published = Column(Boolean, default=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
 
     user_id = Column(Integer, ForeignKey("users.id"))
     user = relationship("User", back_populates="recipes")

@@ -1,7 +1,7 @@
 # routers/recipes.py
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException, Request
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.models.recipe import RecipeCreate, RecipeResponse, RecipeUpdate
+from app.models.recipe import RecipeCreate, RecipeResponse, RecipeUpdate, CommentResponse
 from app.db.dao.recipe import (
   create_recipe, get_recipes_by_user, list_recipes, get_recipe_by_id, update_recipe, delete_recipe,
   set_recipe_image, add_like, remove_like, add_save, remove_save, list_comments, add_comment, list_saved
@@ -24,11 +24,13 @@ async def create_new_recipe(
 @router.get("/list/", response_model=list[RecipeResponse])
 async def list_public_recipes(
     search: str | None = None,
+    include_self: bool = False,
     session: AsyncSession = Depends(get_async_session),
     user: User | None = Depends(get_optional_user),
 ):
     # user is optional; if present (authenticated), liked/saved flags will be included
-    return await list_recipes(session, search, user)
+    # DAO will exclude current user's own posts when user is provided unless include_self=True
+    return await list_recipes(session, search, user, include_self)
 
 @router.get("/my-recipes/", response_model=list[RecipeResponse])
 async def list_my_recipes(
@@ -126,15 +128,16 @@ async def unsave_recipe(recipe_id: int, session: AsyncSession = Depends(get_asyn
 @router.get("/recipe/{recipe_id}/comments/")
 async def get_comments(recipe_id: int, session: AsyncSession = Depends(get_async_session)):
     items = await list_comments(recipe_id, session)
-    return items
+    return [CommentResponse.model_validate(i) for i in items]
 
 @router.post("/recipe/{recipe_id}/comments/")
 async def post_comment(recipe_id: int, data: dict, session: AsyncSession = Depends(get_async_session), user: User = Depends(get_current_user)):
     content = (data or {}).get("content")
+    parent_id = (data or {}).get("parent_id")  # allow reply
     if not content or not content.strip():
         raise HTTPException(status_code=400, detail="Content is required")
-    c = await add_comment(recipe_id, content.strip(), user, session)
-    return c
+    c = await add_comment(recipe_id, content.strip(), user, session, parent_id=parent_id)
+    return CommentResponse.model_validate(c)
 
 @router.get("/options/")
 async def get_options():

@@ -8,7 +8,7 @@ import { X } from "lucide-react";
 
 export default function RecipeStepsForm({ steps, setSteps }) {
   const handleAddStep = () => {
-    setSteps((prev) => [...prev, { instruction: "", timer: "", image: null }]);
+    setSteps((prev) => [...prev, { instruction: "", timer: "", timerUnit: "min", image: null }]);
   };
 
   const handleStepChange = (index, field, value) => {
@@ -38,6 +38,23 @@ export default function RecipeStepsForm({ steps, setSteps }) {
             value={step.instruction}
             onChange={(e) => handleStepChange(index, "instruction", e.target.value)}
           />
+          <Input
+            placeholder="Time"
+            type="number"
+            min="0"
+            className="w-24"
+            value={step.timer}
+            onChange={(e) => handleStepChange(index, "timer", e.target.value)}
+          />
+          <select
+            className="border rounded-md px-2 py-2 text-sm"
+            value={step.timerUnit || "min"}
+            onChange={(e) => handleStepChange(index, "timerUnit", e.target.value)}
+          >
+            <option value="sec">sec</option>
+            <option value="min">min</option>
+            <option value="hr">hr</option>
+          </select>
           <Button
             variant="outline"
             className="text-red-500 border-red-500"
@@ -45,12 +62,6 @@ export default function RecipeStepsForm({ steps, setSteps }) {
           >
             <X className="w-4 h-4" />
           </Button>
-          <Input
-            placeholder="Timer (e.g., 20 min)"
-            className="w-28"
-            value={step.timer}
-            onChange={(e) => handleStepChange(index, "timer", e.target.value)}
-          />
           {/* Optionally, add image field if you handle file uploads */}
         </div>
       ))}

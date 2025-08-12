@@ -2,6 +2,7 @@ from pydantic import BaseModel, EmailStr, Field, field_validator, model_validato
 from typing import Optional
 from datetime import datetime
 import re
+from app.models.recipe import RecipeResponse  # added import
 
 
 class UserSignup(BaseModel):
@@ -39,6 +40,7 @@ class UserUpdate(BaseModel):
         default=None, min_length=3, max_length=20, pattern=r"^[A-Za-z0-9._]+$"
     )
     photo_url: Optional[str] = None
+    bio: Optional[str] = Field(default=None, max_length=300)
 
     @field_validator("first_name", "last_name")
     @classmethod
@@ -72,6 +74,21 @@ class UserProfile(BaseModel):
     joined: datetime | None = None
     is_active: bool | None = None
     photo_url: str | None = None
+    bio: str | None = None
+
+    class Config:
+        from_attributes = True
+
+
+class UserPublicProfile(BaseModel):
+    username: str
+    first_name: str | None = None
+    last_name: str | None = None
+    joined: datetime | None = None
+    photo_url: str | None = None
+    bio: str | None = None
+    recipes: list[RecipeResponse] = []
+    saved_recipes: list[RecipeResponse] = []
 
     class Config:
         from_attributes = True

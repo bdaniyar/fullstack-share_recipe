@@ -34,11 +34,40 @@ export default function SignUpPage() {
     password2: "",
   });
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
+  // Email code flow state
+  const [code, setCode] = useState("");
+  const [codeSent, setCodeSent] = useState(false);
+  const [sendLoading, setSendLoading] = useState(false);
+  const [verifyLoading, setVerifyLoading] = useState(false);
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [emailToken, setEmailToken] = useState("");
+  const [resendSeconds, setResendSeconds] = useState(0);
+
+  const startResendTimer = (secs = 30) => {
+    setResendSeconds(secs);
+    const timer = setInterval(() => {
+      setResendSeconds((s) => {
+        if (s <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1000);
+  };
+
   const handleChange = (e) => {
+    // Reset verification state if email changes
+    if (e.target.name === "email") {
+      setEmailVerified(false);
+      setCodeSent(false);
+      setCode("");
+      setEmailToken("");
+    }
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -58,11 +87,67 @@ export default function SignUpPage() {
     return "";
   };
 
+  const handleSendCode = async () => {
+    setError("");
+    setSuccessMsg("");
+    setSendLoading(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/user/request-code/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.detail || "Failed to send code");
+      }
+      setCodeSent(true);
+      setSuccessMsg("Verification code sent to your email.");
+      startResendTimer(30);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setSendLoading(false);
+    }
+  };
+
+  const handleVerifyCode = async () => {
+    setError("");
+    setSuccessMsg("");
+    setVerifyLoading(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/user/verify-code/`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email, code }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.detail || "Invalid or expired code");
+      }
+      // Token for verified email (optional use later)
+      if (data.token) setEmailToken(data.token);
+      setEmailVerified(true);
+      setSuccessMsg("Email verified successfully.");
+    } catch (e) {
+      setEmailVerified(false);
+      setError(e.message);
+    } finally {
+      setVerifyLoading(false);
+    }
+  };
+
   const handleSignup = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
     setSuccessMsg("");
+
+    if (!emailVerified) {
+      setError("Please verify your email with the code before continuing.");
+      setLoading(false);
+      return;
+    }
 
     const validationMsg = validateClient();
     if (validationMsg) {
@@ -78,6 +163,8 @@ export default function SignUpPage() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          // Optionally send the email verification token along
+          ...(emailToken ? { "X-Email-Token": emailToken } : {}),
         },
         body: JSON.stringify(signupData),
       });
@@ -138,6 +225,46 @@ export default function SignUpPage() {
                   autoComplete="new-email"
                   required
                 />
+                <div className="flex items-center gap-2 mt-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="border-yellow-500 text-yellow-600 hover:bg-yellow-50"
+                    onClick={handleSendCode}
+                    disabled={sendLoading || !formData.email || resendSeconds > 0}
+                  >
+                    {sendLoading
+                      ? "Sending..."
+                      : resendSeconds > 0
+                        ? `Resend in ${resendSeconds}s`
+                        : codeSent
+                          ? "Resend Code"
+                          : "Send Code"}
+                  </Button>
+                  {codeSent && !emailVerified && (
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="text"
+                        placeholder="6-digit code"
+                        value={code}
+                        onChange={(e) => setCode(e.target.value.trim())}
+                        className="w-32"
+                        maxLength={6}
+                      />
+                      <Button
+                        type="button"
+                        className="bg-yellow-500 text-[#1E1E1E] hover:text-white"
+                        onClick={handleVerifyCode}
+                        disabled={verifyLoading || code.length !== 6}
+                      >
+                        {verifyLoading ? "Verifying..." : "Verify"}
+                      </Button>
+                    </div>
+                  )}
+                  {emailVerified && (
+                    <span className="text-xs text-green-600">Email verified</span>
+                  )}
+                </div>
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="username">Username</Label>
@@ -193,8 +320,9 @@ export default function SignUpPage() {
             <Button
               type="submit"
               className="w-full bg-yellow-500 text-[#1E1E1E] mt-7 hover:text-white"
+              disabled={loading || !emailVerified}
             >
-              Let's Cook
+              {loading ? "Processing..." : "Let's Cook"}
             </Button>
           </form>
         </CardContent>
