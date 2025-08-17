@@ -9,12 +9,21 @@ class RecipeCreate(BaseModel):
     instructions: Optional[str] = None
     image_url: Optional[str] = None
     is_published: Optional[bool] = True
+    # New: optional list of ingredient IDs to associate
+    ingredients: Optional[List[int]] = None
 
 class RecipeUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
     instructions: Optional[str] = None
     is_published: Optional[bool] = None
+    # Optional: allow updating ingredients in future
+    ingredients: Optional[List[int]] = None
+
+# New: lightweight ingredient representation for responses
+class IngredientOut(BaseModel):
+    id: int
+    name: str
 
 class RecipeResponse(BaseModel):
     id: int
@@ -32,6 +41,8 @@ class RecipeResponse(BaseModel):
     can_delete: Optional[bool] = None
     # Author info
     author_username: Optional[str] = None
+    # Ingredients list (optional on list endpoints)
+    ingredients: Optional[List[IngredientOut]] = None
 
     class Config:
         from_attributes = True

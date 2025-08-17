@@ -38,6 +38,10 @@ export default function SignUpPage() {
   const [error, setError] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
+  // Show/hide password states
+  const [showPw1, setShowPw1] = useState(false);
+  const [showPw2, setShowPw2] = useState(false);
+
   // Email code flow state
   const [code, setCode] = useState("");
   const [codeSent, setCodeSent] = useState(false);
@@ -285,15 +289,25 @@ export default function SignUpPage() {
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
                 </div>
-                <Input
-                  name="password"
-                  type="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Your secure password"
-                  required
-                  autoComplete="new-password"
-                />
+                <div className="relative">
+                  <Input
+                    name="password"
+                    type={showPw1 ? "text" : "password"}
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Your secure password"
+                    required
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPw1((v) => !v)}
+                    className="absolute inset-y-0 right-2 text-sm text-gray-500 hover:text-gray-700"
+                    aria-label={showPw1 ? "Hide password" : "Show password"}
+                  >
+                    {showPw1 ? "Hide" : "Show"}
+                  </button>
+                </div>
                 <span className="text-xs text-gray-500">
                   Min 8 chars, include uppercase, digit, and special character.
                 </span>
@@ -302,15 +316,25 @@ export default function SignUpPage() {
                 <div className="flex items-center">
                   <Label htmlFor="password2">Confirm Password</Label>
                 </div>
-                <Input
-                  name="password2"
-                  type="password"
-                  value={formData.password2}
-                  onChange={handleChange}
-                  placeholder="Enter password again"
-                  required
-                  autoComplete="new-password"
-                />
+                <div className="relative">
+                  <Input
+                    name="password2"
+                    type={showPw2 ? "text" : "password"}
+                    value={formData.password2}
+                    onChange={handleChange}
+                    placeholder="Enter password again"
+                    required
+                    autoComplete="new-password"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPw2((v) => !v)}
+                    className="absolute inset-y-0 right-2 text-sm text-gray-500 hover:text-gray-700"
+                    aria-label={showPw2 ? "Hide password" : "Show password"}
+                  >
+                    {showPw2 ? "Hide" : "Show"}
+                  </button>
+                </div>
               </div>
             </div>
             {error && <p className="text-red-500 text-sm mt-2">{error}</p>}

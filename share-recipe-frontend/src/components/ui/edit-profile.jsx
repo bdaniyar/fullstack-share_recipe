@@ -14,7 +14,7 @@ export default function EditProfile() {
     const [success, setSuccess] = useState("");
 
     useEffect(() => {
-        // Загружаем текущий профиль при монтировании
+        // Load current profile on mount
         fetchProfile()
             .then(profile => {
                 setFormData({
@@ -23,7 +23,7 @@ export default function EditProfile() {
                     username: profile.username || "",
                 });
             })
-            .catch(() => setError("Не удалось загрузить профиль"));
+            .catch(() => setError("Failed to load profile"));
     }, []);
 
     const handleChange = (e) => {
@@ -39,15 +39,15 @@ export default function EditProfile() {
         try {
             const result = await updateProfile(formData);
             console.log("Profile update result:", result);
-            setSuccess("Профиль успешно обновлён!");
+            setSuccess("Profile updated successfully!");
         } catch (error) {
-            console.error("Ошибка при обновлении профиля:", error);
+            console.error("Error updating profile:", error);
             if (error instanceof Error) {
                 setError(error.message);
             } else if (typeof error === "string") {
                 setError(error);
             } else {
-                setError("Ошибка при обновлении профиля");
+                setError("Error updating profile");
             }
         } finally {
             setLoading(false);
@@ -90,7 +90,7 @@ export default function EditProfile() {
                 className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                 disabled={loading}
             >
-                {loading ? "Сохраняем..." : "Save Changes"}
+                {loading ? "Saving..." : "Save Changes"}
             </button>
         </form>
     );

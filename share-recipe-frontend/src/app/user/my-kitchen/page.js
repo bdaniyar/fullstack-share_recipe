@@ -107,18 +107,18 @@ export default function KitchenDashboard() {
   }, [user]);
 
   useEffect(() => {
-    // Ставим is_active=true при заходе на страницу
+    // Set is_active=true when entering the page
     if (user && user.is_active !== true) {
       updateProfile({ is_active: true }).catch(() => { });
     }
-    // Ставим is_active=false при закрытии вкладки
+    // Set is_active=false when the tab is closed
     const handleUnload = () => {
       updateProfile({ is_active: false });
     };
     window.addEventListener("beforeunload", handleUnload);
     return () => {
       window.removeEventListener("beforeunload", handleUnload);
-      // На всякий случай при размонтировании
+      // Also set on unmount just in case
       updateProfile({ is_active: false });
     };
   }, [user]);
@@ -132,7 +132,7 @@ export default function KitchenDashboard() {
   const handlePhotoUpload = async () => {
     if (!selectedPhoto) return;
     const formData = new FormData();
-    formData.append("file", selectedPhoto); // исправлено: было "photo"
+    formData.append("file", selectedPhoto); // fixed: was "photo"
     try {
       await fetch(`${API_BASE_URL}/api/user/profile/photo/`, {
         method: "POST",
@@ -144,7 +144,7 @@ export default function KitchenDashboard() {
       setShowPhotoModal(false);
       setSelectedPhoto(null);
     } catch (err) {
-      alert("Ошибка при загрузке фото");
+      alert("Error uploading photo");
     }
   };
 
@@ -159,7 +159,7 @@ export default function KitchenDashboard() {
       setShowPhotoModal(false);
       setSelectedPhoto(null);
     } catch (err) {
-      alert("Ошибка при удалении фото");
+      alert("Error deleting photo");
     }
   };
 
@@ -235,7 +235,7 @@ export default function KitchenDashboard() {
               <div className="mt-4 w-full max-w-2xl">
                 {editing ? (
                   <div className="w-full">
-                    <label className="block text-sm text-gray-700 mb-1">Био</label>
+                    <label className="block text-sm text-gray-700 mb-1">Bio</label>
                     <textarea
                       value={formData.bio || ""}
                       onChange={(e) => {
@@ -244,11 +244,11 @@ export default function KitchenDashboard() {
                       }}
                       maxLength={BIO_LIMIT}
                       rows={4}
-                      placeholder="Расскажите немного о себе: интересы, опыт, увлечения"
+                      placeholder="Tell us a bit about yourself: interests, experience, hobbies"
                       className="w-full border rounded-md px-3 py-2 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500 outline-none"
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-1">
-                      <span>Можно использовать эмодзи. Ссылки распознаются.</span>
+                      <span>You can use emojis. Links are recognized.</span>
                       <span>{(formData.bio?.length || 0)} / {BIO_LIMIT}</span>
                     </div>
                   </div>
@@ -264,12 +264,12 @@ export default function KitchenDashboard() {
                             className="mt-2 text-yellow-600 hover:text-yellow-700 text-sm"
                             onClick={() => setBioCollapsed((v) => !v)}
                           >
-                            {bioCollapsed ? "Читать дальше" : "Свернуть"}
+                            {bioCollapsed ? "Read more" : "Collapse"}
                           </button>
                         )}
                       </div>
                     ) : (
-                      <span className="text-gray-400">Пользователь пока ничего о себе не рассказал</span>
+                      <span className="text-gray-400">User has not written a bio yet</span>
                     )}
                   </div>
                 )}

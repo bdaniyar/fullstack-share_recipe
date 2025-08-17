@@ -3,6 +3,7 @@
 from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.user import UserProfile, UserSignIn, UserSignup, UserUpdate, UserPublicProfile  # added import
+from app.models.auth import RequestCodePayload, VerifyEmailRequest, PasswordResetRequest, PasswordResetConfirm
 from app.db.dao.dao import UserDAO
 from app.db.database import User
 from app.utils.security import create_access_token, create_refresh_token, hash_password, verify_password, create_email_token
@@ -46,8 +47,6 @@ USERNAME_CHANGE_COOLDOWN_DAYS = 3
 router = APIRouter(prefix="/api/user", tags=["User"])
 
 
-class RequestCodePayload(BaseModel):
-  email: EmailStr
 
 
 @router.post("/request-code/")
@@ -63,10 +62,6 @@ async def request_code(payload: RequestCodePayload):
     await send_verification_code(email, code)
     return {"detail": "Verification code sent"}
 
-
-class VerifyEmailRequest(BaseModel):
-    email: EmailStr
-    code: str
 
 
 @router.post("/verify-code/")
@@ -476,3 +471,45 @@ async def public_profile(username: str, session: AsyncSession = Depends(get_asyn
         saved_recipes=saved,
     )
     return profile
+
+@router.post("/request-password-reset/")
+async def request_password_reset(payload: PasswordResetRequest):
+    email = payload.email.lower().strip()
+    r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True)
+    code = f"{random.randint(100000, 999999)}"
+    key = f"reset:{email}"
+    await r.setex(key, 300, code)  # 5 minutes
+    try:
+        await send_verification_code(email, code)
+    except Exception:
+        # do not leak whether email exists; still report ok
+        pass
+    return {"status": "ok"}
+
+@router.post("/reset-password/")
+async def reset_password(data: PasswordResetConfirm, session: AsyncSession = Depends(get_async_session)):
+    email = data.email.lower().strip()
+    # Verify code
+    r = redis.Redis(host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True)
+    stored = await r.get(f"reset:{email}")
+    if not stored or stored != data.code:
+        raise HTTPException(status_code=400, detail="Invalid or expired code")
+
+    # Validate passwords
+    if data.new_password != data.password2:
+        raise HTTPException(status_code=400, detail="Passwords do not match")
+    import re as _re
+    if not _re.search(r"[A-Z]", data.new_password) or not _re.search(r"[0-9]", data.new_password) or not _re.search(r"[^A-Za-z0-9]", data.new_password) or len(data.new_password) < 8:
+        raise HTTPException(status_code=400, detail="Password must be at least 8 chars and include an uppercase letter, a digit, and a special character.")
+
+    # Update user password if user exists
+    user = await UserDAO.get_user_by_email(session, email)
+    if user:
+        new_hash = hash_password(data.new_password)
+        # Write to correct column name
+        setattr(user, "hashed_password", new_hash)
+        session.add(user)
+        await session.commit()
+        await session.refresh(user)
+    await r.delete(f"reset:{email}")
+    return {"status": "ok"}

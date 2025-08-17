@@ -33,12 +33,17 @@ export default function Filters() {
     const value = searchParams.get(key);
     if (value) filters[key] = value;
   });
+  // New: parse ingredients (comma-separated IDs)
+  const ingParam = searchParams.get("ingredients");
+  const ingredients = ingParam
+    ? ingParam.split(",").map((s) => s.trim()).filter(Boolean)
+    : [];
 
   const handleClearFilters = () => {
     router.push("/recipes");
   };
 
-  if (Object.keys(filters).length === 0) {
+  if (Object.keys(filters).length === 0 && ingredients.length === 0) {
     return null;
   }
 
@@ -72,6 +77,12 @@ export default function Filters() {
         <span className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">
           <strong className="text-yellow-700">Category:</strong>{" "}
           {getNameById(options.categories, filters.category)}
+        </span>
+      )}
+      {ingredients.length > 0 && (
+        <span className="flex items-center gap-1 bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full">
+          <strong className="text-yellow-700">Ingredients:</strong>{" "}
+          {ingredients.join(", ")}
         </span>
       )}
       <button

@@ -23,7 +23,10 @@ app.include_router(recipe_router.router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # или ["*"] на время разработки
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+    ],  # allow common Next.js dev ports
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -15,7 +15,10 @@ from alembic import context
 from app.db.base import Base 
 from app.db.database import User
 from app.db.recipes import Recipe
-from app.db.social import RecipeLike, SavedRecipe, Comment # если Base содержит все модели
+from app.db.social import RecipeLike, SavedRecipe, Comment # if Base already includes all models
+from app.db.ingredients import Ingredient
+# import the join table so Alembic sees it
+from app.db.recipe_ingredients import RecipeIngredient
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -23,7 +26,7 @@ config = context.config
 
 load_dotenv()
 
-# Переопределим URL на синхронный для alembic
+# Convert async DATABASE_URL to a synchronous URL for Alembic
 async_url = os.getenv("DATABASE_URL")
 if not async_url:
     raise RuntimeError("DATABASE_URL environment variable is not set!")

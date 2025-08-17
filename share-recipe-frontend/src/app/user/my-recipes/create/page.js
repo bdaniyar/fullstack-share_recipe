@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -26,6 +26,8 @@ import { Card, CardHeader, CardContent, CardTitle, CardDescription } from "@/com
 import { X } from "lucide-react"; // Importing the X icon for removing ingredients
 import { createRecipe, uploadRecipeImage } from "@/lib/api/recipes";
 import { API_BASE_URL } from "@/lib/config";
+// Add ingredients directory API helpers
+import { searchIngredients as apiSearchIngredients, addIngredient as apiAddIngredient } from "@/lib/api/recipes";
 export default function MyRecipeCreate({ initialData = {} }) {
   const router = useRouter();
   const [options, setOptions] = useState({
@@ -48,6 +50,22 @@ export default function MyRecipeCreate({ initialData = {} }) {
     image: null,
   });
 
+  // Local ingredient search state and name dictionary for chips
+  const [ingQuery, setIngQuery] = useState("");
+  const [ingResults, setIngResults] = useState([]);
+  const [ingLoading, setIngLoading] = useState(false);
+  const [ingOpen, setIngOpen] = useState(false); // control popover from external buttons
+  const [ingredientNames, setIngredientNames] = useState(() => {
+    // Seed with any provided initialData.ingredients if present
+    const dict = {};
+    if (Array.isArray(initialData.ingredients)) {
+      initialData.ingredients.forEach((i) => {
+        if (i?.id && i?.name) dict[i.id] = i.name;
+      });
+    }
+    return dict;
+  });
+
   const [steps, setSteps] = useState([]);
 
   const [loading, setLoading] = useState(true);
@@ -62,10 +80,7 @@ export default function MyRecipeCreate({ initialData = {} }) {
           regions: res.data.regions.map((r) => ({ id: r.id, name: r.name })),
           sessions: res.data.sessions.map((s) => ({ id: s.id, name: s.name })),
           types: res.data.types.map((t) => ({ id: t.id, name: t.name })),
-          ingredients: res.data.ingredients.map((i) => ({
-            id: i.id,
-            name: i.name,
-          })),
+          ingredients: [], // ingredients fetched via search API
           categories: res.data.categories.map((c) => ({
             id: c.id,
             name: c.name,
@@ -79,6 +94,40 @@ export default function MyRecipeCreate({ initialData = {} }) {
       });
   }, []);
 
+  // Debounced ingredients search
+  useEffect(() => {
+    const q = (ingQuery || "").trim();
+    if (q.length === 0) {
+      setIngResults([]);
+      return;
+    }
+    const handle = setTimeout(async () => {
+      setIngLoading(true);
+      try {
+        const items = await apiSearchIngredients(q);
+        setIngResults(Array.isArray(items) ? items : []);
+      } catch (e) {
+        console.error("Ingredient search failed", e);
+      } finally {
+        setIngLoading(false);
+      }
+    }, 300);
+    return () => clearTimeout(handle);
+  }, [ingQuery]);
+
+  // Determine when to show the Add "..." option: valid input (>=3, letters/spaces/hyphens) and no exact match yet
+  const canAddIngredient = useMemo(() => {
+    const raw = (ingQuery || "").trim();
+    if (raw.length < 3) return false;
+    const LETTERS_RE = /^[A-Za-zА-Яа-яЁё\s-]{3,}$/;
+    if (!LETTERS_RE.test(raw)) return false;
+    const norm = raw.toLowerCase().replace(/\s+/g, " ").trim();
+    const hasExact = (ingResults || []).some((i) =>
+      String(i?.name || "").toLowerCase().replace(/\s+/g, " ").trim() === norm
+    );
+    return !hasExact;
+  }, [ingQuery, ingResults]);
+
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -89,16 +138,54 @@ export default function MyRecipeCreate({ initialData = {} }) {
     if (file) setPreview(URL.createObjectURL(file));
   };
 
-  const handleIngredientToggle = (ingredientId) => {
+  const handleIngredientToggle = (ingredientId, ingredientName) => {
+    const idNum = Number(ingredientId);
+    if (ingredientName) {
+      setIngredientNames((prev) => ({ ...prev, [idNum]: ingredientName }));
+    }
     setFormData((prev) => {
-      const alreadyAdded = prev.ingredients.includes(ingredientId);
+      const alreadyAdded = prev.ingredients.includes(idNum);
       return {
         ...prev,
         ingredients: alreadyAdded
-          ? prev.ingredients.filter((id) => id !== ingredientId)
-          : [...prev.ingredients, ingredientId],
+          ? prev.ingredients.filter((id) => Number(id) !== idNum)
+          : [...prev.ingredients, idNum],
       };
     });
+  };
+
+  const tryAddNewIngredient = async () => {
+    const raw = (ingQuery || "").trim();
+    if (raw.length < 3) return;
+    // Frontend validation to match backend policy: letters (Latin/Cyrillic), spaces, hyphens
+    const LETTERS_RE = /^[A-Za-zА-Яа-яЁё\s-]{3,}$/;
+    if (!LETTERS_RE.test(raw)) return;
+    try {
+      const token = typeof window !== "undefined" ? localStorage.getItem("access") : null;
+      if (!token) {
+        alert("Sign in to add ingredients");
+        return;
+      }
+      setIngLoading(true);
+      const data = await apiAddIngredient(raw);
+      if (data?.id && data?.name) {
+        setIngredientNames((prev) => ({ ...prev, [data.id]: data.name }));
+        setFormData((prev) => (
+          prev.ingredients.includes(data.id)
+            ? prev
+            : { ...prev, ingredients: [...prev.ingredients, data.id] }
+        ));
+        // Refresh results and clear query to show selected chips clearly
+        setIngQuery("");
+        setIngResults([]);
+      }
+    } catch (e) {
+      console.error("Failed to add ingredient", e);
+      const msg = e?.response?.data?.detail || "Failed to add ingredient";
+      alert(msg);
+    } finally {
+      setIngLoading(false);
+    }
   };
 
   const handleClear = () => {
@@ -145,6 +232,8 @@ export default function MyRecipeCreate({ initialData = {} }) {
         title: formData.title,
         description: formData.description,
         instructions,
+        // pass selected ingredient IDs if any
+        ...(formData.ingredients && formData.ingredients.length > 0 ? { ingredients: formData.ingredients } : {}),
       };
 
       const created = await createRecipe(payload);
@@ -214,6 +303,89 @@ export default function MyRecipeCreate({ initialData = {} }) {
               {preview && (
                 <img src={preview} alt="Preview" className="mt-2 w-48 rounded-md shadow" />
               )}
+            </div>
+
+            {/* Ingredients: moved out of Advanced to be always visible */}
+            <div>
+              <Label className="text-yellow-500 mb-2 block">Ingredients</Label>
+              <div className="flex flex-col gap-2">
+                <div className="flex gap-2 items-center">
+                  <Input
+                    placeholder="Ingredient..."
+                    value={ingQuery}
+                    onChange={(e) => setIngQuery(e.target.value)}
+                    className="flex-1"
+                  />
+                  <Popover open={ingOpen} onOpenChange={setIngOpen}>
+                    <PopoverTrigger asChild>
+                      <Button type="button" variant="outline">Find</Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[320px] p-0">
+                      <Command>
+                        <CommandInput
+                          placeholder="Search ingredients..."
+                          value={ingQuery}
+                          onValueChange={setIngQuery}
+                        />
+                        <CommandList>
+                          {!ingLoading && (
+                            <CommandEmpty>
+                              {((ingQuery || "").trim().length < 3)
+                                ? "Enter at least 3 letters to start searching"
+                                : "Nothing found"}
+                            </CommandEmpty>
+                          )}
+                          {ingLoading && (
+                            <div className="py-2 text-center text-sm text-gray-500">Searching...</div>
+                          )}
+                          {!ingLoading && ingResults.map((ingredient) => (
+                            <CommandItem
+                              key={ingredient.id}
+                              onSelect={() => {
+                                handleIngredientToggle(ingredient.id, ingredient.name);
+                                setIngOpen(false);
+                              }}
+                              className={formData.ingredients.includes(Number(ingredient.id)) ? "bg-yellow-100" : ""}
+                            >
+                              {ingredient.name}
+                            </CommandItem>
+                          ))}
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                  <Button
+                    type="button"
+                    onClick={tryAddNewIngredient}
+                    disabled={!canAddIngredient || ingLoading}
+                    className="bg-yellow-500 text-black hover:bg-yellow-600"
+                    title={canAddIngredient ? "Add ingredient" : "Enter 3+ letters (letters, spaces and hyphens only)"}
+                  >
+                    Add
+                  </Button>
+                </div>
+                <div className="text-xs text-gray-500">
+                  {(ingQuery.trim().length < 3)
+                    ? "Enter at least 3 letters to add or search"
+                    : (canAddIngredient ? "You can add it as a new ingredient" : "If the ingredient is found below — pick it from the list")}
+                </div>
+                {/* Selected chips */}
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {formData.ingredients.map((ingredientId) => (
+                    <Badge key={ingredientId} className="bg-yellow-100 text-yellow-800 flex items-center gap-1 px-2 py-1 rounded-full">
+                      {ingredientNames[ingredientId] || `#${ingredientId}`}
+                      <button
+                        type="button"
+                        onClick={(e) => { e.stopPropagation(); handleIngredientToggle(ingredientId); }}
+                        aria-label="Remove ingredient"
+                        className="ml-1 rounded hover:bg-yellow-200"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                    </Badge>
+                  ))}
+                </div>
+              </div>
             </div>
 
             <RecipeStepsForm steps={steps} setSteps={setSteps} />
@@ -315,44 +487,6 @@ export default function MyRecipeCreate({ initialData = {} }) {
                   </Popover>
                 </div>
 
-                {/* Ingredients */}
-                <div>
-                  <Label className="text-yellow-500 mb-2 block">Ingredients</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" className="w-full justify-between">
-                        {formData.ingredients.length > 0 ? "Add or remove ingredients" : "Select ingredients..."}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[320px] p-0">
-                      <Command>
-                        <CommandInput placeholder="Search ingredients..." />
-                        <CommandList>
-                          {options.ingredients?.map((ingredient) => (
-                            <CommandItem
-                              key={ingredient.id}
-                              onSelect={() => handleIngredientToggle(ingredient.id)}
-                              className={formData.ingredients.includes(ingredient.id) ? "bg-yellow-100" : ""}
-                            >
-                              {ingredient.name}
-                            </CommandItem>
-                          ))}
-                        </CommandList>
-                      </Command>
-                    </PopoverContent>
-                  </Popover>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {formData.ingredients.map((ingredientId) => {
-                      const ingredient = options.ingredients.find((i) => i.id === ingredientId);
-                      return (
-                        <Badge key={ingredientId} className="bg-yellow-100 text-yellow-800 flex items-center gap-1 px-2 py-1 rounded-full">
-                          {ingredient?.name}
-                          <X className="w-4 h-4 cursor-pointer" onClick={() => handleIngredientToggle(ingredientId)} />
-                        </Badge>
-                      );
-                    })}
-                  </div>
-                </div>
               </div>
             </details>
 

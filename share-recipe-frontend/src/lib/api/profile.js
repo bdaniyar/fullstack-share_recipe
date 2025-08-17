@@ -10,7 +10,7 @@ export async function fetchProfile() {
   });
 
   if (res.status === 401 && refresh) {
-    // Refresh token
+    // Try to refresh the token
     const refreshRes = await fetch(
       `${API_BASE_URL}/api/user/token/refresh/`,
       {
@@ -24,7 +24,7 @@ export async function fetchProfile() {
     if (refreshRes.ok) {
       localStorage.setItem("access", refreshData.access);
 
-      // Retry request
+      // Retry request with new access token
       res = await fetch(`${API_BASE_URL}/api/user/profile/`, {
         headers: { Authorization: `Bearer ${refreshData.access}` },
       });
@@ -58,7 +58,7 @@ export async function updateProfile(data) {
   });
 
   if (res.status === 401 && refreshToken) {
-    // Попробуем обновить токен
+    // Try to refresh the token
     const refreshRes = await fetch(
       `${API_BASE_URL}/api/user/token/refresh/`,
       {
@@ -72,7 +72,7 @@ export async function updateProfile(data) {
     if (refreshRes.ok) {
       localStorage.setItem("access", refreshData.access);
 
-      // Повторим PATCH с новым access токеном
+      // Retry PATCH with the new access token
       res = await fetch(`${API_BASE_URL}/api/user/profile/`, {
         method: "PATCH",
         headers: {

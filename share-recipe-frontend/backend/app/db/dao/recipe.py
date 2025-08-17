@@ -1,13 +1,16 @@
 # services/recipe.py
 from typing import Optional, Sequence
 from sqlalchemy import select
-from app.models.recipe import RecipeCreate, RecipeUpdate
+from app.models.recipe import RecipeCreate, RecipeUpdate, IngredientOut
 from app.db.recipes import Recipe
 from app.db.database import User
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.social import RecipeLike, SavedRecipe, Comment
 from sqlalchemy import and_, func, delete
 from sqlalchemy.orm import joinedload
+# Import join table and Ingredient for lookups
+from app.db.recipe_ingredients import RecipeIngredient
+from app.db.ingredients import Ingredient
 
 # Helper to attach social fields
 async def _attach_social_fields(db: AsyncSession, recipe: Recipe, user: Optional[User] = None):
@@ -46,12 +49,46 @@ async def _attach_social_fields(db: AsyncSession, recipe: Recipe, user: Optional
     setattr(recipe, "author_username", author_username)
     return recipe
 
+async def _attach_ingredients(db: AsyncSession, recipe: Recipe):
+    try:
+        res = await db.execute(
+            select(Ingredient.id, Ingredient.name)
+            .join(RecipeIngredient, RecipeIngredient.ingredient_id == Ingredient.id)
+            .where(RecipeIngredient.recipe_id == recipe.id)
+            .order_by(Ingredient.name.asc())
+        )
+        rows = res.all()
+        ings = [IngredientOut(id=r[0], name=r[1]) for r in rows]
+    except Exception:
+        ings = []
+    setattr(recipe, "ingredients", ings)
+    return recipe
+
 # Create
 async def create_recipe(recipe_data: RecipeCreate, user: User, db: AsyncSession):
-    new_recipe = Recipe(**recipe_data.model_dump(exclude_unset=True), user_id=user.id)
+    # Exclude non-column fields like 'ingredients' from model init
+    payload = recipe_data.model_dump(exclude_unset=True)
+    payload.pop("ingredients", None)
+    new_recipe = Recipe(**payload, user_id=user.id)
     db.add(new_recipe)
     await db.commit()
     await db.refresh(new_recipe)
+    # Attach any provided ingredient_ids if present in payload (future-proof)
+    ingredient_ids = getattr(recipe_data, "ingredients", None)
+    if isinstance(ingredient_ids, list) and len(ingredient_ids) > 0:
+        # Insert unique pairs
+        seen = set()
+        for iid in ingredient_ids:
+            try:
+                iid_int = int(iid)
+            except Exception:
+                continue
+            if iid_int in seen:
+                continue
+            seen.add(iid_int)
+            db.add(RecipeIngredient(recipe_id=new_recipe.id, ingredient_id=iid_int))
+        await db.commit()
+    await _attach_ingredients(db, new_recipe)
     return await _attach_social_fields(db, new_recipe, user)
 
 # Retrieve by id
@@ -60,24 +97,39 @@ async def get_recipe_by_id(recipe_id: int, db: AsyncSession, user: Optional[User
     recipe = res.scalar_one_or_none()
     if recipe:
         await _attach_social_fields(db, recipe, user)
+        await _attach_ingredients(db, recipe)
     return recipe
 
 # List recipes (public)
-async def list_recipes(db: AsyncSession, search: Optional[str] = None, user: Optional[User] = None, include_self: bool = False) -> Sequence[Recipe]:
+async def list_recipes(
+    db: AsyncSession,
+    search: Optional[str] = None,
+    user: Optional[User] = None,
+    include_self: bool = False,
+    ingredient_ids: Optional[list[int]] = None,
+) -> Sequence[Recipe]:
     stmt = select(Recipe).options(joinedload(Recipe.user)).order_by(Recipe.created_at.desc())
     if search:
         # basic title search
-        from sqlalchemy import or_, func
-        stmt = stmt.where(func.lower(Recipe.title).like(f"%{search.lower()}%"))
+        from sqlalchemy import func as _func
+        stmt = stmt.where(_func.lower(Recipe.title).like(f"%{search.lower()}%"))
     # Exclude the current user's own posts in public listing when authenticated unless include_self is True
     if user is not None and getattr(user, "id", None) is not None and not include_self:
         stmt = stmt.where(Recipe.user_id != getattr(user, "id"))
+    # Filter by ingredients if provided (ANY of the selected ingredients)
+    if ingredient_ids:
+        stmt = (
+            stmt.join(RecipeIngredient, RecipeIngredient.recipe_id == Recipe.id)
+            .where(RecipeIngredient.ingredient_id.in_(ingredient_ids))
+            .distinct()
+        )
     res = await db.execute(stmt)
     recipes = res.scalars().all()
-    # attach social counts for each; omit liked/saved unless user provided
+    # attach social counts and ingredients for listing
     out = []
     for r in recipes:
         await _attach_social_fields(db, r, user)
+        await _attach_ingredients(db, r)
         out.append(r)
     return out
 
@@ -90,6 +142,7 @@ async def get_recipes_by_user(user: User, db: AsyncSession):
     out = []
     for r in recipes:
         await _attach_social_fields(db, r, user)
+        await _attach_ingredients(db, r)
         out.append(r)
     return out
 
@@ -98,11 +151,37 @@ async def update_recipe(recipe_id: int, data: RecipeUpdate, user: User, db: Asyn
     recipe = await get_recipe_by_id(recipe_id, db, user)
     if recipe is None or getattr(recipe, "user_id") != user.id:
         return None
-    for k, v in data.model_dump(exclude_unset=True).items():
+    payload = data.model_dump(exclude_unset=True)
+    # Extract ingredients if present
+    new_ingredient_ids = payload.pop("ingredients", None)
+    # Update scalar fields
+    for k, v in payload.items():
         setattr(recipe, k, v)
     db.add(recipe)
     await db.commit()
     await db.refresh(recipe)
+
+    # Replace ingredients if provided
+    if new_ingredient_ids is not None:
+        try:
+            await db.execute(
+                delete(RecipeIngredient).where(RecipeIngredient.recipe_id == recipe.id)
+            )
+            seen = set()
+            for iid in (new_ingredient_ids or []):
+                try:
+                    iid_int = int(iid)
+                except Exception:
+                    continue
+                if iid_int in seen:
+                    continue
+                seen.add(iid_int)
+                db.add(RecipeIngredient(recipe_id=recipe.id, ingredient_id=iid_int))
+            await db.commit()
+        except Exception:
+            # best-effort; do not fail the whole update
+            await db.rollback()
+    await _attach_ingredients(db, recipe)
     return await _attach_social_fields(db, recipe, user)
 
 # Delete
@@ -123,6 +202,7 @@ async def set_recipe_image(recipe_id: int, image_url: str, user: User, db: Async
     db.add(recipe)
     await db.commit()
     await db.refresh(recipe)
+    await _attach_ingredients(db, recipe)
     return await _attach_social_fields(db, recipe, user)
 
 # Likes
@@ -171,6 +251,7 @@ async def list_saved(user: User, db: AsyncSession):
     out = []
     for r in recipes:
         await _attach_social_fields(db, r, user)
+        await _attach_ingredients(db, r)
         out.append(r)
     return out
 

@@ -44,6 +44,15 @@ export default function RecipePage() {
           const value = searchParams.get(key);
           if (value) filters[key] = value;
         });
+        // New: support ingredient filtering via URL, e.g. ?ingredients=1,2,3
+        const ingParam = searchParams.get("ingredients");
+        if (ingParam) {
+          const arr = ingParam
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean);
+          if (arr.length) filters.ingredients = arr;
+        }
 
         let data;
         if (search) {
@@ -138,6 +147,15 @@ export default function RecipePage() {
                         <Heart className="w-4 h-4 text-red-500" />
                       </div>
                     </div>
+                    {Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1">
+                        {recipe.ingredients.map((ing) => (
+                          <span key={ing.id} className="text-xs bg-yellow-100 text-yellow-800 px-2 py-0.5 rounded-full">
+                            {ing.name}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               </Link>

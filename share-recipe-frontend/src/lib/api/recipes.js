@@ -149,3 +149,22 @@ export async function addComment(recipeId, content, parentId = null) {
   return res.data;
 }
 
+// Ingredients directory helpers
+export async function searchIngredients(q) {
+  const res = await axios.get(`${API_BASE_URL}/api/recipes/ingredients/`, {
+    params: { q },
+    headers: { ...authHeaders() },
+  });
+  return res.data; // [{ id, name }]
+}
+
+export async function addIngredient(name) {
+  const token = localStorage.getItem("access");
+  const res = await axios.post(
+    `${API_BASE_URL}/api/recipes/ingredients/`,
+    { name },
+    { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+  );
+  return res.data; // { id, name, existing }
+}
+

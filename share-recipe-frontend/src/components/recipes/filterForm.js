@@ -17,6 +17,13 @@ import { Router } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { API_BASE_URL } from "@/lib/config";
 
+// UI imports for ingredients typeahead
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import { Command, CommandInput, CommandList, CommandItem, CommandEmpty } from "@/components/ui/command";
+import { Badge } from "@/components/ui/badge";
+import { searchIngredients as apiSearchIngredients } from "@/lib/api/recipes";
+
 export default function FilterForm() {
   const route = useRouter();
   const [options, setOptions] = useState({
@@ -31,7 +38,15 @@ export default function FilterForm() {
     session: "",
     type: "",
     category: "",
+    ingredients: [],
   });
+
+  // Local state for ingredients search & selection
+  const [ingQuery, setIngQuery] = useState("");
+  const [ingResults, setIngResults] = useState([]);
+  const [ingLoading, setIngLoading] = useState(false);
+  const [ingOpen, setIngOpen] = useState(false);
+  const [ingredientNames, setIngredientNames] = useState({});
 
   useEffect(() => {
     axios
@@ -44,6 +59,26 @@ export default function FilterForm() {
       });
   }, []);
 
+  useEffect(() => {
+    const q = (ingQuery || "").trim();
+    if (q.length < 1) {
+      setIngResults([]);
+      return;
+    }
+    const handle = setTimeout(async () => {
+      setIngLoading(true);
+      try {
+        const items = await apiSearchIngredients(q);
+        setIngResults(Array.isArray(items) ? items : []);
+      } catch (e) {
+        console.error("Ingredient search failed", e);
+      } finally {
+        setIngLoading(false);
+      }
+    }, 300);
+    return () => clearTimeout(handle);
+  }, [ingQuery]);
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -51,12 +86,32 @@ export default function FilterForm() {
     }));
   };
 
+  const toggleIngredient = (id, name) => {
+    const idNum = Number(id);
+    if (name) {
+      setIngredientNames((prev) => ({ ...prev, [idNum]: name }));
+    }
+    setFormData((prev) => {
+      const exists = prev.ingredients.includes(idNum);
+      return {
+        ...prev,
+        ingredients: exists
+          ? prev.ingredients.filter((x) => Number(x) !== idNum)
+          : [...prev.ingredients, idNum],
+      };
+    });
+  };
+
   const handleSetFilters = (e) => {
     e.preventDefault();
 
     const filteredParams = Object.fromEntries(
-      Object.entries(formData).filter(([_, v]) => v)
+      Object.entries(formData)
+        .filter(([key, v]) => key !== "ingredients" && v)
     );
+    if (Array.isArray(formData.ingredients) && formData.ingredients.length > 0) {
+      filteredParams.ingredients = formData.ingredients.join(",");
+    }
     const queryParams = new URLSearchParams(filteredParams).toString();
     route.push(`/recipes?${queryParams}`);
   };
@@ -67,7 +122,11 @@ export default function FilterForm() {
       session: "",
       type: "",
       category: "",
+      ingredients: [],
     });
+    setIngQuery("");
+    setIngResults([]);
+    setIngredientNames({});
     route.push("/recipes");
   };
 
@@ -165,6 +224,74 @@ export default function FilterForm() {
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* Ingredients filter */}
+          <div>
+            <Label className="text-yellow-500">Ingredients</Label>
+            <div className="mt-2 flex flex-col gap-2">
+              <div className="flex gap-2 items-center">
+                <Input
+                  placeholder="Ingredient..."
+                  value={ingQuery}
+                  onChange={(e) => setIngQuery(e.target.value)}
+                  className="flex-1"
+                />
+                <Popover open={ingOpen} onOpenChange={setIngOpen}>
+                  <PopoverTrigger asChild>
+                    <Button type="button" variant="outline">Find</Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[320px] p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder="Search ingredients..."
+                        value={ingQuery}
+                        onValueChange={setIngQuery}
+                      />
+                      <CommandList>
+                        {!ingLoading && (
+                          <CommandEmpty>
+                            {((ingQuery || "").trim().length < 3)
+                              ? "Enter at least 3 letters to start searching"
+                              : "Nothing found"}
+                          </CommandEmpty>
+                        )}
+                        {ingLoading && (
+                          <div className="py-2 text-center text-sm text-gray-500">Searching...</div>
+                        )}
+                        {!ingLoading && ingResults.map((ingredient) => (
+                          <CommandItem
+                            key={ingredient.id}
+                            onSelect={() => {
+                              toggleIngredient(ingredient.id, ingredient.name);
+                              setIngOpen(false);
+                            }}
+                            className={formData.ingredients.includes(Number(ingredient.id)) ? "bg-yellow-100" : ""}
+                          >
+                            {ingredient.name}
+                          </CommandItem>
+                        ))}
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formData.ingredients.map((id) => (
+                  <Badge key={id} className="bg-yellow-100 text-yellow-800 flex items-center gap-1 px-2 py-1 rounded-full">
+                    {ingredientNames[id] || `#${id}`}
+                    <button
+                      type="button"
+                      onClick={(e) => { e.stopPropagation(); toggleIngredient(id); }}
+                      aria-label="Remove ingredient"
+                      className="ml-1 rounded hover:bg-yellow-200"
+                    >
+                      ×
+                    </button>
+                  </Badge>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-4 justify-end">

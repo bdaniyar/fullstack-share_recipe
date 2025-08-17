@@ -6,10 +6,17 @@ from app.db.dao.recipe import (
   create_recipe, get_recipes_by_user, list_recipes, get_recipe_by_id, update_recipe, delete_recipe,
   set_recipe_image, add_like, remove_like, add_save, remove_save, list_comments, add_comment, list_saved
 )
+from app.db.dao.ingredients import search_ingredients, create_ingredient
 from app.db.session import get_async_session
 from app.services.auth import get_current_user, get_optional_user
 from app.db.database import User
 import os, uuid
+from app.config.config import settings
+from sqlalchemy import select, func, and_
+from app.db.recipes import Recipe
+from datetime import datetime, timezone
+from pydantic import BaseModel
+import re
 
 router = APIRouter(prefix="/api/recipes", tags=["Recipes"])
 
@@ -19,18 +26,47 @@ async def create_new_recipe(
     session: AsyncSession = Depends(get_async_session),
     user: User = Depends(get_current_user),
 ):
+    # Daily posts limit per user
+    try:
+        start_of_day = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        q = select(func.count()).select_from(Recipe).where(and_(Recipe.user_id == user.id, Recipe.created_at >= start_of_day))
+        res = await session.execute(q)
+        count_today = int(res.scalar() or 0)
+        if count_today >= int(getattr(settings, "POSTS_DAILY_LIMIT", 5)):
+            raise HTTPException(status_code=429, detail=f"Daily post limit reached ({getattr(settings, 'POSTS_DAILY_LIMIT', 5)}). Try again tomorrow.")
+    except HTTPException:
+        raise
+    except Exception:
+        # If counting fails for any reason, be permissive but log later
+        pass
+
     return await create_recipe(recipe, user, session)
 
 @router.get("/list/", response_model=list[RecipeResponse])
 async def list_public_recipes(
     search: str | None = None,
     include_self: bool = False,
+    ingredients: str | None = None,
     session: AsyncSession = Depends(get_async_session),
     user: User | None = Depends(get_optional_user),
 ):
+    # Parse comma-separated ingredient IDs
+    ingredient_ids = None
+    if ingredients:
+        parsed: list[int] = []
+        for part in ingredients.split(","):
+            part = part.strip()
+            if not part:
+                continue
+            try:
+                parsed.append(int(part))
+            except Exception:
+                continue
+        ingredient_ids = parsed or None
+
     # user is optional; if present (authenticated), liked/saved flags will be included
     # DAO will exclude current user's own posts when user is provided unless include_self=True
-    return await list_recipes(session, search, user, include_self)
+    return await list_recipes(session, search, user, include_self, ingredient_ids=ingredient_ids)
 
 @router.get("/my-recipes/", response_model=list[RecipeResponse])
 async def list_my_recipes(
@@ -139,9 +175,47 @@ async def post_comment(recipe_id: int, data: dict, session: AsyncSession = Depen
     c = await add_comment(recipe_id, content.strip(), user, session, parent_id=parent_id)
     return CommentResponse.model_validate(c)
 
+# Ingredients schemas
+class IngredientIn(BaseModel):
+    name: str
+
+LETTERS_RE = re.compile(r"^[A-Za-zА-Яа-яЁё\s-]{3,}$")
+
+def _normalize_ingredient(name: str) -> str:
+    return " ".join(name.strip().lower().split())
+
+@router.get("/ingredients/")
+async def ingredients_search(q: str | None = None, session: AsyncSession = Depends(get_async_session)):
+    """Search ingredients by substring of normalized name."""
+    if not q:
+        # return a small list of popular or recent ingredients; for now, empty list
+        return []
+    items = await search_ingredients(session, q)
+    return [{"id": i.id, "name": i.name} for i in items]
+
+@router.post("/ingredients/")
+async def ingredients_add(payload: IngredientIn, session: AsyncSession = Depends(get_async_session), user: User = Depends(get_current_user)):
+    """Add a new ingredient if it passes validation and doesn't already exist."""
+    raw = (payload.name or "").strip()
+    if len(raw) < 3:
+        raise HTTPException(status_code=400, detail="Ingredient must be at least 3 characters")
+    if not LETTERS_RE.match(raw):
+        raise HTTPException(status_code=400, detail="Ingredient must contain only letters, spaces or hyphens")
+    norm = _normalize_ingredient(raw)
+    # Try to find existing via search (DAO will use norm like)
+    from app.db.dao.ingredients import get_by_normalized
+    existing = await get_by_normalized(session, norm)
+    if existing:
+        return {"id": existing.id, "name": existing.name, "existing": True}
+    ing = await create_ingredient(session, raw)
+    return {"id": ing.id, "name": ing.name, "existing": False}
+
 @router.get("/options/")
-async def get_options():
-    # Placeholder taxonomy until implemented
+async def get_options(session: AsyncSession = Depends(get_async_session)):
+    # Fetch dynamic taxonomies (ingredients for now)
+    from app.db.dao.ingredients import search_ingredients as _search
+    items = await _search(session, q="", limit=50) if False else []
+    # Placeholder taxonomy until implemented; ingredients will be fetched via separate search endpoint on UI
     return {
         "regions": [],
         "sessions": [],

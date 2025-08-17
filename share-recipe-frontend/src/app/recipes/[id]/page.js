@@ -103,6 +103,11 @@ export default function RecipeDetailPage() {
     }
   };
 
+  const onEdit = () => {
+    if (!ensureAuth()) return;
+    router.push(`/user/my-recipes/${id}/edit`);
+  };
+
   const findComment = (cid) => comments.find(c => String(c.id) === String(cid));
   const findRootId = (cid) => {
     let cur = findComment(cid);
@@ -331,6 +336,20 @@ export default function RecipeDetailPage() {
                 </div>
               ) : null}
               <p className="text-gray-700 mb-6">{recipe.description}</p>
+
+              {Array.isArray(recipe.ingredients) && recipe.ingredients.length > 0 && (
+                <div className="mb-6">
+                  <h2 className="text-xl font-semibold mb-2">Ingredients</h2>
+                  <div className="flex flex-wrap gap-2">
+                    {recipe.ingredients.map((ing) => (
+                      <span key={ing.id} className="text-sm bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full">
+                        {ing.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <div className="prose">
                 <h2 className="text-xl font-semibold mb-2">Instructions</h2>
                 <p className="whitespace-pre-line">
@@ -363,12 +382,20 @@ export default function RecipeDetailPage() {
                   {saved ? "Saved" : "Save"}
                 </button>
                 {recipe?.can_delete ? (
-                  <button
-                    onClick={onDelete}
-                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md ml-auto"
-                  >
-                    Delete
-                  </button>
+                  <div className="ml-auto flex gap-2">
+                    <button
+                      onClick={onEdit}
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={onDelete}
+                      className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+                    >
+                      Delete
+                    </button>
+                  </div>
                 ) : null}
               </div>
 
