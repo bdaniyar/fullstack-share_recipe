@@ -1,24 +1,32 @@
 import os
 import sys
+
 # Ensure backend root is on sys.path so that 'app' package is importable when running Alembic directly
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 BACKEND_ROOT = os.path.abspath(os.path.join(CURRENT_DIR, os.pardir))
 if BACKEND_ROOT not in sys.path:
     sys.path.insert(0, BACKEND_ROOT)
 
-from sqlalchemy.engine.url import make_url
-from dotenv import load_dotenv
 from logging.config import fileConfig
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+
+from dotenv import load_dotenv
+from sqlalchemy import engine_from_config, pool
+from sqlalchemy.engine.url import make_url
+
 from alembic import context
-from app.db.base import Base 
+from app.db.base import Base
 from app.db.database import User
-from app.db.recipes import Recipe
-from app.db.social import RecipeLike, SavedRecipe, Comment # if Base already includes all models
 from app.db.ingredients import Ingredient
+
 # import the join table so Alembic sees it
 from app.db.recipe_ingredients import RecipeIngredient
+from app.db.recipes import Recipe
+from app.db.social import (  # if Base already includes all models
+    Comment,
+    RecipeLike,
+    SavedRecipe,
+)
+from app.db.feedback import Feedback
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -30,8 +38,14 @@ load_dotenv()
 async_url = os.getenv("DATABASE_URL")
 if not async_url:
     raise RuntimeError("DATABASE_URL environment variable is not set!")
-sync_url = make_url(async_url).set(drivername="postgresql+psycopg2")
-config.set_main_option("sqlalchemy.url", str(sync_url))
+
+# Manual conversion to avoid URL parsing issues
+if "postgresql+asyncpg://" in async_url:
+    sync_url = async_url.replace("postgresql+asyncpg://", "postgresql+psycopg2://")
+else:
+    sync_url = async_url
+
+config.set_main_option("sqlalchemy.url", sync_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -83,9 +97,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()

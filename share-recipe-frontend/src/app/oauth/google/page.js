@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
 import { fetchProfile } from "@/lib/api/profile";
 
-export default function GoogleOAuthLanding() {
+function GoogleOAuthContent() {
     const router = useRouter();
     const params = useSearchParams();
     const dispatch = useDispatch();
@@ -72,3 +72,21 @@ export default function GoogleOAuthLanding() {
         </div>
     );
 }
+
+export default function GoogleOAuthLanding() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center p-6">
+                <div className="max-w-md w-full text-center">
+                    <h1 className="text-xl font-semibold mb-2">Loading...</h1>
+                    <p className="text-sm text-gray-600">Please wait a moment.</p>
+                </div>
+            </div>
+        }>
+            <GoogleOAuthContent />
+        </Suspense>
+    );
+}
+
+// Force dynamic rendering to avoid static generation issues
+export const dynamic = 'force-dynamic';

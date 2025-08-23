@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 
 import FeedbackForm from "@/components/feedback";
-import ChefCuate from "@/assets/chef-cuate.svg";
+import ChefCuate from "@/assets/Chef-cuate.svg";
 
 export default function Home() {
   // Auth-aware UI flags

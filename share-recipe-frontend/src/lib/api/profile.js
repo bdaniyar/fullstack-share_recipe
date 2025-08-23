@@ -87,7 +87,31 @@ export async function updateProfile(data) {
   }
 
   if (!res.ok) {
-    throw new Error("Profile update failed. Please try again later.");
+    // Try to extract a meaningful backend error message
+    let errorMessage = "Profile update failed. Please try again later.";
+    try {
+      const contentType = res.headers.get("content-type") || "";
+      if (contentType.includes("application/json")) {
+        const errData = await res.json();
+        if (typeof errData?.detail === "string") {
+          errorMessage = errData.detail;
+        } else if (Array.isArray(errData?.detail) && errData.detail.length) {
+          // FastAPI validation errors shape: [{ msg, loc, type, ... }]
+          const msgs = errData.detail
+            .map((e) => e?.msg || (typeof e === "string" ? e : ""))
+            .filter(Boolean);
+          if (msgs.length) errorMessage = msgs.join("; ");
+        } else if (typeof errData?.message === "string") {
+          errorMessage = errData.message;
+        }
+      } else {
+        const text = await res.text();
+        if (text) errorMessage = text;
+      }
+    } catch (_) {
+      // ignore parse errors, keep default message
+    }
+    throw new Error(errorMessage);
   }
 
   return res.json();

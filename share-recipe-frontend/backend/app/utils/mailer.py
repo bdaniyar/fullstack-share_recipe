@@ -1,17 +1,21 @@
-from email.message import EmailMessage
-import smtplib
-from app.config.config import settings
 import asyncio
-import os
 import base64
+import os
+import smtplib
+from email.message import EmailMessage
+
+from app.config.config import settings
 
 # Update: support PNG/SVG, correct MIME type, robust path resolution
+
 
 def _get_embedded_logo():
     # Allow override via env
     env_path = os.getenv("LOGO_FILE")
     # Compute repo root: backend/app/utils -> ../../.. -> share-recipe-frontend
-    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+    repo_root = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "..", "..", "..")
+    )
     candidates = [
         env_path if env_path else None,
         os.path.join(repo_root, "public", "logo.png"),
@@ -32,7 +36,9 @@ def _get_embedded_logo():
     return ""
 
 
-def _send_email_sync(email_to: str, subject: str, text_body: str, html_body: str | None = None) -> None:
+def _send_email_sync(
+    email_to: str, subject: str, text_body: str, html_body: str | None = None
+) -> None:
     msg = EmailMessage()
     msg["Subject"] = subject
     msg["From"] = settings.EMAIL_FROM

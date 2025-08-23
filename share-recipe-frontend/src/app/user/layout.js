@@ -1,7 +1,6 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import AppSidebar from "@/components/user/appsidebar";
 import AppHeader from "@/components/user/appheader";
-import fetchProfile from "@/lib/api/profile"; // Adjust the import path as needed
 
 export default async function Layout({ children }) {
   return (
@@ -10,7 +9,7 @@ export default async function Layout({ children }) {
         <AppSidebar />
         <div className="flex-1 flex flex-col">
           <main>
-              <SidebarTrigger />
+            <SidebarTrigger />
             {children}
           </main>
         </div>

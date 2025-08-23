@@ -1,15 +1,15 @@
-from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
-from typing import Optional
-from datetime import datetime
 import re
+from datetime import datetime
+from typing import Optional
+
+from pydantic import BaseModel, EmailStr, Field, field_validator, model_validator
+
 from app.models.recipe import RecipeResponse  # added import
 
 
 class UserSignup(BaseModel):
     email: EmailStr
-    username: str = Field(
-        ..., min_length=3, max_length=20, pattern=r"^[A-Za-z0-9._]+$"
-    )
+    username: str = Field(..., min_length=3, max_length=20, pattern=r"^[A-Za-z0-9._]+$")
     password: str = Field(..., min_length=8)
     password2: str = Field(..., min_length=8)
 
@@ -18,7 +18,9 @@ class UserSignup(BaseModel):
         pw = self.password
         # at least one uppercase, one digit, one special character
         if not (
-            re.search(r"[A-Z]", pw) and re.search(r"[0-9]", pw) and re.search(r"[^A-Za-z0-9]", pw)
+            re.search(r"[A-Z]", pw)
+            and re.search(r"[0-9]", pw)
+            and re.search(r"[^A-Za-z0-9]", pw)
         ):
             raise ValueError(
                 "Password must contain at least one uppercase letter, one digit, and one special character."

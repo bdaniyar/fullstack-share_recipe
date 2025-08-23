@@ -1,7 +1,11 @@
-from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from datetime import datetime, timezone
-from app.db.base import Base  
+
+from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from sqlalchemy.orm import relationship
+
+from app.db.base import Base
+
+
 # таблица базы данных для пользователей
 class User(Base):
     __tablename__ = "users"
@@ -13,11 +17,12 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     first_name = Column(String, nullable=True)
     last_name = Column(String, nullable=True)
-    joined = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
+    joined = Column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc),
+        nullable=False,
+    )
     photo_url = Column(String, nullable=True)
     username_changed_at = Column(DateTime(timezone=True), nullable=True)
     bio = Column(String(300), nullable=True)
     recipes = relationship("Recipe", back_populates="user")
-
-
-

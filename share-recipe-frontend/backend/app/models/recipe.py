@@ -1,6 +1,7 @@
-from pydantic import BaseModel
-from typing import Optional, List
 from datetime import datetime
+from typing import List, Optional
+
+from pydantic import BaseModel
 
 
 class RecipeCreate(BaseModel):
@@ -12,6 +13,7 @@ class RecipeCreate(BaseModel):
     # New: optional list of ingredient IDs to associate
     ingredients: Optional[List[int]] = None
 
+
 class RecipeUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
@@ -20,10 +22,12 @@ class RecipeUpdate(BaseModel):
     # Optional: allow updating ingredients in future
     ingredients: Optional[List[int]] = None
 
+
 # New: lightweight ingredient representation for responses
 class IngredientOut(BaseModel):
     id: int
     name: str
+
 
 class RecipeResponse(BaseModel):
     id: int
@@ -47,8 +51,10 @@ class RecipeResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class CommentCreate(BaseModel):
     content: str
+
 
 class CommentResponse(BaseModel):
     id: int
