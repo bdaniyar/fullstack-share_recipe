@@ -3,7 +3,16 @@
 A fullstack recipe-sharing application built with FastAPI (backend) and Next.js (frontend).
 Features authentication, JWT tokens, saving & liking recipes, and commenting.
 
+🔧 Tech Stack
+	•	Backend: FastAPI, SQLAlchemy, Alembic, Redis
+	•	Frontend: Next.js (React)
+    •	Database: PostgreSQ
+    •	Auth: JWT, Google OAuth
+	•	Infra: Docker, Docker Compose
+
+
 🚀 Getting Started
+
 
 Backend
 	1.	Create a virtual environment (recommended):
@@ -37,6 +46,8 @@ Backend
             • API base: http://localhost:8000
             • Static media is served under /media
             • Admin panel: http://localhost:8000/admin
+    5. Docker
+        docker-compose up --build
 
 Admin panel (SQLAdmin)
     • Path: /admin
@@ -44,13 +55,8 @@ Admin panel (SQLAdmin)
       (defaults admin/admin in development). SESSION_SECRET (or SECRET_KEY) is required for sessions.
     • Uses a dedicated synchronous SQLAlchemy engine under the hood to avoid async driver issues.
 
-Username change cooldown
-    • Users can change their username, but only once every 3 days.
-    • If attempted sooner, the API returns: "You can change your username only once every 3 days."
-    • Frontend surfaces backend error details in the profile editor.
-
 CORS (development)
-    • Configured to allow http://localhost:3000 and http://localhost:3001 for local Next.js dev.
+    • Configured to allow http://localhost:3000 
 
 Frontend
 	1.	Install dependencies and start the dev server:
