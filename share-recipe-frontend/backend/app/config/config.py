@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     EMAIL_FROM: str
     REDIS_HOST: str
     REDIS_PORT: int
+    REDIS_PASSWORD: str | None = None
     # Google OAuth
     OAUTH_GOOGLE_CLIENT_ID: str
     OAUTH_GOOGLE_CLIENT_SECRET: str

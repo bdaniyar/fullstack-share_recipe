@@ -15,14 +15,13 @@ COPY app app
 COPY alembic alembic
 COPY alembic.ini alembic.ini
 
-# Expose port
+# Expose default port (Railway may override via PORT env)
 EXPOSE 8000
 
-# Set environment variables (override in docker-compose)
 ENV PYTHONUNBUFFERED=1
 
-# Entrypoint
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Entrypoint - run migrations then start uvicorn on provided PORT (fallback 8000)
+CMD ["sh", "-c", "alembic upgrade head || exit 1; uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --log-level info"]
 
 # --- Optional for development ---
 # To include development dependencies, uncomment the following:

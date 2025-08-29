@@ -52,7 +52,11 @@ app.add_middleware(RequestLoggingMiddleware)
 @app.on_event("startup")
 async def startup():
     redis_client = redis.Redis(
-        host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=False
+        host=settings.REDIS_HOST,
+        port=settings.REDIS_PORT,
+        password=settings.REDIS_PASSWORD,
+        db=0,
+        decode_responses=False,
     )
     FastAPICache.init(RedisBackend(redis_client), prefix="cache")
     # Mount SQLAdmin

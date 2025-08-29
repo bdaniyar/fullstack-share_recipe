@@ -7022,3 +7022,1027 @@ WHERE recipes.user_id = $1::INTEGER ORDER BY recipes.created_at DESC
 2025-08-23 17:35:20,339 INFO [app.request] [b9441f823f1f4dd99450fcd5248183d3] Incoming request GET /api/recipes/options/ from 192.168.65.1
 2025-08-23 17:35:20,341 INFO [app.request] [b9441f823f1f4dd99450fcd5248183d3] Completed GET /api/recipes/options/ -> 200 in 1ms
 2025-08-23 17:35:20,341 INFO [uvicorn.access] [-] 192.168.65.1:20863 - "GET /api/recipes/options/ HTTP/1.1" 200
+2025-08-24 14:17:10,727 INFO [app.request] [1150fb8e0bf3420585ad40b6ec307e74] Incoming request OPTIONS /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:10,771 INFO [app.request] [1150fb8e0bf3420585ad40b6ec307e74] Completed OPTIONS /api/recipes/ingredients/ -> 200 in 44ms
+2025-08-24 14:17:10,772 INFO [uvicorn.access] [-] 192.168.65.1:57807 - "OPTIONS /api/recipes/ingredients/?q=wfw HTTP/1.1" 200
+2025-08-24 14:17:10,774 INFO [app.request] [59e6a79619dc40848ef6a88c520a8a8c] Incoming request GET /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:10,782 INFO [sqlalchemy.engine.Engine] [59e6a79619dc40848ef6a88c520a8a8c] BEGIN (implicit)
+2025-08-24 14:17:10,785 INFO [sqlalchemy.engine.Engine] [59e6a79619dc40848ef6a88c520a8a8c] SELECT ingredients.id, ingredients.name, ingredients.name_norm, ingredients.created_at 
+FROM ingredients 
+WHERE ingredients.name_norm LIKE $1::VARCHAR ORDER BY ingredients.name ASC 
+ LIMIT $2::INTEGER
+2025-08-24 14:17:10,785 INFO [sqlalchemy.engine.Engine] [59e6a79619dc40848ef6a88c520a8a8c] [generated in 0.00044s] ('%wfw%', 20)
+2025-08-24 14:17:10,791 INFO [sqlalchemy.engine.Engine] [59e6a79619dc40848ef6a88c520a8a8c] ROLLBACK
+2025-08-24 14:17:10,791 INFO [app.request] [59e6a79619dc40848ef6a88c520a8a8c] Completed GET /api/recipes/ingredients/ -> 200 in 16ms
+2025-08-24 14:17:10,791 INFO [uvicorn.access] [-] 192.168.65.1:57807 - "GET /api/recipes/ingredients/?q=wfw HTTP/1.1" 200
+2025-08-24 14:17:14,509 INFO [app.request] [c5bc150234d741558f5a479b89c7539d] Incoming request OPTIONS /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:14,510 INFO [app.request] [c5bc150234d741558f5a479b89c7539d] Completed OPTIONS /api/recipes/ingredients/ -> 200 in 0ms
+2025-08-24 14:17:14,510 INFO [uvicorn.access] [-] 192.168.65.1:57807 - "OPTIONS /api/recipes/ingredients/?q=wow HTTP/1.1" 200
+2025-08-24 14:17:14,513 INFO [app.request] [4b9f5df1fce14cecbf9cb353a80be501] Incoming request GET /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:14,514 INFO [sqlalchemy.engine.Engine] [4b9f5df1fce14cecbf9cb353a80be501] BEGIN (implicit)
+2025-08-24 14:17:14,515 INFO [sqlalchemy.engine.Engine] [4b9f5df1fce14cecbf9cb353a80be501] SELECT ingredients.id, ingredients.name, ingredients.name_norm, ingredients.created_at 
+FROM ingredients 
+WHERE ingredients.name_norm LIKE $1::VARCHAR ORDER BY ingredients.name ASC 
+ LIMIT $2::INTEGER
+2025-08-24 14:17:14,516 INFO [sqlalchemy.engine.Engine] [4b9f5df1fce14cecbf9cb353a80be501] [cached since 3.731s ago] ('%wow%', 20)
+2025-08-24 14:17:14,526 INFO [sqlalchemy.engine.Engine] [4b9f5df1fce14cecbf9cb353a80be501] ROLLBACK
+2025-08-24 14:17:14,527 INFO [app.request] [4b9f5df1fce14cecbf9cb353a80be501] Completed GET /api/recipes/ingredients/ -> 200 in 14ms
+2025-08-24 14:17:14,527 INFO [uvicorn.access] [-] 192.168.65.1:57807 - "GET /api/recipes/ingredients/?q=wow HTTP/1.1" 200
+2025-08-24 14:17:18,445 INFO [app.request] [ab6fae5daccd43fe9e1cbd19ca7d7548] Incoming request OPTIONS /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:18,446 INFO [app.request] [ab6fae5daccd43fe9e1cbd19ca7d7548] Completed OPTIONS /api/recipes/ingredients/ -> 200 in 1ms
+2025-08-24 14:17:18,446 INFO [uvicorn.access] [-] 192.168.65.1:57807 - "OPTIONS /api/recipes/ingredients/ HTTP/1.1" 200
+2025-08-24 14:17:18,449 INFO [app.request] [a40874c906b74649a26be1208edc04f4] Incoming request POST /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:18,456 INFO [app.request] [a40874c906b74649a26be1208edc04f4] Completed POST /api/recipes/ingredients/ -> 401 in 6ms
+2025-08-24 14:17:18,457 INFO [uvicorn.access] [-] 192.168.65.1:57807 - "POST /api/recipes/ingredients/ HTTP/1.1" 401
+2025-08-24 14:17:24,035 INFO [app.request] [57ce9105c7484ca2bdca36f0709867f0] Incoming request GET /api/recipes/options/ from 192.168.65.1
+2025-08-24 14:17:24,036 INFO [app.request] [57ce9105c7484ca2bdca36f0709867f0] Completed GET /api/recipes/options/ -> 200 in 1ms
+2025-08-24 14:17:24,036 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "GET /api/recipes/options/ HTTP/1.1" 200
+2025-08-24 14:17:28,617 INFO [app.request] [b91056f7fe224a1f80cbdfa08719eb55] Incoming request GET /api/recipes/options/ from 192.168.65.1
+2025-08-24 14:17:28,619 INFO [app.request] [bc0c42a2e1b7457ea62879762024fbf5] Incoming request OPTIONS /api/recipes/list/ from 192.168.65.1
+2025-08-24 14:17:28,620 INFO [app.request] [bc0c42a2e1b7457ea62879762024fbf5] Completed OPTIONS /api/recipes/list/ -> 200 in 0ms
+2025-08-24 14:17:28,620 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "OPTIONS /api/recipes/list/?include_self=true HTTP/1.1" 200
+2025-08-24 14:17:28,621 INFO [app.request] [b91056f7fe224a1f80cbdfa08719eb55] Completed GET /api/recipes/options/ -> 200 in 4ms
+2025-08-24 14:17:28,621 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "GET /api/recipes/options/ HTTP/1.1" 200
+2025-08-24 14:17:28,626 INFO [app.request] [2488ee1dff824187966dbbbe7298fb92] Incoming request GET /api/recipes/list/ from 192.168.65.1
+2025-08-24 14:17:28,627 INFO [sqlalchemy.engine.Engine] [2488ee1dff824187966dbbbe7298fb92] BEGIN (implicit)
+2025-08-24 14:17:28,627 INFO [sqlalchemy.engine.Engine] [2488ee1dff824187966dbbbe7298fb92] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id, users_1.id AS id_1, users_1.email, users_1.username, users_1.hashed_password, users_1.is_active, users_1.first_name, users_1.last_name, users_1.joined, users_1.photo_url, users_1.username_changed_at, users_1.bio 
+FROM recipes LEFT OUTER JOIN users AS users_1 ON users_1.id = recipes.user_id ORDER BY recipes.created_at DESC
+2025-08-24 14:17:28,627 INFO [sqlalchemy.engine.Engine] [2488ee1dff824187966dbbbe7298fb92] [cached since 6619s ago] ()
+2025-08-24 14:17:28,630 INFO [sqlalchemy.engine.Engine] [2488ee1dff824187966dbbbe7298fb92] ROLLBACK
+2025-08-24 14:17:28,631 INFO [app.request] [2488ee1dff824187966dbbbe7298fb92] Completed GET /api/recipes/list/ -> 200 in 5ms
+2025-08-24 14:17:28,631 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "GET /api/recipes/list/?include_self=true HTTP/1.1" 200
+2025-08-24 14:17:29,484 INFO [app.request] [846ae2e9d5a64cc087b74b17ddaaa1bc] Incoming request OPTIONS /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:29,486 INFO [app.request] [3e1a550bea2a49f1af0159858ae662ef] Incoming request OPTIONS /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:29,487 INFO [app.request] [846ae2e9d5a64cc087b74b17ddaaa1bc] Completed OPTIONS /api/user/profile/ -> 200 in 3ms
+2025-08-24 14:17:29,487 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "OPTIONS /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:17:29,489 INFO [app.request] [3e1a550bea2a49f1af0159858ae662ef] Completed OPTIONS /api/user/profile/ -> 200 in 2ms
+2025-08-24 14:17:29,492 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "OPTIONS /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:17:29,495 INFO [app.request] [d51fbb6a87f14d099e11d82ec0dbaec9] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:29,497 INFO [app.request] [c4d4bc12dd78491091bffadbe73cbd96] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:29,499 INFO [app.request] [d51fbb6a87f14d099e11d82ec0dbaec9] Completed GET /api/user/profile/ -> 401 in 3ms
+2025-08-24 14:17:29,499 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "GET /api/user/profile/ HTTP/1.1" 401
+2025-08-24 14:17:29,500 INFO [app.request] [c4d4bc12dd78491091bffadbe73cbd96] Completed PATCH /api/user/profile/ -> 401 in 3ms
+2025-08-24 14:17:29,501 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "PATCH /api/user/profile/ HTTP/1.1" 401
+2025-08-24 14:17:29,502 INFO [app.request] [94f543d12ff143edaace26b97225a678] Incoming request OPTIONS /api/user/token/refresh/ from 192.168.65.1
+2025-08-24 14:17:29,503 INFO [app.request] [94f543d12ff143edaace26b97225a678] Completed OPTIONS /api/user/token/refresh/ -> 200 in 0ms
+2025-08-24 14:17:29,503 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "OPTIONS /api/user/token/refresh/ HTTP/1.1" 200
+2025-08-24 14:17:29,504 INFO [app.request] [6ede32cc396e42279d3f92f3946791d2] Incoming request OPTIONS /api/user/token/refresh/ from 192.168.65.1
+2025-08-24 14:17:29,504 INFO [app.request] [6ede32cc396e42279d3f92f3946791d2] Completed OPTIONS /api/user/token/refresh/ -> 200 in 0ms
+2025-08-24 14:17:29,505 INFO [uvicorn.access] [-] 192.168.65.1:61626 - "OPTIONS /api/user/token/refresh/ HTTP/1.1" 200
+2025-08-24 14:17:29,505 INFO [app.request] [51d094d6bf3f48e5ba9b686ef1c67741] Incoming request POST /api/user/token/refresh/ from 192.168.65.1
+2025-08-24 14:17:29,506 INFO [app.request] [722a374d38064da488df2e3b83e6e9fe] Incoming request POST /api/user/token/refresh/ from 192.168.65.1
+2025-08-24 14:17:29,507 INFO [app.request] [51d094d6bf3f48e5ba9b686ef1c67741] Completed POST /api/user/token/refresh/ -> 200 in 1ms
+2025-08-24 14:17:29,507 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "POST /api/user/token/refresh/ HTTP/1.1" 200
+2025-08-24 14:17:29,508 INFO [app.request] [722a374d38064da488df2e3b83e6e9fe] Completed POST /api/user/token/refresh/ -> 200 in 1ms
+2025-08-24 14:17:29,508 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "POST /api/user/token/refresh/ HTTP/1.1" 200
+2025-08-24 14:17:29,509 INFO [app.request] [caea8ba68b2744919d54aad333c11703] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:29,510 INFO [sqlalchemy.engine.Engine] [caea8ba68b2744919d54aad333c11703] BEGIN (implicit)
+2025-08-24 14:17:29,510 INFO [sqlalchemy.engine.Engine] [caea8ba68b2744919d54aad333c11703] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:29,510 INFO [sqlalchemy.engine.Engine] [caea8ba68b2744919d54aad333c11703] [cached since 6623s ago] (1,)
+2025-08-24 14:17:29,511 INFO [app.request] [b13d675d031f4a98b1aa12099e57e1c0] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:29,512 INFO [sqlalchemy.engine.Engine] [b13d675d031f4a98b1aa12099e57e1c0] BEGIN (implicit)
+2025-08-24 14:17:29,512 INFO [sqlalchemy.engine.Engine] [b13d675d031f4a98b1aa12099e57e1c0] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:29,513 INFO [sqlalchemy.engine.Engine] [b13d675d031f4a98b1aa12099e57e1c0] [cached since 6623s ago] (1,)
+2025-08-24 14:17:29,513 INFO [sqlalchemy.engine.Engine] [caea8ba68b2744919d54aad333c11703] ROLLBACK
+2025-08-24 14:17:29,515 INFO [sqlalchemy.engine.Engine] [b13d675d031f4a98b1aa12099e57e1c0] ROLLBACK
+2025-08-24 14:17:29,515 INFO [app.request] [caea8ba68b2744919d54aad333c11703] Completed GET /api/user/profile/ -> 200 in 6ms
+2025-08-24 14:17:29,515 INFO [uvicorn.access] [-] 192.168.65.1:61626 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:17:29,516 INFO [sqlalchemy.engine.Engine] [b13d675d031f4a98b1aa12099e57e1c0] BEGIN (implicit)
+2025-08-24 14:17:29,517 INFO [sqlalchemy.engine.Engine] [b13d675d031f4a98b1aa12099e57e1c0] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:29,517 INFO [sqlalchemy.engine.Engine] [b13d675d031f4a98b1aa12099e57e1c0] [cached since 6451s ago] (1,)
+2025-08-24 14:17:29,518 INFO [sqlalchemy.engine.Engine] [b13d675d031f4a98b1aa12099e57e1c0] ROLLBACK
+2025-08-24 14:17:29,518 INFO [app.request] [b13d675d031f4a98b1aa12099e57e1c0] Completed PATCH /api/user/profile/ -> 200 in 7ms
+2025-08-24 14:17:29,519 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:17:29,519 INFO [app.request] [2b49cdb47e7c4f90b8963c0f9830b279] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:29,520 INFO [sqlalchemy.engine.Engine] [2b49cdb47e7c4f90b8963c0f9830b279] BEGIN (implicit)
+2025-08-24 14:17:29,520 INFO [sqlalchemy.engine.Engine] [2b49cdb47e7c4f90b8963c0f9830b279] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:29,521 INFO [sqlalchemy.engine.Engine] [2b49cdb47e7c4f90b8963c0f9830b279] [cached since 6623s ago] (1,)
+2025-08-24 14:17:29,521 INFO [sqlalchemy.engine.Engine] [2b49cdb47e7c4f90b8963c0f9830b279] ROLLBACK
+2025-08-24 14:17:29,522 INFO [sqlalchemy.engine.Engine] [2b49cdb47e7c4f90b8963c0f9830b279] BEGIN (implicit)
+2025-08-24 14:17:29,522 INFO [sqlalchemy.engine.Engine] [2b49cdb47e7c4f90b8963c0f9830b279] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:29,523 INFO [sqlalchemy.engine.Engine] [2b49cdb47e7c4f90b8963c0f9830b279] [cached since 6451s ago] (1,)
+2025-08-24 14:17:29,525 INFO [sqlalchemy.engine.Engine] [2b49cdb47e7c4f90b8963c0f9830b279] ROLLBACK
+2025-08-24 14:17:29,525 INFO [app.request] [2b49cdb47e7c4f90b8963c0f9830b279] Completed PATCH /api/user/profile/ -> 200 in 5ms
+2025-08-24 14:17:29,525 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:17:30,887 INFO [app.request] [158f271ccb2d46fd997b15121da6da4b] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:30,890 INFO [app.request] [158f271ccb2d46fd997b15121da6da4b] Completed PATCH /api/user/profile/ -> 400 in 2ms
+2025-08-24 14:17:30,924 INFO [app.request] [badba7bf926847a6a4f7808a4c37d961] Incoming request OPTIONS /api/recipes/my-recipes/ from 192.168.65.1
+2025-08-24 14:17:30,926 INFO [app.request] [badba7bf926847a6a4f7808a4c37d961] Completed OPTIONS /api/recipes/my-recipes/ -> 200 in 2ms
+2025-08-24 14:17:30,927 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "OPTIONS /api/recipes/my-recipes/ HTTP/1.1" 200
+2025-08-24 14:17:30,931 INFO [app.request] [e9f9720c0af341aebbb808a5cabd817d] Incoming request GET /api/recipes/my-recipes/ from 192.168.65.1
+2025-08-24 14:17:30,936 INFO [sqlalchemy.engine.Engine] [e9f9720c0af341aebbb808a5cabd817d] BEGIN (implicit)
+2025-08-24 14:17:30,937 INFO [sqlalchemy.engine.Engine] [e9f9720c0af341aebbb808a5cabd817d] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:30,939 INFO [sqlalchemy.engine.Engine] [e9f9720c0af341aebbb808a5cabd817d] [cached since 6624s ago] (1,)
+2025-08-24 14:17:30,941 INFO [sqlalchemy.engine.Engine] [e9f9720c0af341aebbb808a5cabd817d] ROLLBACK
+2025-08-24 14:17:30,942 INFO [sqlalchemy.engine.Engine] [e9f9720c0af341aebbb808a5cabd817d] BEGIN (implicit)
+2025-08-24 14:17:30,943 INFO [sqlalchemy.engine.Engine] [e9f9720c0af341aebbb808a5cabd817d] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id 
+FROM recipes 
+WHERE recipes.user_id = $1::INTEGER ORDER BY recipes.created_at DESC
+2025-08-24 14:17:30,944 INFO [sqlalchemy.engine.Engine] [e9f9720c0af341aebbb808a5cabd817d] [cached since 4811s ago] (1,)
+2025-08-24 14:17:30,946 INFO [sqlalchemy.engine.Engine] [e9f9720c0af341aebbb808a5cabd817d] ROLLBACK
+2025-08-24 14:17:30,946 INFO [app.request] [e9f9720c0af341aebbb808a5cabd817d] Completed GET /api/recipes/my-recipes/ -> 200 in 15ms
+2025-08-24 14:17:30,947 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "GET /api/recipes/my-recipes/ HTTP/1.1" 200
+2025-08-24 14:17:31,568 INFO [app.request] [5a1873177dbc41449cfa832a0ea56c3d] Incoming request OPTIONS /api/recipes/saved/ from 192.168.65.1
+2025-08-24 14:17:31,571 INFO [app.request] [5a1873177dbc41449cfa832a0ea56c3d] Completed OPTIONS /api/recipes/saved/ -> 200 in 2ms
+2025-08-24 14:17:31,572 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "OPTIONS /api/recipes/saved/ HTTP/1.1" 200
+2025-08-24 14:17:31,576 INFO [app.request] [caf3bcab115040f9b90295c10a268338] Incoming request GET /api/recipes/saved/ from 192.168.65.1
+2025-08-24 14:17:31,578 INFO [sqlalchemy.engine.Engine] [caf3bcab115040f9b90295c10a268338] BEGIN (implicit)
+2025-08-24 14:17:31,579 INFO [sqlalchemy.engine.Engine] [caf3bcab115040f9b90295c10a268338] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:31,580 INFO [sqlalchemy.engine.Engine] [caf3bcab115040f9b90295c10a268338] [cached since 6625s ago] (1,)
+2025-08-24 14:17:31,582 INFO [sqlalchemy.engine.Engine] [caf3bcab115040f9b90295c10a268338] ROLLBACK
+2025-08-24 14:17:31,588 INFO [sqlalchemy.engine.Engine] [caf3bcab115040f9b90295c10a268338] BEGIN (implicit)
+2025-08-24 14:17:31,590 INFO [sqlalchemy.engine.Engine] [caf3bcab115040f9b90295c10a268338] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id 
+FROM recipes JOIN saved_recipes ON saved_recipes.recipe_id = recipes.id 
+WHERE saved_recipes.user_id = $1::INTEGER
+2025-08-24 14:17:31,590 INFO [sqlalchemy.engine.Engine] [caf3bcab115040f9b90295c10a268338] [generated in 0.00039s] (1,)
+2025-08-24 14:17:31,593 INFO [sqlalchemy.engine.Engine] [caf3bcab115040f9b90295c10a268338] ROLLBACK
+2025-08-24 14:17:31,594 INFO [app.request] [caf3bcab115040f9b90295c10a268338] Completed GET /api/recipes/saved/ -> 200 in 17ms
+2025-08-24 14:17:31,594 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "GET /api/recipes/saved/ HTTP/1.1" 200
+2025-08-24 14:17:33,084 INFO [app.request] [17bf0bd545f640b0a010f406ce529af6] Incoming request GET /api/recipes/options/ from 192.168.65.1
+2025-08-24 14:17:33,085 INFO [app.request] [3be7208553e24e3b977500e1bce10828] Incoming request GET /api/recipes/list/ from 192.168.65.1
+2025-08-24 14:17:33,087 INFO [sqlalchemy.engine.Engine] [3be7208553e24e3b977500e1bce10828] BEGIN (implicit)
+2025-08-24 14:17:33,088 INFO [sqlalchemy.engine.Engine] [3be7208553e24e3b977500e1bce10828] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:33,089 INFO [sqlalchemy.engine.Engine] [3be7208553e24e3b977500e1bce10828] [cached since 6627s ago] (1,)
+2025-08-24 14:17:33,091 INFO [app.request] [17bf0bd545f640b0a010f406ce529af6] Completed GET /api/recipes/options/ -> 200 in 7ms
+2025-08-24 14:17:33,092 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "GET /api/recipes/options/ HTTP/1.1" 200
+2025-08-24 14:17:33,093 INFO [sqlalchemy.engine.Engine] [3be7208553e24e3b977500e1bce10828] ROLLBACK
+2025-08-24 14:17:33,095 INFO [sqlalchemy.engine.Engine] [3be7208553e24e3b977500e1bce10828] BEGIN (implicit)
+2025-08-24 14:17:33,096 INFO [sqlalchemy.engine.Engine] [3be7208553e24e3b977500e1bce10828] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id, users_1.id AS id_1, users_1.email, users_1.username, users_1.hashed_password, users_1.is_active, users_1.first_name, users_1.last_name, users_1.joined, users_1.photo_url, users_1.username_changed_at, users_1.bio 
+FROM recipes LEFT OUTER JOIN users AS users_1 ON users_1.id = recipes.user_id ORDER BY recipes.created_at DESC
+2025-08-24 14:17:33,096 INFO [sqlalchemy.engine.Engine] [3be7208553e24e3b977500e1bce10828] [cached since 6624s ago] ()
+2025-08-24 14:17:33,098 INFO [sqlalchemy.engine.Engine] [3be7208553e24e3b977500e1bce10828] ROLLBACK
+2025-08-24 14:17:33,099 INFO [app.request] [3be7208553e24e3b977500e1bce10828] Completed GET /api/recipes/list/ -> 200 in 13ms
+2025-08-24 14:17:33,099 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "GET /api/recipes/list/?include_self=true HTTP/1.1" 200
+2025-08-24 14:17:33,891 INFO [app.request] [8e03fd14b27a4e2081424f5cade3aaa6] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:33,894 INFO [sqlalchemy.engine.Engine] [8e03fd14b27a4e2081424f5cade3aaa6] BEGIN (implicit)
+2025-08-24 14:17:33,894 INFO [sqlalchemy.engine.Engine] [8e03fd14b27a4e2081424f5cade3aaa6] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:33,895 INFO [sqlalchemy.engine.Engine] [8e03fd14b27a4e2081424f5cade3aaa6] [cached since 6627s ago] (1,)
+2025-08-24 14:17:33,896 INFO [app.request] [a40bd783c51d47ceb2fedaae9fab2d4e] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:33,898 INFO [sqlalchemy.engine.Engine] [a40bd783c51d47ceb2fedaae9fab2d4e] BEGIN (implicit)
+2025-08-24 14:17:33,900 INFO [sqlalchemy.engine.Engine] [a40bd783c51d47ceb2fedaae9fab2d4e] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:33,901 INFO [sqlalchemy.engine.Engine] [a40bd783c51d47ceb2fedaae9fab2d4e] [cached since 6627s ago] (1,)
+2025-08-24 14:17:33,903 INFO [sqlalchemy.engine.Engine] [8e03fd14b27a4e2081424f5cade3aaa6] ROLLBACK
+2025-08-24 14:17:33,906 INFO [sqlalchemy.engine.Engine] [a40bd783c51d47ceb2fedaae9fab2d4e] ROLLBACK
+2025-08-24 14:17:33,907 INFO [app.request] [8e03fd14b27a4e2081424f5cade3aaa6] Completed GET /api/user/profile/ -> 200 in 15ms
+2025-08-24 14:17:33,907 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:17:33,909 INFO [sqlalchemy.engine.Engine] [a40bd783c51d47ceb2fedaae9fab2d4e] BEGIN (implicit)
+2025-08-24 14:17:33,910 INFO [sqlalchemy.engine.Engine] [a40bd783c51d47ceb2fedaae9fab2d4e] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:33,911 INFO [sqlalchemy.engine.Engine] [a40bd783c51d47ceb2fedaae9fab2d4e] [cached since 6456s ago] (1,)
+2025-08-24 14:17:33,913 INFO [sqlalchemy.engine.Engine] [a40bd783c51d47ceb2fedaae9fab2d4e] ROLLBACK
+2025-08-24 14:17:33,914 INFO [app.request] [a40bd783c51d47ceb2fedaae9fab2d4e] Completed PATCH /api/user/profile/ -> 200 in 18ms
+2025-08-24 14:17:33,915 INFO [uvicorn.access] [-] 192.168.65.1:30879 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:17:33,916 INFO [app.request] [56bb03bcfbc54a6683fc806b78660374] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:33,918 INFO [sqlalchemy.engine.Engine] [56bb03bcfbc54a6683fc806b78660374] BEGIN (implicit)
+2025-08-24 14:17:33,918 INFO [sqlalchemy.engine.Engine] [56bb03bcfbc54a6683fc806b78660374] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:33,918 INFO [sqlalchemy.engine.Engine] [56bb03bcfbc54a6683fc806b78660374] [cached since 6627s ago] (1,)
+2025-08-24 14:17:33,919 INFO [sqlalchemy.engine.Engine] [56bb03bcfbc54a6683fc806b78660374] ROLLBACK
+2025-08-24 14:17:33,920 INFO [sqlalchemy.engine.Engine] [56bb03bcfbc54a6683fc806b78660374] BEGIN (implicit)
+2025-08-24 14:17:33,920 INFO [sqlalchemy.engine.Engine] [56bb03bcfbc54a6683fc806b78660374] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:33,920 INFO [sqlalchemy.engine.Engine] [56bb03bcfbc54a6683fc806b78660374] [cached since 6456s ago] (1,)
+2025-08-24 14:17:33,921 INFO [sqlalchemy.engine.Engine] [56bb03bcfbc54a6683fc806b78660374] ROLLBACK
+2025-08-24 14:17:33,922 INFO [app.request] [56bb03bcfbc54a6683fc806b78660374] Completed PATCH /api/user/profile/ -> 200 in 5ms
+2025-08-24 14:17:33,922 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:17:35,222 INFO [app.request] [3f9fcbca8e524d6d8c2ebe624d69abff] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 14:17:35,225 INFO [app.request] [3f9fcbca8e524d6d8c2ebe624d69abff] Completed PATCH /api/user/profile/ -> 400 in 2ms
+2025-08-24 14:17:35,247 INFO [app.request] [df8f7cc849004b1fac6ad91d5d6acbbb] Incoming request GET /api/recipes/my-recipes/ from 192.168.65.1
+2025-08-24 14:17:35,248 INFO [sqlalchemy.engine.Engine] [df8f7cc849004b1fac6ad91d5d6acbbb] BEGIN (implicit)
+2025-08-24 14:17:35,249 INFO [sqlalchemy.engine.Engine] [df8f7cc849004b1fac6ad91d5d6acbbb] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:35,250 INFO [sqlalchemy.engine.Engine] [df8f7cc849004b1fac6ad91d5d6acbbb] [cached since 6629s ago] (1,)
+2025-08-24 14:17:35,254 INFO [sqlalchemy.engine.Engine] [df8f7cc849004b1fac6ad91d5d6acbbb] ROLLBACK
+2025-08-24 14:17:35,257 INFO [sqlalchemy.engine.Engine] [df8f7cc849004b1fac6ad91d5d6acbbb] BEGIN (implicit)
+2025-08-24 14:17:35,257 INFO [sqlalchemy.engine.Engine] [df8f7cc849004b1fac6ad91d5d6acbbb] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id 
+FROM recipes 
+WHERE recipes.user_id = $1::INTEGER ORDER BY recipes.created_at DESC
+2025-08-24 14:17:35,258 INFO [sqlalchemy.engine.Engine] [df8f7cc849004b1fac6ad91d5d6acbbb] [cached since 4815s ago] (1,)
+2025-08-24 14:17:35,261 INFO [sqlalchemy.engine.Engine] [df8f7cc849004b1fac6ad91d5d6acbbb] ROLLBACK
+2025-08-24 14:17:35,262 INFO [app.request] [df8f7cc849004b1fac6ad91d5d6acbbb] Completed GET /api/recipes/my-recipes/ -> 200 in 14ms
+2025-08-24 14:17:35,262 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "GET /api/recipes/my-recipes/ HTTP/1.1" 200
+2025-08-24 14:17:36,562 INFO [app.request] [0d23b556a01a45659a9e5865e5eaf188] Incoming request GET /api/recipes/options/ from 192.168.65.1
+2025-08-24 14:17:36,564 INFO [app.request] [0d23b556a01a45659a9e5865e5eaf188] Completed GET /api/recipes/options/ -> 200 in 1ms
+2025-08-24 14:17:36,565 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "GET /api/recipes/options/ HTTP/1.1" 200
+2025-08-24 14:17:41,474 INFO [app.request] [db4ed2bedb004d61b2665a0abee71bbd] Incoming request OPTIONS /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:41,476 INFO [app.request] [db4ed2bedb004d61b2665a0abee71bbd] Completed OPTIONS /api/recipes/ingredients/ -> 200 in 1ms
+2025-08-24 14:17:41,479 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "OPTIONS /api/recipes/ingredients/?q=fewfew HTTP/1.1" 200
+2025-08-24 14:17:41,488 INFO [app.request] [ad3cf46808c0402ab00137c4cfcbb8d1] Incoming request GET /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:41,491 INFO [sqlalchemy.engine.Engine] [ad3cf46808c0402ab00137c4cfcbb8d1] BEGIN (implicit)
+2025-08-24 14:17:41,492 INFO [sqlalchemy.engine.Engine] [ad3cf46808c0402ab00137c4cfcbb8d1] SELECT ingredients.id, ingredients.name, ingredients.name_norm, ingredients.created_at 
+FROM ingredients 
+WHERE ingredients.name_norm LIKE $1::VARCHAR ORDER BY ingredients.name ASC 
+ LIMIT $2::INTEGER
+2025-08-24 14:17:41,493 INFO [sqlalchemy.engine.Engine] [ad3cf46808c0402ab00137c4cfcbb8d1] [cached since 30.71s ago] ('%fewfew%', 20)
+2025-08-24 14:17:41,502 INFO [sqlalchemy.engine.Engine] [ad3cf46808c0402ab00137c4cfcbb8d1] ROLLBACK
+2025-08-24 14:17:41,506 INFO [app.request] [ad3cf46808c0402ab00137c4cfcbb8d1] Completed GET /api/recipes/ingredients/ -> 200 in 18ms
+2025-08-24 14:17:41,507 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "GET /api/recipes/ingredients/?q=fewfew HTTP/1.1" 200
+2025-08-24 14:17:43,938 INFO [app.request] [a361d286f4554739938713fab611b44e] Incoming request OPTIONS /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:43,939 INFO [app.request] [a361d286f4554739938713fab611b44e] Completed OPTIONS /api/recipes/ingredients/ -> 200 in 1ms
+2025-08-24 14:17:43,941 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "OPTIONS /api/recipes/ingredients/?q=few+few HTTP/1.1" 200
+2025-08-24 14:17:43,949 INFO [app.request] [0a84ab240a7e4408a6689ebf9a31931f] Incoming request GET /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:43,951 INFO [sqlalchemy.engine.Engine] [0a84ab240a7e4408a6689ebf9a31931f] BEGIN (implicit)
+2025-08-24 14:17:43,952 INFO [sqlalchemy.engine.Engine] [0a84ab240a7e4408a6689ebf9a31931f] SELECT ingredients.id, ingredients.name, ingredients.name_norm, ingredients.created_at 
+FROM ingredients 
+WHERE ingredients.name_norm LIKE $1::VARCHAR ORDER BY ingredients.name ASC 
+ LIMIT $2::INTEGER
+2025-08-24 14:17:43,952 INFO [sqlalchemy.engine.Engine] [0a84ab240a7e4408a6689ebf9a31931f] [cached since 33.17s ago] ('%few few%', 20)
+2025-08-24 14:17:43,955 INFO [sqlalchemy.engine.Engine] [0a84ab240a7e4408a6689ebf9a31931f] ROLLBACK
+2025-08-24 14:17:43,956 INFO [app.request] [0a84ab240a7e4408a6689ebf9a31931f] Completed GET /api/recipes/ingredients/ -> 200 in 7ms
+2025-08-24 14:17:43,957 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "GET /api/recipes/ingredients/?q=few+few HTTP/1.1" 200
+2025-08-24 14:17:44,776 INFO [app.request] [bf084c69d22f4c6faaff68b9d53faa62] Incoming request POST /api/recipes/ingredients/ from 192.168.65.1
+2025-08-24 14:17:44,778 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] BEGIN (implicit)
+2025-08-24 14:17:44,779 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:44,780 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] [cached since 6638s ago] (1,)
+2025-08-24 14:17:44,782 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] ROLLBACK
+2025-08-24 14:17:44,787 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] BEGIN (implicit)
+2025-08-24 14:17:44,789 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] SELECT ingredients.id, ingredients.name, ingredients.name_norm, ingredients.created_at 
+FROM ingredients 
+WHERE ingredients.name_norm = $1::VARCHAR
+2025-08-24 14:17:44,789 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] [generated in 0.00062s] ('few few',)
+2025-08-24 14:17:44,793 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] INSERT INTO ingredients (name, name_norm, created_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::TIMESTAMP WITH TIME ZONE) RETURNING ingredients.id
+2025-08-24 14:17:44,794 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] [generated in 0.00081s] ('few few', 'few few', datetime.datetime(2025, 8, 24, 14, 17, 44, 793848, tzinfo=datetime.timezone.utc))
+2025-08-24 14:17:44,797 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] COMMIT
+2025-08-24 14:17:44,800 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] BEGIN (implicit)
+2025-08-24 14:17:44,801 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] SELECT ingredients.id, ingredients.name, ingredients.name_norm, ingredients.created_at 
+FROM ingredients 
+WHERE ingredients.id = $1::INTEGER
+2025-08-24 14:17:44,801 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] [generated in 0.00048s] (1,)
+2025-08-24 14:17:44,802 INFO [sqlalchemy.engine.Engine] [bf084c69d22f4c6faaff68b9d53faa62] ROLLBACK
+2025-08-24 14:17:44,803 INFO [app.request] [bf084c69d22f4c6faaff68b9d53faa62] Completed POST /api/recipes/ingredients/ -> 200 in 27ms
+2025-08-24 14:17:44,803 INFO [uvicorn.access] [-] 192.168.65.1:49322 - "POST /api/recipes/ingredients/ HTTP/1.1" 200
+2025-08-24 14:17:50,397 INFO [app.request] [6f05c68b2c0f426f8060e8b6aee78bce] Incoming request OPTIONS /api/recipes/create/ from 192.168.65.1
+2025-08-24 14:17:50,398 INFO [app.request] [6f05c68b2c0f426f8060e8b6aee78bce] Completed OPTIONS /api/recipes/create/ -> 200 in 1ms
+2025-08-24 14:17:50,398 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "OPTIONS /api/recipes/create/ HTTP/1.1" 200
+2025-08-24 14:17:50,401 INFO [app.request] [880bf8f677924816bb5d97e5247e2f5c] Incoming request POST /api/recipes/create/ from 192.168.65.1
+2025-08-24 14:17:50,402 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] BEGIN (implicit)
+2025-08-24 14:17:50,403 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:50,404 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [cached since 6644s ago] (1,)
+2025-08-24 14:17:50,405 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] ROLLBACK
+2025-08-24 14:17:50,409 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] BEGIN (implicit)
+2025-08-24 14:17:50,413 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] SELECT count(*) AS count_1 
+FROM recipes 
+WHERE recipes.user_id = $1::INTEGER AND recipes.created_at >= $2::TIMESTAMP WITH TIME ZONE
+2025-08-24 14:17:50,414 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [generated in 0.00060s] (1, datetime.datetime(2025, 8, 24, 0, 0, tzinfo=datetime.timezone.utc))
+2025-08-24 14:17:50,419 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] INSERT INTO recipes (title, description, instructions, image_url, is_published, created_at, user_id, category_id) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::VARCHAR, $5::BOOLEAN, $6::TIMESTAMP WITH TIME ZONE, $7::INTEGER, $8::INTEGER) RETURNING recipes.id
+2025-08-24 14:17:50,419 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [generated in 0.00065s] ('few few', 'fwefew', '', None, True, datetime.datetime(2025, 8, 24, 14, 17, 50, 419021, tzinfo=datetime.timezone.utc), 1, None)
+2025-08-24 14:17:50,422 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] COMMIT
+2025-08-24 14:17:50,423 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] BEGIN (implicit)
+2025-08-24 14:17:50,424 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id 
+FROM recipes 
+WHERE recipes.id = $1::INTEGER
+2025-08-24 14:17:50,424 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [generated in 0.00038s] (1,)
+2025-08-24 14:17:50,426 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES ($1::INTEGER, $2::INTEGER)
+2025-08-24 14:17:50,427 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [generated in 0.00029s] (1, 1)
+2025-08-24 14:17:50,429 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] COMMIT
+2025-08-24 14:17:50,429 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] BEGIN (implicit)
+2025-08-24 14:17:50,430 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] SELECT ingredients.id, ingredients.name 
+FROM ingredients JOIN recipe_ingredients ON recipe_ingredients.ingredient_id = ingredients.id 
+WHERE recipe_ingredients.recipe_id = $1::INTEGER ORDER BY ingredients.name ASC
+2025-08-24 14:17:50,430 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [generated in 0.00025s] (1,)
+2025-08-24 14:17:50,433 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER
+2025-08-24 14:17:50,433 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [generated in 0.00029s] (1,)
+2025-08-24 14:17:50,435 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.is_active AS users_is_active, users.first_name AS users_first_name, users.last_name AS users_last_name, users.joined AS users_joined, users.photo_url AS users_photo_url, users.username_changed_at AS users_username_changed_at, users.bio AS users_bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:50,435 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [generated in 0.00027s] (1,)
+2025-08-24 14:17:50,436 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER AND recipe_likes.user_id = $2::INTEGER
+2025-08-24 14:17:50,436 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [generated in 0.00022s] (1, 1)
+2025-08-24 14:17:50,439 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] SELECT count(*) AS count_1 
+FROM saved_recipes 
+WHERE saved_recipes.recipe_id = $1::INTEGER AND saved_recipes.user_id = $2::INTEGER
+2025-08-24 14:17:50,439 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] [generated in 0.00022s] (1, 1)
+2025-08-24 14:17:50,441 INFO [sqlalchemy.engine.Engine] [880bf8f677924816bb5d97e5247e2f5c] ROLLBACK
+2025-08-24 14:17:50,441 INFO [app.request] [880bf8f677924816bb5d97e5247e2f5c] Completed POST /api/recipes/create/ -> 200 in 40ms
+2025-08-24 14:17:50,441 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "POST /api/recipes/create/ HTTP/1.1" 200
+2025-08-24 14:17:50,452 INFO [app.request] [b3cca3c9141347c6acabf93c6073d51b] Incoming request GET /api/recipes/my-recipes/ from 192.168.65.1
+2025-08-24 14:17:50,453 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] BEGIN (implicit)
+2025-08-24 14:17:50,453 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:50,453 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] [cached since 6644s ago] (1,)
+2025-08-24 14:17:50,454 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] ROLLBACK
+2025-08-24 14:17:50,454 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] BEGIN (implicit)
+2025-08-24 14:17:50,454 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id 
+FROM recipes 
+WHERE recipes.user_id = $1::INTEGER ORDER BY recipes.created_at DESC
+2025-08-24 14:17:50,454 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] [cached since 4830s ago] (1,)
+2025-08-24 14:17:50,455 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER
+2025-08-24 14:17:50,456 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] [cached since 0.02319s ago] (1,)
+2025-08-24 14:17:50,456 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.is_active AS users_is_active, users.first_name AS users_first_name, users.last_name AS users_last_name, users.joined AS users_joined, users.photo_url AS users_photo_url, users.username_changed_at AS users_username_changed_at, users.bio AS users_bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:50,457 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] [cached since 0.02163s ago] (1,)
+2025-08-24 14:17:50,457 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER AND recipe_likes.user_id = $2::INTEGER
+2025-08-24 14:17:50,458 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] [cached since 0.02136s ago] (1, 1)
+2025-08-24 14:17:50,458 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] SELECT count(*) AS count_1 
+FROM saved_recipes 
+WHERE saved_recipes.recipe_id = $1::INTEGER AND saved_recipes.user_id = $2::INTEGER
+2025-08-24 14:17:50,459 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] [cached since 0.01968s ago] (1, 1)
+2025-08-24 14:17:50,461 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] SELECT ingredients.id, ingredients.name 
+FROM ingredients JOIN recipe_ingredients ON recipe_ingredients.ingredient_id = ingredients.id 
+WHERE recipe_ingredients.recipe_id = $1::INTEGER ORDER BY ingredients.name ASC
+2025-08-24 14:17:50,461 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] [cached since 0.03065s ago] (1,)
+2025-08-24 14:17:50,462 INFO [sqlalchemy.engine.Engine] [b3cca3c9141347c6acabf93c6073d51b] ROLLBACK
+2025-08-24 14:17:50,463 INFO [app.request] [b3cca3c9141347c6acabf93c6073d51b] Completed GET /api/recipes/my-recipes/ -> 200 in 10ms
+2025-08-24 14:17:50,463 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "GET /api/recipes/my-recipes/ HTTP/1.1" 200
+2025-08-24 14:17:51,755 INFO [app.request] [bd7c46d507524d8eaef69464410d633f] Incoming request OPTIONS /api/recipes/recipe/1/ from 192.168.65.1
+2025-08-24 14:17:51,756 INFO [app.request] [bd7c46d507524d8eaef69464410d633f] Completed OPTIONS /api/recipes/recipe/1/ -> 200 in 1ms
+2025-08-24 14:17:51,756 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "OPTIONS /api/recipes/recipe/1/ HTTP/1.1" 200
+2025-08-24 14:17:51,759 INFO [app.request] [dba5e0aa4a3642b8bdbf6175b2781d92] Incoming request GET /api/recipes/recipe/1/ from 192.168.65.1
+2025-08-24 14:17:51,761 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] BEGIN (implicit)
+2025-08-24 14:17:51,763 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:51,765 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] [cached since 6645s ago] (1,)
+2025-08-24 14:17:51,768 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] ROLLBACK
+2025-08-24 14:17:51,770 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] BEGIN (implicit)
+2025-08-24 14:17:51,772 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id, users_1.id AS id_1, users_1.email, users_1.username, users_1.hashed_password, users_1.is_active, users_1.first_name, users_1.last_name, users_1.joined, users_1.photo_url, users_1.username_changed_at, users_1.bio 
+FROM recipes LEFT OUTER JOIN users AS users_1 ON users_1.id = recipes.user_id 
+WHERE recipes.id = $1::INTEGER
+2025-08-24 14:17:51,772 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] [cached since 6645s ago] (1,)
+2025-08-24 14:17:51,775 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER
+2025-08-24 14:17:51,776 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] [cached since 1.343s ago] (1,)
+2025-08-24 14:17:51,777 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER AND recipe_likes.user_id = $2::INTEGER
+2025-08-24 14:17:51,779 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] [cached since 1.343s ago] (1, 1)
+2025-08-24 14:17:51,780 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] SELECT count(*) AS count_1 
+FROM saved_recipes 
+WHERE saved_recipes.recipe_id = $1::INTEGER AND saved_recipes.user_id = $2::INTEGER
+2025-08-24 14:17:51,781 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] [cached since 1.342s ago] (1, 1)
+2025-08-24 14:17:51,782 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] SELECT ingredients.id, ingredients.name 
+FROM ingredients JOIN recipe_ingredients ON recipe_ingredients.ingredient_id = ingredients.id 
+WHERE recipe_ingredients.recipe_id = $1::INTEGER ORDER BY ingredients.name ASC
+2025-08-24 14:17:51,783 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] [cached since 1.352s ago] (1,)
+2025-08-24 14:17:51,784 INFO [sqlalchemy.engine.Engine] [dba5e0aa4a3642b8bdbf6175b2781d92] ROLLBACK
+2025-08-24 14:17:51,785 INFO [app.request] [dba5e0aa4a3642b8bdbf6175b2781d92] Completed GET /api/recipes/recipe/1/ -> 200 in 25ms
+2025-08-24 14:17:51,785 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "GET /api/recipes/recipe/1/ HTTP/1.1" 200
+2025-08-24 14:17:51,788 INFO [app.request] [bfc17d417d744634a6576f6137b8960c] Incoming request GET /api/recipes/recipe/1/comments/ from 192.168.65.1
+2025-08-24 14:17:51,789 INFO [sqlalchemy.engine.Engine] [bfc17d417d744634a6576f6137b8960c] BEGIN (implicit)
+2025-08-24 14:17:51,790 INFO [sqlalchemy.engine.Engine] [bfc17d417d744634a6576f6137b8960c] SELECT comments.id, comments.recipe_id, comments.user_id, comments.parent_id, comments.content, comments.created_at, users.username 
+FROM comments JOIN users ON users.id = comments.user_id 
+WHERE comments.recipe_id = $1::INTEGER ORDER BY comments.created_at ASC
+2025-08-24 14:17:51,791 INFO [sqlalchemy.engine.Engine] [bfc17d417d744634a6576f6137b8960c] [generated in 0.00030s] (1,)
+2025-08-24 14:17:51,793 INFO [sqlalchemy.engine.Engine] [bfc17d417d744634a6576f6137b8960c] ROLLBACK
+2025-08-24 14:17:51,793 INFO [app.request] [bfc17d417d744634a6576f6137b8960c] Completed GET /api/recipes/recipe/1/comments/ -> 200 in 5ms
+2025-08-24 14:17:51,794 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "GET /api/recipes/recipe/1/comments/ HTTP/1.1" 200
+2025-08-24 14:17:54,078 INFO [app.request] [df725c03ff904f72b834dc62b1f86b26] Incoming request OPTIONS /api/recipes/recipe/1/like/ from 192.168.65.1
+2025-08-24 14:17:54,080 INFO [app.request] [df725c03ff904f72b834dc62b1f86b26] Completed OPTIONS /api/recipes/recipe/1/like/ -> 200 in 1ms
+2025-08-24 14:17:54,080 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "OPTIONS /api/recipes/recipe/1/like/ HTTP/1.1" 200
+2025-08-24 14:17:54,083 INFO [app.request] [0a557dfc17354fd8b2acbcb0460df532] Incoming request POST /api/recipes/recipe/1/like/ from 192.168.65.1
+2025-08-24 14:17:54,086 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] BEGIN (implicit)
+2025-08-24 14:17:54,088 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:54,088 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] [cached since 6648s ago] (1,)
+2025-08-24 14:17:54,091 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] ROLLBACK
+2025-08-24 14:17:54,092 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] BEGIN (implicit)
+2025-08-24 14:17:54,094 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] SELECT recipe_likes.id, recipe_likes.recipe_id, recipe_likes.user_id, recipe_likes.created_at 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER AND recipe_likes.user_id = $2::INTEGER
+2025-08-24 14:17:54,095 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] [generated in 0.00061s] (1, 1)
+2025-08-24 14:17:54,099 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] INSERT INTO recipe_likes (recipe_id, user_id, created_at) VALUES ($1::INTEGER, $2::INTEGER, $3::TIMESTAMP WITH TIME ZONE) RETURNING recipe_likes.id
+2025-08-24 14:17:54,100 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] [generated in 0.00069s] (1, 1, datetime.datetime(2025, 8, 24, 14, 17, 54, 99863, tzinfo=datetime.timezone.utc))
+2025-08-24 14:17:54,103 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] COMMIT
+2025-08-24 14:17:54,104 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] BEGIN (implicit)
+2025-08-24 14:17:54,105 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER
+2025-08-24 14:17:54,105 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] [cached since 3.673s ago] (1,)
+2025-08-24 14:17:54,106 INFO [sqlalchemy.engine.Engine] [0a557dfc17354fd8b2acbcb0460df532] ROLLBACK
+2025-08-24 14:17:54,107 INFO [app.request] [0a557dfc17354fd8b2acbcb0460df532] Completed POST /api/recipes/recipe/1/like/ -> 200 in 23ms
+2025-08-24 14:17:54,107 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "POST /api/recipes/recipe/1/like/ HTTP/1.1" 200
+2025-08-24 14:17:54,898 INFO [app.request] [d5fc8a392bff4b43bb5fc09086330662] Incoming request OPTIONS /api/recipes/recipe/1/save/ from 192.168.65.1
+2025-08-24 14:17:54,900 INFO [app.request] [d5fc8a392bff4b43bb5fc09086330662] Completed OPTIONS /api/recipes/recipe/1/save/ -> 200 in 1ms
+2025-08-24 14:17:54,901 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "OPTIONS /api/recipes/recipe/1/save/ HTTP/1.1" 200
+2025-08-24 14:17:54,908 INFO [app.request] [862115db69bb4d31a33ccc01d00e2b2b] Incoming request POST /api/recipes/recipe/1/save/ from 192.168.65.1
+2025-08-24 14:17:54,911 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] BEGIN (implicit)
+2025-08-24 14:17:54,912 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:17:54,912 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] [cached since 6648s ago] (1,)
+2025-08-24 14:17:54,915 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] ROLLBACK
+2025-08-24 14:17:54,918 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] BEGIN (implicit)
+2025-08-24 14:17:54,920 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] SELECT saved_recipes.id, saved_recipes.recipe_id, saved_recipes.user_id, saved_recipes.created_at 
+FROM saved_recipes 
+WHERE saved_recipes.recipe_id = $1::INTEGER AND saved_recipes.user_id = $2::INTEGER
+2025-08-24 14:17:54,920 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] [generated in 0.00044s] (1, 1)
+2025-08-24 14:17:54,923 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] INSERT INTO saved_recipes (recipe_id, user_id, created_at) VALUES ($1::INTEGER, $2::INTEGER, $3::TIMESTAMP WITH TIME ZONE) RETURNING saved_recipes.id
+2025-08-24 14:17:54,923 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] [generated in 0.00038s] (1, 1, datetime.datetime(2025, 8, 24, 14, 17, 54, 923142, tzinfo=datetime.timezone.utc))
+2025-08-24 14:17:54,925 INFO [sqlalchemy.engine.Engine] [862115db69bb4d31a33ccc01d00e2b2b] COMMIT
+2025-08-24 14:17:54,926 INFO [app.request] [862115db69bb4d31a33ccc01d00e2b2b] Completed POST /api/recipes/recipe/1/save/ -> 200 in 18ms
+2025-08-24 14:17:54,927 INFO [uvicorn.access] [-] 192.168.65.1:16422 - "POST /api/recipes/recipe/1/save/ HTTP/1.1" 200
+2025-08-24 14:18:04,022 INFO [app.request] [22e1e24c673c45afa90e1bd61bdbcf7f] Incoming request GET /api/recipes/options/ from 192.168.65.1
+2025-08-24 14:18:04,024 INFO [app.request] [4e41ada214c446349f8f74532d16c045] Incoming request GET /api/recipes/list/ from 192.168.65.1
+2025-08-24 14:18:04,026 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] BEGIN (implicit)
+2025-08-24 14:18:04,027 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:18:04,027 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] [cached since 6658s ago] (1,)
+2025-08-24 14:18:04,030 INFO [app.request] [22e1e24c673c45afa90e1bd61bdbcf7f] Completed GET /api/recipes/options/ -> 200 in 7ms
+2025-08-24 14:18:04,032 INFO [uvicorn.access] [-] 192.168.65.1:54970 - "GET /api/recipes/options/ HTTP/1.1" 200
+2025-08-24 14:18:04,034 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] ROLLBACK
+2025-08-24 14:18:04,036 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] BEGIN (implicit)
+2025-08-24 14:18:04,037 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id, users_1.id AS id_1, users_1.email, users_1.username, users_1.hashed_password, users_1.is_active, users_1.first_name, users_1.last_name, users_1.joined, users_1.photo_url, users_1.username_changed_at, users_1.bio 
+FROM recipes LEFT OUTER JOIN users AS users_1 ON users_1.id = recipes.user_id ORDER BY recipes.created_at DESC
+2025-08-24 14:18:04,037 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] [cached since 6655s ago] ()
+2025-08-24 14:18:04,039 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER
+2025-08-24 14:18:04,039 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] [cached since 13.61s ago] (1,)
+2025-08-24 14:18:04,040 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER AND recipe_likes.user_id = $2::INTEGER
+2025-08-24 14:18:04,041 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] [cached since 13.6s ago] (1, 1)
+2025-08-24 14:18:04,042 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] SELECT count(*) AS count_1 
+FROM saved_recipes 
+WHERE saved_recipes.recipe_id = $1::INTEGER AND saved_recipes.user_id = $2::INTEGER
+2025-08-24 14:18:04,042 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] [cached since 13.6s ago] (1, 1)
+2025-08-24 14:18:04,043 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] SELECT ingredients.id, ingredients.name 
+FROM ingredients JOIN recipe_ingredients ON recipe_ingredients.ingredient_id = ingredients.id 
+WHERE recipe_ingredients.recipe_id = $1::INTEGER ORDER BY ingredients.name ASC
+2025-08-24 14:18:04,043 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] [cached since 13.61s ago] (1,)
+2025-08-24 14:18:04,045 INFO [sqlalchemy.engine.Engine] [4e41ada214c446349f8f74532d16c045] ROLLBACK
+2025-08-24 14:18:04,045 INFO [app.request] [4e41ada214c446349f8f74532d16c045] Completed GET /api/recipes/list/ -> 200 in 21ms
+2025-08-24 14:18:04,046 INFO [uvicorn.access] [-] 192.168.65.1:61628 - "GET /api/recipes/list/?include_self=true HTTP/1.1" 200
+2025-08-24 14:18:04,996 INFO [app.request] [7b3328a65259497ab9d79ee4c421e72b] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 14:18:05,001 INFO [sqlalchemy.engine.Engine] [7b3328a65259497ab9d79ee4c421e72b] BEGIN (implicit)
+2025-08-24 14:18:05,002 INFO [sqlalchemy.engine.Engine] [7b3328a65259497ab9d79ee4c421e72b] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:18:05,004 INFO [sqlalchemy.engine.Engine] [7b3328a65259497ab9d79ee4c421e72b] [cached since 6659s ago] (1,)
+2025-08-24 14:18:05,006 INFO [app.request] [2300bbe0c4e8421c94ac3d58ec61989a] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 14:18:05,008 INFO [sqlalchemy.engine.Engine] [2300bbe0c4e8421c94ac3d58ec61989a] BEGIN (implicit)
+2025-08-24 14:18:05,009 INFO [sqlalchemy.engine.Engine] [2300bbe0c4e8421c94ac3d58ec61989a] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:18:05,010 INFO [sqlalchemy.engine.Engine] [2300bbe0c4e8421c94ac3d58ec61989a] [cached since 6659s ago] (1,)
+2025-08-24 14:18:05,011 INFO [sqlalchemy.engine.Engine] [7b3328a65259497ab9d79ee4c421e72b] ROLLBACK
+2025-08-24 14:18:05,012 INFO [sqlalchemy.engine.Engine] [2300bbe0c4e8421c94ac3d58ec61989a] ROLLBACK
+2025-08-24 14:18:05,013 INFO [app.request] [7b3328a65259497ab9d79ee4c421e72b] Completed GET /api/user/profile/ -> 200 in 17ms
+2025-08-24 14:18:05,014 INFO [uvicorn.access] [-] 192.168.65.1:54970 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:18:05,015 INFO [sqlalchemy.engine.Engine] [2300bbe0c4e8421c94ac3d58ec61989a] BEGIN (implicit)
+2025-08-24 14:18:05,015 INFO [sqlalchemy.engine.Engine] [2300bbe0c4e8421c94ac3d58ec61989a] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:18:05,016 INFO [sqlalchemy.engine.Engine] [2300bbe0c4e8421c94ac3d58ec61989a] [cached since 6487s ago] (1,)
+2025-08-24 14:18:05,017 INFO [sqlalchemy.engine.Engine] [2300bbe0c4e8421c94ac3d58ec61989a] ROLLBACK
+2025-08-24 14:18:05,017 INFO [app.request] [2300bbe0c4e8421c94ac3d58ec61989a] Completed PATCH /api/user/profile/ -> 200 in 11ms
+2025-08-24 14:18:05,018 INFO [uvicorn.access] [-] 192.168.65.1:61628 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 14:18:05,020 INFO [app.request] [6341c0a874f34767a2a2e77f60657e5d] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 14:18:05,022 INFO [sqlalchemy.engine.Engine] [6341c0a874f34767a2a2e77f60657e5d] BEGIN (implicit)
+2025-08-24 14:18:05,022 INFO [sqlalchemy.engine.Engine] [6341c0a874f34767a2a2e77f60657e5d] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:18:05,022 INFO [sqlalchemy.engine.Engine] [6341c0a874f34767a2a2e77f60657e5d] [cached since 6659s ago] (1,)
+2025-08-24 14:18:05,023 INFO [sqlalchemy.engine.Engine] [6341c0a874f34767a2a2e77f60657e5d] ROLLBACK
+2025-08-24 14:18:05,024 INFO [sqlalchemy.engine.Engine] [6341c0a874f34767a2a2e77f60657e5d] BEGIN (implicit)
+2025-08-24 14:18:05,025 INFO [sqlalchemy.engine.Engine] [6341c0a874f34767a2a2e77f60657e5d] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 14:18:05,025 INFO [sqlalchemy.engine.Engine] [6341c0a874f34767a2a2e77f60657e5d] [cached since 6487s ago] (1,)
+2025-08-24 14:18:05,026 INFO [sqlalchemy.engine.Engine] [6341c0a874f34767a2a2e77f60657e5d] ROLLBACK
+2025-08-24 14:18:05,027 INFO [app.request] [6341c0a874f34767a2a2e77f60657e5d] Completed PATCH /api/user/profile/ -> 200 in 6ms
+2025-08-24 14:18:05,027 INFO [uvicorn.access] [-] 192.168.65.1:54970 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 17:14:33,980 INFO [app.core.logging] [-] Logging configured
+2025-08-24 17:14:33,998 INFO [uvicorn.error] [-] Started server process [9]
+2025-08-24 17:14:33,998 INFO [uvicorn.error] [-] Waiting for application startup.
+2025-08-24 17:14:34,028 INFO [app.main] [-] Application startup
+2025-08-24 17:14:34,029 INFO [uvicorn.error] [-] Application startup complete.
+2025-08-24 17:14:34,031 INFO [uvicorn.error] [-] Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-08-24 17:15:35,845 INFO [app.request] [907909a063d940cab46b62a3672ca891] Incoming request GET /api/docs from 192.168.65.1
+2025-08-24 17:15:35,848 INFO [app.request] [907909a063d940cab46b62a3672ca891] Completed GET /api/docs -> 404 in 3ms
+2025-08-24 17:15:35,849 INFO [uvicorn.access] [-] 192.168.65.1:37753 - "GET /api/docs HTTP/1.1" 404
+2025-08-24 17:15:41,206 INFO [app.request] [c34e173378784991b3f0393c7b6b0d9c] Incoming request GET /docs from 192.168.65.1
+2025-08-24 17:15:41,209 INFO [app.request] [c34e173378784991b3f0393c7b6b0d9c] Completed GET /docs -> 200 in 2ms
+2025-08-24 17:15:41,209 INFO [uvicorn.access] [-] 192.168.65.1:35348 - "GET /docs HTTP/1.1" 200
+2025-08-24 17:15:48,763 INFO [app.request] [7d0981fe8ef245afafb56bcdbf8cb2f5] Incoming request POST /api/users/request-verification-code/ from 192.168.65.1
+2025-08-24 17:15:48,765 INFO [app.request] [7d0981fe8ef245afafb56bcdbf8cb2f5] Completed POST /api/users/request-verification-code/ -> 404 in 1ms
+2025-08-24 17:15:48,765 INFO [uvicorn.access] [-] 192.168.65.1:48167 - "POST /api/users/request-verification-code/ HTTP/1.1" 404
+2025-08-24 17:15:53,438 INFO [app.request] [522f6c8df1404be28416740feab56b2f] Incoming request GET /docs from 192.168.65.1
+2025-08-24 17:15:53,439 INFO [app.request] [522f6c8df1404be28416740feab56b2f] Completed GET /docs -> 200 in 1ms
+2025-08-24 17:15:53,439 INFO [uvicorn.access] [-] 192.168.65.1:61537 - "GET /docs?id=36071cbd-a310-4d2b-852d-18b1fb0e974c&vscodeBrowserReqId=1756055753434 HTTP/1.1" 200
+2025-08-24 17:15:54,607 INFO [app.request] [bf5ca871c89a496b905d181ba39e73b8] Incoming request GET /openapi.json from 192.168.65.1
+2025-08-24 17:15:54,632 INFO [app.request] [bf5ca871c89a496b905d181ba39e73b8] Completed GET /openapi.json -> 200 in 25ms
+2025-08-24 17:15:54,633 INFO [uvicorn.access] [-] 192.168.65.1:61537 - "GET /openapi.json HTTP/1.1" 200
+2025-08-24 17:16:08,794 INFO [app.request] [627443f6f008469b9b079d7f671ec9b3] Incoming request POST /api/user/request-code/ from 192.168.65.1
+2025-08-24 17:16:10,828 INFO [app.request] [627443f6f008469b9b079d7f671ec9b3] Completed POST /api/user/request-code/ -> 200 in 2033ms
+2025-08-24 17:16:10,829 INFO [uvicorn.access] [-] 192.168.65.1:41279 - "POST /api/user/request-code/ HTTP/1.1" 200
+2025-08-24 17:16:28,141 INFO [app.request] [8cb610d8ee414048ab60d8c21c7bb281] Incoming request POST /api/user/request-password-reset/ from 192.168.65.1
+2025-08-24 17:16:29,896 INFO [app.request] [8cb610d8ee414048ab60d8c21c7bb281] Completed POST /api/user/request-password-reset/ -> 200 in 1755ms
+2025-08-24 17:16:29,897 INFO [uvicorn.access] [-] 192.168.65.1:39282 - "POST /api/user/request-password-reset/ HTTP/1.1" 200
+2025-08-24 17:52:43,309 INFO [app.core.logging] [-] Logging configured
+2025-08-24 17:52:43,316 INFO [uvicorn.error] [-] Started server process [10]
+2025-08-24 17:52:43,316 INFO [uvicorn.error] [-] Waiting for application startup.
+2025-08-24 17:52:43,325 INFO [app.main] [-] Application startup
+2025-08-24 17:52:43,325 INFO [uvicorn.error] [-] Application startup complete.
+2025-08-24 17:52:43,326 INFO [uvicorn.error] [-] Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2025-08-24 18:33:24,034 INFO [app.request] [047277b1ee3a4f8584cf7aeac157cb1f] Incoming request OPTIONS /api/user/profile/photo/ from 192.168.65.1
+2025-08-24 18:33:24,040 INFO [app.request] [047277b1ee3a4f8584cf7aeac157cb1f] Completed OPTIONS /api/user/profile/photo/ -> 200 in 6ms
+2025-08-24 18:33:24,040 INFO [uvicorn.access] [-] 192.168.65.1:63434 - "OPTIONS /api/user/profile/photo/ HTTP/1.1" 200
+2025-08-24 18:33:24,045 INFO [app.request] [1f4cef6f1bf54f0bb4c0822378f82dac] Incoming request POST /api/user/profile/photo/ from 192.168.65.1
+2025-08-24 18:33:24,504 INFO [app.request] [1f4cef6f1bf54f0bb4c0822378f82dac] Completed POST /api/user/profile/photo/ -> 401 in 459ms
+2025-08-24 18:33:24,505 INFO [uvicorn.access] [-] 192.168.65.1:63434 - "POST /api/user/profile/photo/ HTTP/1.1" 401
+2025-08-24 18:33:24,510 INFO [app.request] [a04cf27ded0c4f9cb013186c27546e55] Incoming request OPTIONS /api/user/profile/ from 192.168.65.1
+2025-08-24 18:33:24,511 INFO [app.request] [a04cf27ded0c4f9cb013186c27546e55] Completed OPTIONS /api/user/profile/ -> 200 in 0ms
+2025-08-24 18:33:24,511 INFO [uvicorn.access] [-] 192.168.65.1:63434 - "OPTIONS /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:33:24,512 INFO [app.request] [7963ccf33d93415086795ad523f1e00b] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:33:24,513 INFO [app.request] [7963ccf33d93415086795ad523f1e00b] Completed GET /api/user/profile/ -> 401 in 0ms
+2025-08-24 18:33:24,513 INFO [uvicorn.access] [-] 192.168.65.1:63434 - "GET /api/user/profile/ HTTP/1.1" 401
+2025-08-24 18:33:24,515 INFO [app.request] [8b39a730f4e54527b76be7413f92d4df] Incoming request OPTIONS /api/user/token/refresh/ from 192.168.65.1
+2025-08-24 18:33:24,515 INFO [app.request] [8b39a730f4e54527b76be7413f92d4df] Completed OPTIONS /api/user/token/refresh/ -> 200 in 0ms
+2025-08-24 18:33:24,515 INFO [uvicorn.access] [-] 192.168.65.1:63434 - "OPTIONS /api/user/token/refresh/ HTTP/1.1" 200
+2025-08-24 18:33:24,516 INFO [app.request] [e4cba1ee8e194aff9d4ee316b821ef01] Incoming request POST /api/user/token/refresh/ from 192.168.65.1
+2025-08-24 18:33:24,518 INFO [app.request] [e4cba1ee8e194aff9d4ee316b821ef01] Completed POST /api/user/token/refresh/ -> 200 in 2ms
+2025-08-24 18:33:24,518 INFO [uvicorn.access] [-] 192.168.65.1:63434 - "POST /api/user/token/refresh/ HTTP/1.1" 200
+2025-08-24 18:33:24,520 INFO [app.request] [1d3c7f3e04184a54a801295577d1e8c2] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:33:24,549 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] select pg_catalog.version()
+2025-08-24 18:33:24,549 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] [raw sql] ()
+2025-08-24 18:33:24,551 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] select current_schema()
+2025-08-24 18:33:24,551 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] [raw sql] ()
+2025-08-24 18:33:24,552 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] show standard_conforming_strings
+2025-08-24 18:33:24,552 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] [raw sql] ()
+2025-08-24 18:33:24,552 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] BEGIN (implicit)
+2025-08-24 18:33:24,554 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:33:24,554 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] [generated in 0.00015s] (1,)
+2025-08-24 18:33:24,561 INFO [sqlalchemy.engine.Engine] [1d3c7f3e04184a54a801295577d1e8c2] ROLLBACK
+2025-08-24 18:33:24,562 INFO [app.request] [1d3c7f3e04184a54a801295577d1e8c2] Completed GET /api/user/profile/ -> 200 in 41ms
+2025-08-24 18:33:24,562 INFO [uvicorn.access] [-] 192.168.65.1:63434 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:33:26,837 INFO [app.request] [cf3db9e379874e33b1d3905bfbba57e1] Incoming request OPTIONS /api/user/profile/ from 192.168.65.1
+2025-08-24 18:33:26,838 INFO [app.request] [cf3db9e379874e33b1d3905bfbba57e1] Completed OPTIONS /api/user/profile/ -> 200 in 1ms
+2025-08-24 18:33:26,839 INFO [uvicorn.access] [-] 192.168.65.1:63434 - "OPTIONS /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:33:26,841 INFO [app.request] [f59c02141fe54989be06f1b46698cce2] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:33:26,844 INFO [sqlalchemy.engine.Engine] [f59c02141fe54989be06f1b46698cce2] BEGIN (implicit)
+2025-08-24 18:33:26,844 INFO [sqlalchemy.engine.Engine] [f59c02141fe54989be06f1b46698cce2] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:33:26,845 INFO [sqlalchemy.engine.Engine] [f59c02141fe54989be06f1b46698cce2] [cached since 2.291s ago] (1,)
+2025-08-24 18:33:26,847 INFO [sqlalchemy.engine.Engine] [f59c02141fe54989be06f1b46698cce2] ROLLBACK
+2025-08-24 18:33:26,854 INFO [app.request] [f59c02141fe54989be06f1b46698cce2] Completed PATCH /api/user/profile/ -> 422 in 12ms
+2025-08-24 18:33:26,854 INFO [uvicorn.access] [-] 192.168.65.1:63434 - "PATCH /api/user/profile/ HTTP/1.1" 422
+2025-08-24 18:33:44,897 INFO [app.request] [9d6eb5be4ef44941b98097f7eb76a03a] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:33:44,899 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] BEGIN (implicit)
+2025-08-24 18:33:44,900 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:33:44,900 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] [cached since 20.35s ago] (1,)
+2025-08-24 18:33:44,901 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] ROLLBACK
+2025-08-24 18:33:44,903 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] BEGIN (implicit)
+2025-08-24 18:33:44,905 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] UPDATE users SET first_name=$1::VARCHAR, last_name=$2::VARCHAR, bio=$3::VARCHAR WHERE users.id = $4::INTEGER
+2025-08-24 18:33:44,905 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] [generated in 0.00038s] ('DSK', 'Sided', '', 1)
+2025-08-24 18:33:44,910 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] COMMIT
+2025-08-24 18:33:44,912 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] BEGIN (implicit)
+2025-08-24 18:33:44,913 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:33:44,913 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] [generated in 0.00026s] (1,)
+2025-08-24 18:33:44,914 INFO [sqlalchemy.engine.Engine] [9d6eb5be4ef44941b98097f7eb76a03a] ROLLBACK
+2025-08-24 18:33:44,914 INFO [app.request] [9d6eb5be4ef44941b98097f7eb76a03a] Completed PATCH /api/user/profile/ -> 200 in 17ms
+2025-08-24 18:33:44,915 INFO [uvicorn.access] [-] 192.168.65.1:26542 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:33:44,917 INFO [app.request] [2cc3502b55444ed6958b0acdb9348356] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:33:44,918 INFO [sqlalchemy.engine.Engine] [2cc3502b55444ed6958b0acdb9348356] BEGIN (implicit)
+2025-08-24 18:33:44,918 INFO [sqlalchemy.engine.Engine] [2cc3502b55444ed6958b0acdb9348356] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:33:44,918 INFO [sqlalchemy.engine.Engine] [2cc3502b55444ed6958b0acdb9348356] [cached since 20.36s ago] (1,)
+2025-08-24 18:33:44,919 INFO [sqlalchemy.engine.Engine] [2cc3502b55444ed6958b0acdb9348356] ROLLBACK
+2025-08-24 18:33:44,919 INFO [app.request] [2cc3502b55444ed6958b0acdb9348356] Completed GET /api/user/profile/ -> 200 in 2ms
+2025-08-24 18:33:44,919 INFO [uvicorn.access] [-] 192.168.65.1:26542 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:33:44,922 INFO [app.request] [4d7fb432d86d44268cf4def90cbf3d75] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:33:44,923 INFO [sqlalchemy.engine.Engine] [4d7fb432d86d44268cf4def90cbf3d75] BEGIN (implicit)
+2025-08-24 18:33:44,923 INFO [sqlalchemy.engine.Engine] [4d7fb432d86d44268cf4def90cbf3d75] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:33:44,924 INFO [sqlalchemy.engine.Engine] [4d7fb432d86d44268cf4def90cbf3d75] [cached since 20.37s ago] (1,)
+2025-08-24 18:33:44,924 INFO [sqlalchemy.engine.Engine] [4d7fb432d86d44268cf4def90cbf3d75] ROLLBACK
+2025-08-24 18:33:44,925 INFO [sqlalchemy.engine.Engine] [4d7fb432d86d44268cf4def90cbf3d75] BEGIN (implicit)
+2025-08-24 18:33:44,925 INFO [sqlalchemy.engine.Engine] [4d7fb432d86d44268cf4def90cbf3d75] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:33:44,925 INFO [sqlalchemy.engine.Engine] [4d7fb432d86d44268cf4def90cbf3d75] [cached since 0.01245s ago] (1,)
+2025-08-24 18:33:44,926 INFO [sqlalchemy.engine.Engine] [4d7fb432d86d44268cf4def90cbf3d75] ROLLBACK
+2025-08-24 18:33:44,926 INFO [app.request] [4d7fb432d86d44268cf4def90cbf3d75] Completed PATCH /api/user/profile/ -> 200 in 3ms
+2025-08-24 18:33:44,926 INFO [uvicorn.access] [-] 192.168.65.1:26542 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:34:04,459 INFO [app.request] [d5e56114d7664d798f82e392966eee18] Incoming request POST /api/user/profile/photo/ from 192.168.65.1
+2025-08-24 18:34:04,483 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] BEGIN (implicit)
+2025-08-24 18:34:04,485 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:04,485 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] [cached since 39.93s ago] (1,)
+2025-08-24 18:34:04,491 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] ROLLBACK
+2025-08-24 18:34:04,498 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] BEGIN (implicit)
+2025-08-24 18:34:04,500 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] UPDATE users SET photo_url=$1::VARCHAR WHERE users.id = $2::INTEGER
+2025-08-24 18:34:04,500 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] [generated in 0.00037s] ('/media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg', 1)
+2025-08-24 18:34:04,502 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] COMMIT
+2025-08-24 18:34:04,503 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] BEGIN (implicit)
+2025-08-24 18:34:04,503 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:04,503 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] [cached since 19.59s ago] (1,)
+2025-08-24 18:34:04,504 INFO [sqlalchemy.engine.Engine] [d5e56114d7664d798f82e392966eee18] ROLLBACK
+2025-08-24 18:34:04,505 INFO [app.request] [d5e56114d7664d798f82e392966eee18] Completed POST /api/user/profile/photo/ -> 200 in 46ms
+2025-08-24 18:34:04,505 INFO [uvicorn.access] [-] 192.168.65.1:27817 - "POST /api/user/profile/photo/ HTTP/1.1" 200
+2025-08-24 18:34:04,508 INFO [app.request] [8afb9a5b14184539998dd04caa035ee3] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:34:04,509 INFO [sqlalchemy.engine.Engine] [8afb9a5b14184539998dd04caa035ee3] BEGIN (implicit)
+2025-08-24 18:34:04,509 INFO [sqlalchemy.engine.Engine] [8afb9a5b14184539998dd04caa035ee3] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:04,509 INFO [sqlalchemy.engine.Engine] [8afb9a5b14184539998dd04caa035ee3] [cached since 39.95s ago] (1,)
+2025-08-24 18:34:04,510 INFO [sqlalchemy.engine.Engine] [8afb9a5b14184539998dd04caa035ee3] ROLLBACK
+2025-08-24 18:34:04,510 INFO [app.request] [8afb9a5b14184539998dd04caa035ee3] Completed GET /api/user/profile/ -> 200 in 2ms
+2025-08-24 18:34:04,510 INFO [uvicorn.access] [-] 192.168.65.1:27817 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:34:04,518 INFO [app.request] [ed2b3e2637a649998f226d224f913382] Incoming request GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg from 192.168.65.1
+2025-08-24 18:34:04,521 INFO [app.request] [1c1127854a174edcbcbe18c61b380380] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:34:04,523 INFO [sqlalchemy.engine.Engine] [1c1127854a174edcbcbe18c61b380380] BEGIN (implicit)
+2025-08-24 18:34:04,523 INFO [sqlalchemy.engine.Engine] [1c1127854a174edcbcbe18c61b380380] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:04,523 INFO [sqlalchemy.engine.Engine] [1c1127854a174edcbcbe18c61b380380] [cached since 39.97s ago] (1,)
+2025-08-24 18:34:04,525 INFO [app.request] [ed2b3e2637a649998f226d224f913382] Completed GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg -> 200 in 7ms
+2025-08-24 18:34:04,525 INFO [uvicorn.access] [-] 192.168.65.1:27817 - "GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg?t=1756060444513 HTTP/1.1" 200
+2025-08-24 18:34:04,526 INFO [app.request] [5ea5147bc4cb493f84ea32fd457498fc] Incoming request GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg from 192.168.65.1
+2025-08-24 18:34:04,526 INFO [sqlalchemy.engine.Engine] [1c1127854a174edcbcbe18c61b380380] ROLLBACK
+2025-08-24 18:34:04,527 INFO [sqlalchemy.engine.Engine] [1c1127854a174edcbcbe18c61b380380] BEGIN (implicit)
+2025-08-24 18:34:04,528 INFO [sqlalchemy.engine.Engine] [1c1127854a174edcbcbe18c61b380380] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:04,528 INFO [sqlalchemy.engine.Engine] [1c1127854a174edcbcbe18c61b380380] [cached since 19.62s ago] (1,)
+2025-08-24 18:34:04,529 INFO [app.request] [5ea5147bc4cb493f84ea32fd457498fc] Completed GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg -> 200 in 2ms
+2025-08-24 18:34:04,529 INFO [uvicorn.access] [-] 192.168.65.1:25347 - "GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg?t=1756060444522 HTTP/1.1" 200
+2025-08-24 18:34:04,530 INFO [sqlalchemy.engine.Engine] [1c1127854a174edcbcbe18c61b380380] ROLLBACK
+2025-08-24 18:34:04,530 INFO [app.request] [1c1127854a174edcbcbe18c61b380380] Completed PATCH /api/user/profile/ -> 200 in 9ms
+2025-08-24 18:34:04,531 INFO [uvicorn.access] [-] 192.168.65.1:22013 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:34:07,224 INFO [app.request] [83209be38da4427d826b4e70b1029977] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:34:07,228 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] BEGIN (implicit)
+2025-08-24 18:34:07,229 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:07,230 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] [cached since 42.68s ago] (1,)
+2025-08-24 18:34:07,233 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] ROLLBACK
+2025-08-24 18:34:07,236 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] BEGIN (implicit)
+2025-08-24 18:34:07,237 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] COMMIT
+2025-08-24 18:34:07,239 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] BEGIN (implicit)
+2025-08-24 18:34:07,239 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:07,240 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] [cached since 22.33s ago] (1,)
+2025-08-24 18:34:07,241 INFO [sqlalchemy.engine.Engine] [83209be38da4427d826b4e70b1029977] ROLLBACK
+2025-08-24 18:34:07,242 INFO [app.request] [83209be38da4427d826b4e70b1029977] Completed PATCH /api/user/profile/ -> 200 in 18ms
+2025-08-24 18:34:07,243 INFO [uvicorn.access] [-] 192.168.65.1:27817 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:34:07,249 INFO [app.request] [bea43135e42640b2ad2f184a29905867] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:34:07,250 INFO [sqlalchemy.engine.Engine] [bea43135e42640b2ad2f184a29905867] BEGIN (implicit)
+2025-08-24 18:34:07,250 INFO [sqlalchemy.engine.Engine] [bea43135e42640b2ad2f184a29905867] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:07,250 INFO [sqlalchemy.engine.Engine] [bea43135e42640b2ad2f184a29905867] [cached since 42.7s ago] (1,)
+2025-08-24 18:34:07,251 INFO [sqlalchemy.engine.Engine] [bea43135e42640b2ad2f184a29905867] ROLLBACK
+2025-08-24 18:34:07,252 INFO [app.request] [bea43135e42640b2ad2f184a29905867] Completed GET /api/user/profile/ -> 200 in 3ms
+2025-08-24 18:34:07,252 INFO [uvicorn.access] [-] 192.168.65.1:22013 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:34:07,262 INFO [app.request] [82a2206bbfbc4bea81ca34a399aa7586] Incoming request GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg from 192.168.65.1
+2025-08-24 18:34:07,263 INFO [app.request] [82a2206bbfbc4bea81ca34a399aa7586] Completed GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg -> 200 in 1ms
+2025-08-24 18:34:07,263 INFO [uvicorn.access] [-] 192.168.65.1:25347 - "GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg?t=1756060447257 HTTP/1.1" 200
+2025-08-24 18:34:09,810 INFO [app.request] [bd4346dd395e4b0b9d83fac125e80f45] Incoming request GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg from 192.168.65.1
+2025-08-24 18:34:09,814 INFO [app.request] [bd4346dd395e4b0b9d83fac125e80f45] Completed GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg -> 200 in 4ms
+2025-08-24 18:34:09,815 INFO [uvicorn.access] [-] 192.168.65.1:27817 - "GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg?t=1756060449803 HTTP/1.1" 200
+2025-08-24 18:34:21,391 INFO [app.request] [95e3d0a1ec944a9a86856a13422d8384] Incoming request GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg from 192.168.65.1
+2025-08-24 18:34:21,394 INFO [app.request] [95e3d0a1ec944a9a86856a13422d8384] Completed GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg -> 200 in 2ms
+2025-08-24 18:34:21,395 INFO [uvicorn.access] [-] 192.168.65.1:18881 - "GET /media/profile_photos/user_1_8b66c46c556440378c3fa28bf47e0245_12732168-3f9c-4fe8-875b-65c0102a2640.jpeg?t=1756060461385 HTTP/1.1" 200
+2025-08-24 18:34:22,888 INFO [app.request] [6571af82dc1b4136a7d9b97bca761a35] Incoming request POST /api/user/profile/photo/ from 192.168.65.1
+2025-08-24 18:34:22,899 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] BEGIN (implicit)
+2025-08-24 18:34:22,900 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:22,901 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] [cached since 58.35s ago] (1,)
+2025-08-24 18:34:22,902 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] ROLLBACK
+2025-08-24 18:34:22,905 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] BEGIN (implicit)
+2025-08-24 18:34:22,906 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] UPDATE users SET photo_url=$1::VARCHAR WHERE users.id = $2::INTEGER
+2025-08-24 18:34:22,906 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] [cached since 18.41s ago] ('/media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png', 1)
+2025-08-24 18:34:22,908 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] COMMIT
+2025-08-24 18:34:22,910 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] BEGIN (implicit)
+2025-08-24 18:34:22,910 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:22,911 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] [cached since 38s ago] (1,)
+2025-08-24 18:34:22,912 INFO [sqlalchemy.engine.Engine] [6571af82dc1b4136a7d9b97bca761a35] ROLLBACK
+2025-08-24 18:34:22,912 INFO [app.request] [6571af82dc1b4136a7d9b97bca761a35] Completed POST /api/user/profile/photo/ -> 200 in 23ms
+2025-08-24 18:34:22,912 INFO [uvicorn.access] [-] 192.168.65.1:18881 - "POST /api/user/profile/photo/ HTTP/1.1" 200
+2025-08-24 18:34:22,916 INFO [app.request] [1dcd2b5343904c03a88e7334dddf451e] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:34:22,917 INFO [sqlalchemy.engine.Engine] [1dcd2b5343904c03a88e7334dddf451e] BEGIN (implicit)
+2025-08-24 18:34:22,918 INFO [sqlalchemy.engine.Engine] [1dcd2b5343904c03a88e7334dddf451e] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:22,918 INFO [sqlalchemy.engine.Engine] [1dcd2b5343904c03a88e7334dddf451e] [cached since 58.36s ago] (1,)
+2025-08-24 18:34:22,918 INFO [sqlalchemy.engine.Engine] [1dcd2b5343904c03a88e7334dddf451e] ROLLBACK
+2025-08-24 18:34:22,919 INFO [app.request] [1dcd2b5343904c03a88e7334dddf451e] Completed GET /api/user/profile/ -> 200 in 2ms
+2025-08-24 18:34:22,919 INFO [uvicorn.access] [-] 192.168.65.1:18881 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:34:22,925 INFO [app.request] [2cf7c19ff6f44fca827f642b7a6dcb43] Incoming request GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png from 192.168.65.1
+2025-08-24 18:34:22,926 INFO [app.request] [2cf7c19ff6f44fca827f642b7a6dcb43] Completed GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png -> 200 in 0ms
+2025-08-24 18:34:22,927 INFO [uvicorn.access] [-] 192.168.65.1:18881 - "GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png?t=1756060462923 HTTP/1.1" 200
+2025-08-24 18:34:22,928 INFO [app.request] [67f3e81f4a38461882591d305f0cf488] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:34:22,930 INFO [sqlalchemy.engine.Engine] [67f3e81f4a38461882591d305f0cf488] BEGIN (implicit)
+2025-08-24 18:34:22,931 INFO [sqlalchemy.engine.Engine] [67f3e81f4a38461882591d305f0cf488] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:22,931 INFO [sqlalchemy.engine.Engine] [67f3e81f4a38461882591d305f0cf488] [cached since 58.38s ago] (1,)
+2025-08-24 18:34:22,932 INFO [app.request] [b62a7ebca5284678b8442c8ee5859497] Incoming request GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png from 192.168.65.1
+2025-08-24 18:34:22,934 INFO [sqlalchemy.engine.Engine] [67f3e81f4a38461882591d305f0cf488] ROLLBACK
+2025-08-24 18:34:22,935 INFO [app.request] [b62a7ebca5284678b8442c8ee5859497] Completed GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png -> 200 in 2ms
+2025-08-24 18:34:22,935 INFO [uvicorn.access] [-] 192.168.65.1:36734 - "GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png?t=1756060462928 HTTP/1.1" 200
+2025-08-24 18:34:22,936 INFO [sqlalchemy.engine.Engine] [67f3e81f4a38461882591d305f0cf488] BEGIN (implicit)
+2025-08-24 18:34:22,937 INFO [sqlalchemy.engine.Engine] [67f3e81f4a38461882591d305f0cf488] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:22,937 INFO [sqlalchemy.engine.Engine] [67f3e81f4a38461882591d305f0cf488] [cached since 38.02s ago] (1,)
+2025-08-24 18:34:22,938 INFO [sqlalchemy.engine.Engine] [67f3e81f4a38461882591d305f0cf488] ROLLBACK
+2025-08-24 18:34:22,940 INFO [app.request] [67f3e81f4a38461882591d305f0cf488] Completed PATCH /api/user/profile/ -> 200 in 11ms
+2025-08-24 18:34:22,940 INFO [uvicorn.access] [-] 192.168.65.1:22133 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:34:24,902 INFO [app.request] [37db807447414087b5b0783780556cd3] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:34:24,905 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] BEGIN (implicit)
+2025-08-24 18:34:24,906 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:24,906 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] [cached since 60.35s ago] (1,)
+2025-08-24 18:34:24,908 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] ROLLBACK
+2025-08-24 18:34:24,910 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] BEGIN (implicit)
+2025-08-24 18:34:24,911 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] COMMIT
+2025-08-24 18:34:24,912 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] BEGIN (implicit)
+2025-08-24 18:34:24,912 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:24,913 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] [cached since 40s ago] (1,)
+2025-08-24 18:34:24,915 INFO [sqlalchemy.engine.Engine] [37db807447414087b5b0783780556cd3] ROLLBACK
+2025-08-24 18:34:24,916 INFO [app.request] [37db807447414087b5b0783780556cd3] Completed PATCH /api/user/profile/ -> 200 in 14ms
+2025-08-24 18:34:24,917 INFO [uvicorn.access] [-] 192.168.65.1:22133 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:34:24,921 INFO [app.request] [5763ea9f0388412da82dffffeb4c568f] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:34:24,923 INFO [sqlalchemy.engine.Engine] [5763ea9f0388412da82dffffeb4c568f] BEGIN (implicit)
+2025-08-24 18:34:24,924 INFO [sqlalchemy.engine.Engine] [5763ea9f0388412da82dffffeb4c568f] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:34:24,924 INFO [sqlalchemy.engine.Engine] [5763ea9f0388412da82dffffeb4c568f] [cached since 60.37s ago] (1,)
+2025-08-24 18:34:24,926 INFO [sqlalchemy.engine.Engine] [5763ea9f0388412da82dffffeb4c568f] ROLLBACK
+2025-08-24 18:34:24,926 INFO [app.request] [5763ea9f0388412da82dffffeb4c568f] Completed GET /api/user/profile/ -> 200 in 5ms
+2025-08-24 18:34:24,927 INFO [uvicorn.access] [-] 192.168.65.1:18881 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:34:24,933 INFO [app.request] [b49decf7ce5347d59d8c863226b8d353] Incoming request GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png from 192.168.65.1
+2025-08-24 18:34:24,934 INFO [app.request] [b49decf7ce5347d59d8c863226b8d353] Completed GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png -> 200 in 0ms
+2025-08-24 18:34:24,934 INFO [uvicorn.access] [-] 192.168.65.1:36734 - "GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png?t=1756060464931 HTTP/1.1" 200
+2025-08-24 18:35:05,212 INFO [app.request] [27bfd6b1204a4f31a6d2f7ddf199ce89] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:05,224 INFO [sqlalchemy.engine.Engine] [27bfd6b1204a4f31a6d2f7ddf199ce89] BEGIN (implicit)
+2025-08-24 18:35:05,226 INFO [sqlalchemy.engine.Engine] [27bfd6b1204a4f31a6d2f7ddf199ce89] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:05,226 INFO [sqlalchemy.engine.Engine] [27bfd6b1204a4f31a6d2f7ddf199ce89] [cached since 100.7s ago] (1,)
+2025-08-24 18:35:05,227 INFO [app.request] [c3affaa0c14048738a7be63448f398b6] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:05,238 INFO [sqlalchemy.engine.Engine] [27bfd6b1204a4f31a6d2f7ddf199ce89] ROLLBACK
+2025-08-24 18:35:05,240 INFO [app.request] [27bfd6b1204a4f31a6d2f7ddf199ce89] Completed GET /api/user/profile/ -> 200 in 28ms
+2025-08-24 18:35:05,241 INFO [uvicorn.access] [-] 192.168.65.1:33195 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:35:05,260 INFO [app.request] [8dfc29aea62a4fc3ae13a0651c9ab10a] Incoming request GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png from 192.168.65.1
+2025-08-24 18:35:05,261 INFO [app.request] [61f417ffa0fc440cbbcf3c3d449c3088] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:05,263 INFO [app.request] [10b80264aa604879982e05a31f7e9859] Incoming request GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png from 192.168.65.1
+2025-08-24 18:35:05,269 INFO [sqlalchemy.engine.Engine] [61f417ffa0fc440cbbcf3c3d449c3088] BEGIN (implicit)
+2025-08-24 18:35:05,270 INFO [sqlalchemy.engine.Engine] [61f417ffa0fc440cbbcf3c3d449c3088] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:05,270 INFO [sqlalchemy.engine.Engine] [61f417ffa0fc440cbbcf3c3d449c3088] [cached since 100.7s ago] (1,)
+2025-08-24 18:35:05,272 INFO [app.request] [8dfc29aea62a4fc3ae13a0651c9ab10a] Completed GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png -> 200 in 12ms
+2025-08-24 18:35:05,272 INFO [uvicorn.access] [-] 192.168.65.1:33195 - "GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png?t=1756060505243 HTTP/1.1" 200
+2025-08-24 18:35:05,273 INFO [app.request] [10b80264aa604879982e05a31f7e9859] Completed GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png -> 200 in 10ms
+2025-08-24 18:35:05,273 INFO [uvicorn.access] [-] 192.168.65.1:37597 - "GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png?t=1756060505247 HTTP/1.1" 200
+2025-08-24 18:35:05,274 INFO [sqlalchemy.engine.Engine] [61f417ffa0fc440cbbcf3c3d449c3088] ROLLBACK
+2025-08-24 18:35:05,277 INFO [sqlalchemy.engine.Engine] [61f417ffa0fc440cbbcf3c3d449c3088] BEGIN (implicit)
+2025-08-24 18:35:05,278 INFO [sqlalchemy.engine.Engine] [61f417ffa0fc440cbbcf3c3d449c3088] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:05,278 INFO [sqlalchemy.engine.Engine] [61f417ffa0fc440cbbcf3c3d449c3088] [cached since 80.37s ago] (1,)
+2025-08-24 18:35:05,279 INFO [sqlalchemy.engine.Engine] [c3affaa0c14048738a7be63448f398b6] BEGIN (implicit)
+2025-08-24 18:35:05,280 INFO [sqlalchemy.engine.Engine] [c3affaa0c14048738a7be63448f398b6] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:05,280 INFO [sqlalchemy.engine.Engine] [c3affaa0c14048738a7be63448f398b6] [cached since 100.7s ago] (1,)
+2025-08-24 18:35:05,282 INFO [sqlalchemy.engine.Engine] [61f417ffa0fc440cbbcf3c3d449c3088] ROLLBACK
+2025-08-24 18:35:05,285 INFO [app.request] [61f417ffa0fc440cbbcf3c3d449c3088] Completed PATCH /api/user/profile/ -> 200 in 23ms
+2025-08-24 18:35:05,285 INFO [uvicorn.access] [-] 192.168.65.1:19282 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:35:05,287 INFO [sqlalchemy.engine.Engine] [c3affaa0c14048738a7be63448f398b6] ROLLBACK
+2025-08-24 18:35:05,288 INFO [sqlalchemy.engine.Engine] [c3affaa0c14048738a7be63448f398b6] BEGIN (implicit)
+2025-08-24 18:35:05,290 INFO [sqlalchemy.engine.Engine] [c3affaa0c14048738a7be63448f398b6] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:05,290 INFO [sqlalchemy.engine.Engine] [c3affaa0c14048738a7be63448f398b6] [cached since 80.38s ago] (1,)
+2025-08-24 18:35:05,292 INFO [sqlalchemy.engine.Engine] [c3affaa0c14048738a7be63448f398b6] ROLLBACK
+2025-08-24 18:35:05,293 INFO [app.request] [c3affaa0c14048738a7be63448f398b6] Completed PATCH /api/user/profile/ -> 200 in 65ms
+2025-08-24 18:35:05,294 INFO [uvicorn.access] [-] 192.168.65.1:25191 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:35:05,972 INFO [app.request] [e36c6a9110434c4fb6d147d28983c02b] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:05,973 INFO [app.request] [e36c6a9110434c4fb6d147d28983c02b] Completed PATCH /api/user/profile/ -> 400 in 1ms
+2025-08-24 18:35:05,997 INFO [app.request] [0fa8b8ebdb584929bc8ccfc4e690469e] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:05,999 INFO [sqlalchemy.engine.Engine] [0fa8b8ebdb584929bc8ccfc4e690469e] BEGIN (implicit)
+2025-08-24 18:35:06,000 INFO [sqlalchemy.engine.Engine] [0fa8b8ebdb584929bc8ccfc4e690469e] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:06,000 INFO [sqlalchemy.engine.Engine] [0fa8b8ebdb584929bc8ccfc4e690469e] [cached since 101.4s ago] (1,)
+2025-08-24 18:35:06,000 INFO [app.request] [81a82f0ace8742b996e6eda46624d88f] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:06,003 INFO [sqlalchemy.engine.Engine] [81a82f0ace8742b996e6eda46624d88f] BEGIN (implicit)
+2025-08-24 18:35:06,003 INFO [sqlalchemy.engine.Engine] [81a82f0ace8742b996e6eda46624d88f] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:06,004 INFO [sqlalchemy.engine.Engine] [81a82f0ace8742b996e6eda46624d88f] [cached since 101.4s ago] (1,)
+2025-08-24 18:35:06,004 INFO [sqlalchemy.engine.Engine] [0fa8b8ebdb584929bc8ccfc4e690469e] ROLLBACK
+2025-08-24 18:35:06,006 INFO [sqlalchemy.engine.Engine] [81a82f0ace8742b996e6eda46624d88f] ROLLBACK
+2025-08-24 18:35:06,007 INFO [app.request] [0fa8b8ebdb584929bc8ccfc4e690469e] Completed GET /api/user/profile/ -> 200 in 9ms
+2025-08-24 18:35:06,007 INFO [uvicorn.access] [-] 192.168.65.1:25191 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:35:06,009 INFO [sqlalchemy.engine.Engine] [81a82f0ace8742b996e6eda46624d88f] BEGIN (implicit)
+2025-08-24 18:35:06,009 INFO [sqlalchemy.engine.Engine] [81a82f0ace8742b996e6eda46624d88f] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:06,010 INFO [sqlalchemy.engine.Engine] [81a82f0ace8742b996e6eda46624d88f] [cached since 81.1s ago] (1,)
+2025-08-24 18:35:06,011 INFO [sqlalchemy.engine.Engine] [81a82f0ace8742b996e6eda46624d88f] ROLLBACK
+2025-08-24 18:35:06,012 INFO [app.request] [8a54c8ce264e49d3a125ebd6911393cb] Incoming request GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png from 192.168.65.1
+2025-08-24 18:35:06,013 INFO [app.request] [4e22f279a43744b490cf6e15c578743c] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:06,014 INFO [app.request] [81a82f0ace8742b996e6eda46624d88f] Completed PATCH /api/user/profile/ -> 200 in 13ms
+2025-08-24 18:35:06,014 INFO [uvicorn.access] [-] 192.168.65.1:33195 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:35:06,016 INFO [sqlalchemy.engine.Engine] [4e22f279a43744b490cf6e15c578743c] BEGIN (implicit)
+2025-08-24 18:35:06,016 INFO [sqlalchemy.engine.Engine] [4e22f279a43744b490cf6e15c578743c] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:06,016 INFO [sqlalchemy.engine.Engine] [4e22f279a43744b490cf6e15c578743c] [cached since 101.5s ago] (1,)
+2025-08-24 18:35:06,017 INFO [app.request] [a7b1d9fe9ed64fb6b38b1f474bdf55f6] Incoming request GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png from 192.168.65.1
+2025-08-24 18:35:06,017 INFO [app.request] [8a54c8ce264e49d3a125ebd6911393cb] Completed GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png -> 200 in 5ms
+2025-08-24 18:35:06,018 INFO [uvicorn.access] [-] 192.168.65.1:37597 - "GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png?t=1756060506011 HTTP/1.1" 200
+2025-08-24 18:35:06,018 INFO [sqlalchemy.engine.Engine] [4e22f279a43744b490cf6e15c578743c] ROLLBACK
+2025-08-24 18:35:06,019 INFO [app.request] [a7b1d9fe9ed64fb6b38b1f474bdf55f6] Completed GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png -> 200 in 1ms
+2025-08-24 18:35:06,019 INFO [uvicorn.access] [-] 192.168.65.1:23505 - "GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png?t=1756060506014 HTTP/1.1" 200
+2025-08-24 18:35:06,019 INFO [sqlalchemy.engine.Engine] [4e22f279a43744b490cf6e15c578743c] BEGIN (implicit)
+2025-08-24 18:35:06,020 INFO [sqlalchemy.engine.Engine] [4e22f279a43744b490cf6e15c578743c] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:06,020 INFO [sqlalchemy.engine.Engine] [4e22f279a43744b490cf6e15c578743c] [cached since 81.11s ago] (1,)
+2025-08-24 18:35:06,021 INFO [sqlalchemy.engine.Engine] [4e22f279a43744b490cf6e15c578743c] ROLLBACK
+2025-08-24 18:35:06,022 INFO [app.request] [4e22f279a43744b490cf6e15c578743c] Completed PATCH /api/user/profile/ -> 200 in 8ms
+2025-08-24 18:35:06,022 INFO [uvicorn.access] [-] 192.168.65.1:25191 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:35:07,544 INFO [app.request] [56605ce9901b4aa29f96772db737df3f] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:07,546 INFO [app.request] [56605ce9901b4aa29f96772db737df3f] Completed PATCH /api/user/profile/ -> 400 in 2ms
+2025-08-24 18:35:07,608 INFO [app.request] [ba8684a293bc4fc5ae96fdc2301237ab] Incoming request OPTIONS /api/recipes/my-recipes/ from 192.168.65.1
+2025-08-24 18:35:07,609 INFO [app.request] [ba8684a293bc4fc5ae96fdc2301237ab] Completed OPTIONS /api/recipes/my-recipes/ -> 200 in 0ms
+2025-08-24 18:35:07,609 INFO [uvicorn.access] [-] 192.168.65.1:25191 - "OPTIONS /api/recipes/my-recipes/ HTTP/1.1" 200
+2025-08-24 18:35:07,612 INFO [app.request] [f7c578d025ff475a96e9a049c574b16f] Incoming request GET /api/recipes/my-recipes/ from 192.168.65.1
+2025-08-24 18:35:07,613 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] BEGIN (implicit)
+2025-08-24 18:35:07,614 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:07,615 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] [cached since 103.1s ago] (1,)
+2025-08-24 18:35:07,616 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] ROLLBACK
+2025-08-24 18:35:07,617 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] BEGIN (implicit)
+2025-08-24 18:35:07,619 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id 
+FROM recipes 
+WHERE recipes.user_id = $1::INTEGER ORDER BY recipes.created_at DESC
+2025-08-24 18:35:07,620 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] [generated in 0.00025s] (1,)
+2025-08-24 18:35:07,625 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER
+2025-08-24 18:35:07,625 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] [generated in 0.00022s] (1,)
+2025-08-24 18:35:07,630 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.is_active AS users_is_active, users.first_name AS users_first_name, users.last_name AS users_last_name, users.joined AS users_joined, users.photo_url AS users_photo_url, users.username_changed_at AS users_username_changed_at, users.bio AS users_bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:07,630 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] [generated in 0.00028s] (1,)
+2025-08-24 18:35:07,631 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER AND recipe_likes.user_id = $2::INTEGER
+2025-08-24 18:35:07,631 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] [generated in 0.00017s] (1, 1)
+2025-08-24 18:35:07,632 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] SELECT count(*) AS count_1 
+FROM saved_recipes 
+WHERE saved_recipes.recipe_id = $1::INTEGER AND saved_recipes.user_id = $2::INTEGER
+2025-08-24 18:35:07,633 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] [generated in 0.00018s] (1, 1)
+2025-08-24 18:35:07,635 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] SELECT ingredients.id, ingredients.name 
+FROM ingredients JOIN recipe_ingredients ON recipe_ingredients.ingredient_id = ingredients.id 
+WHERE recipe_ingredients.recipe_id = $1::INTEGER ORDER BY ingredients.name ASC
+2025-08-24 18:35:07,635 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] [generated in 0.00022s] (1,)
+2025-08-24 18:35:07,642 INFO [sqlalchemy.engine.Engine] [f7c578d025ff475a96e9a049c574b16f] ROLLBACK
+2025-08-24 18:35:07,642 INFO [app.request] [f7c578d025ff475a96e9a049c574b16f] Completed GET /api/recipes/my-recipes/ -> 200 in 30ms
+2025-08-24 18:35:07,643 INFO [uvicorn.access] [-] 192.168.65.1:23505 - "GET /api/recipes/my-recipes/ HTTP/1.1" 200
+2025-08-24 18:35:08,223 INFO [app.request] [4fa0a2ef3c484193b6da2d4ff64be519] Incoming request GET /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:08,226 INFO [sqlalchemy.engine.Engine] [4fa0a2ef3c484193b6da2d4ff64be519] BEGIN (implicit)
+2025-08-24 18:35:08,227 INFO [sqlalchemy.engine.Engine] [4fa0a2ef3c484193b6da2d4ff64be519] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:08,228 INFO [sqlalchemy.engine.Engine] [4fa0a2ef3c484193b6da2d4ff64be519] [cached since 103.7s ago] (1,)
+2025-08-24 18:35:08,228 INFO [app.request] [92cc45079bd24cefaabb39ad2b82a247] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:08,234 INFO [sqlalchemy.engine.Engine] [92cc45079bd24cefaabb39ad2b82a247] BEGIN (implicit)
+2025-08-24 18:35:08,235 INFO [sqlalchemy.engine.Engine] [92cc45079bd24cefaabb39ad2b82a247] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:08,235 INFO [sqlalchemy.engine.Engine] [92cc45079bd24cefaabb39ad2b82a247] [cached since 103.7s ago] (1,)
+2025-08-24 18:35:08,236 INFO [sqlalchemy.engine.Engine] [4fa0a2ef3c484193b6da2d4ff64be519] ROLLBACK
+2025-08-24 18:35:08,237 INFO [app.request] [4fa0a2ef3c484193b6da2d4ff64be519] Completed GET /api/user/profile/ -> 200 in 14ms
+2025-08-24 18:35:08,238 INFO [uvicorn.access] [-] 192.168.65.1:37597 - "GET /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:35:08,238 INFO [sqlalchemy.engine.Engine] [92cc45079bd24cefaabb39ad2b82a247] ROLLBACK
+2025-08-24 18:35:08,239 INFO [sqlalchemy.engine.Engine] [92cc45079bd24cefaabb39ad2b82a247] BEGIN (implicit)
+2025-08-24 18:35:08,240 INFO [sqlalchemy.engine.Engine] [92cc45079bd24cefaabb39ad2b82a247] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:08,240 INFO [sqlalchemy.engine.Engine] [92cc45079bd24cefaabb39ad2b82a247] [cached since 83.33s ago] (1,)
+2025-08-24 18:35:08,241 INFO [app.request] [b1fe3d6bd1814a77a1840d1198324bcc] Incoming request GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png from 192.168.65.1
+2025-08-24 18:35:08,241 INFO [app.request] [3576caa491bf4f719bfd465f10385e17] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:08,242 INFO [sqlalchemy.engine.Engine] [92cc45079bd24cefaabb39ad2b82a247] ROLLBACK
+2025-08-24 18:35:08,243 INFO [sqlalchemy.engine.Engine] [3576caa491bf4f719bfd465f10385e17] BEGIN (implicit)
+2025-08-24 18:35:08,244 INFO [sqlalchemy.engine.Engine] [3576caa491bf4f719bfd465f10385e17] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:08,244 INFO [sqlalchemy.engine.Engine] [3576caa491bf4f719bfd465f10385e17] [cached since 103.7s ago] (1,)
+2025-08-24 18:35:08,245 INFO [app.request] [b1fe3d6bd1814a77a1840d1198324bcc] Completed GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png -> 200 in 3ms
+2025-08-24 18:35:08,245 INFO [uvicorn.access] [-] 192.168.65.1:23505 - "GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png?t=1756060508240 HTTP/1.1" 200
+2025-08-24 18:35:08,245 INFO [app.request] [11d765ef64b940a5bc16527f5b4394e0] Incoming request GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png from 192.168.65.1
+2025-08-24 18:35:08,246 INFO [app.request] [92cc45079bd24cefaabb39ad2b82a247] Completed PATCH /api/user/profile/ -> 200 in 17ms
+2025-08-24 18:35:08,246 INFO [uvicorn.access] [-] 192.168.65.1:25191 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:35:08,246 INFO [sqlalchemy.engine.Engine] [3576caa491bf4f719bfd465f10385e17] ROLLBACK
+2025-08-24 18:35:08,247 INFO [app.request] [11d765ef64b940a5bc16527f5b4394e0] Completed GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png -> 200 in 1ms
+2025-08-24 18:35:08,247 INFO [uvicorn.access] [-] 192.168.65.1:63512 - "GET /media/profile_photos/user_1_bffbff189b1c4bb193421ab866fcf3fa_E30FA0A0-195A-4D44-B47B-A199D1DB542E.png?t=1756060508243 HTTP/1.1" 200
+2025-08-24 18:35:08,248 INFO [sqlalchemy.engine.Engine] [3576caa491bf4f719bfd465f10385e17] BEGIN (implicit)
+2025-08-24 18:35:08,248 INFO [sqlalchemy.engine.Engine] [3576caa491bf4f719bfd465f10385e17] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:08,248 INFO [sqlalchemy.engine.Engine] [3576caa491bf4f719bfd465f10385e17] [cached since 83.34s ago] (1,)
+2025-08-24 18:35:08,250 INFO [sqlalchemy.engine.Engine] [3576caa491bf4f719bfd465f10385e17] ROLLBACK
+2025-08-24 18:35:08,251 INFO [app.request] [3576caa491bf4f719bfd465f10385e17] Completed PATCH /api/user/profile/ -> 200 in 9ms
+2025-08-24 18:35:08,251 INFO [uvicorn.access] [-] 192.168.65.1:37597 - "PATCH /api/user/profile/ HTTP/1.1" 200
+2025-08-24 18:35:09,428 INFO [app.request] [232c9194e4ba46048780bde8e3173e44] Incoming request PATCH /api/user/profile/ from 192.168.65.1
+2025-08-24 18:35:09,432 INFO [app.request] [232c9194e4ba46048780bde8e3173e44] Completed PATCH /api/user/profile/ -> 400 in 3ms
+2025-08-24 18:35:09,468 INFO [app.request] [633449d0f2c84207bc2abd17afa67c0b] Incoming request GET /api/recipes/my-recipes/ from 192.168.65.1
+2025-08-24 18:35:09,471 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] BEGIN (implicit)
+2025-08-24 18:35:09,473 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] SELECT users.id, users.email, users.username, users.hashed_password, users.is_active, users.first_name, users.last_name, users.joined, users.photo_url, users.username_changed_at, users.bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:09,474 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] [cached since 104.9s ago] (1,)
+2025-08-24 18:35:09,476 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] ROLLBACK
+2025-08-24 18:35:09,477 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] BEGIN (implicit)
+2025-08-24 18:35:09,478 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] SELECT recipes.id, recipes.title, recipes.description, recipes.instructions, recipes.image_url, recipes.is_published, recipes.created_at, recipes.user_id, recipes.category_id 
+FROM recipes 
+WHERE recipes.user_id = $1::INTEGER ORDER BY recipes.created_at DESC
+2025-08-24 18:35:09,478 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] [cached since 1.859s ago] (1,)
+2025-08-24 18:35:09,486 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER
+2025-08-24 18:35:09,487 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] [cached since 1.862s ago] (1,)
+2025-08-24 18:35:09,490 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] SELECT users.id AS users_id, users.email AS users_email, users.username AS users_username, users.hashed_password AS users_hashed_password, users.is_active AS users_is_active, users.first_name AS users_first_name, users.last_name AS users_last_name, users.joined AS users_joined, users.photo_url AS users_photo_url, users.username_changed_at AS users_username_changed_at, users.bio AS users_bio 
+FROM users 
+WHERE users.id = $1::INTEGER
+2025-08-24 18:35:09,490 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] [cached since 1.86s ago] (1,)
+2025-08-24 18:35:09,491 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] SELECT count(*) AS count_1 
+FROM recipe_likes 
+WHERE recipe_likes.recipe_id = $1::INTEGER AND recipe_likes.user_id = $2::INTEGER
+2025-08-24 18:35:09,491 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] [cached since 1.86s ago] (1, 1)
+2025-08-24 18:35:09,492 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] SELECT count(*) AS count_1 
+FROM saved_recipes 
+WHERE saved_recipes.recipe_id = $1::INTEGER AND saved_recipes.user_id = $2::INTEGER
+2025-08-24 18:35:09,492 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] [cached since 1.86s ago] (1, 1)
+2025-08-24 18:35:09,494 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] SELECT ingredients.id, ingredients.name 
+FROM ingredients JOIN recipe_ingredients ON recipe_ingredients.ingredient_id = ingredients.id 
+WHERE recipe_ingredients.recipe_id = $1::INTEGER ORDER BY ingredients.name ASC
+2025-08-24 18:35:09,495 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] [cached since 1.859s ago] (1,)
+2025-08-24 18:35:09,497 INFO [sqlalchemy.engine.Engine] [633449d0f2c84207bc2abd17afa67c0b] ROLLBACK
+2025-08-24 18:35:09,497 INFO [app.request] [633449d0f2c84207bc2abd17afa67c0b] Completed GET /api/recipes/my-recipes/ -> 200 in 28ms
+2025-08-24 18:35:09,497 INFO [uvicorn.access] [-] 192.168.65.1:37597 - "GET /api/recipes/my-recipes/ HTTP/1.1" 200
+2025-08-26 15:30:59,097 INFO [app.core.logging] [-] Logging configured
+2025-08-26 15:30:59,105 INFO [uvicorn.error] [-] Started server process [8]
+2025-08-26 15:30:59,106 INFO [uvicorn.error] [-] Waiting for application startup.
+2025-08-26 15:30:59,121 INFO [app.main] [-] Application startup
+2025-08-26 15:30:59,122 INFO [uvicorn.error] [-] Application startup complete.
+2025-08-26 15:30:59,124 INFO [uvicorn.error] [-] Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)

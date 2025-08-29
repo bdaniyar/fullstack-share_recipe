@@ -74,7 +74,11 @@ router = APIRouter(prefix="/api/user", tags=["User"])
 async def request_code(payload: RequestCodePayload):
     email = payload.email
     r = redis.Redis(
-        host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True
+        host=settings.REDIS_HOST,
+        port=settings.REDIS_PORT,
+        password=settings.REDIS_PASSWORD,
+        db=0,
+        decode_responses=True,
     )
     # Rate limit: max 3 codes per 5 minutes per email
     count_key = f"verify_count:{email}"
@@ -83,7 +87,7 @@ async def request_code(payload: RequestCodePayload):
     if count is not None and int(count) >= 3:
         raise HTTPException(
             status_code=429,
-            detail="You can request a verification code no more than 3 times in 5 minutes. Please wait before trying again."
+            detail="You can request a verification code no more than 3 times in 5 minutes. Please wait before trying again.",
         )
     # Generate 6-digit code
     code = f"{random.randint(0, 999999):06d}"
@@ -102,7 +106,11 @@ async def request_code(payload: RequestCodePayload):
 @router.post("/verify-code/")
 async def verify_email_code(data: VerifyEmailRequest):
     r = redis.Redis(
-        host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True
+        host=settings.REDIS_HOST,
+        port=settings.REDIS_PORT,
+        password=settings.REDIS_PASSWORD,
+        db=0,
+        decode_responses=True,
     )
     key = f"verify:{data.email}"
     stored = await r.get(key)
@@ -626,7 +634,11 @@ async def public_profile(
 async def request_password_reset(payload: PasswordResetRequest):
     email = payload.email.lower().strip()
     r = redis.Redis(
-        host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True
+        host=settings.REDIS_HOST,
+        port=settings.REDIS_PORT,
+        password=settings.REDIS_PASSWORD,
+        db=0,
+        decode_responses=True,
     )
     code = f"{random.randint(100000, 999999)}"
     key = f"reset:{email}"
@@ -646,7 +658,11 @@ async def reset_password(
     email = data.email.lower().strip()
     # Verify code
     r = redis.Redis(
-        host=settings.REDIS_HOST, port=settings.REDIS_PORT, db=0, decode_responses=True
+        host=settings.REDIS_HOST,
+        port=settings.REDIS_PORT,
+        password=settings.REDIS_PASSWORD,
+        db=0,
+        decode_responses=True,
     )
     stored = await r.get(f"reset:{email}")
     if not stored or stored != data.code:
