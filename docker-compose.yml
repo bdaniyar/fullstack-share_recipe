@@ -2,19 +2,19 @@
 
 services:
   backend:
-    build: ./share-recipe-frontend/backend
+    build: ./share-recipe/backend
     container_name: recipe-backend
     restart: unless-stopped
     env_file:
-      - ./share-recipe-frontend/backend/.env
+      - ./share-recipe/backend/.env
     ports:
       - "8000:8000"
     volumes:
-      - ./share-recipe-frontend/backend/app:/app/app
-      - ./share-recipe-frontend/backend/alembic:/app/alembic
-      - ./share-recipe-frontend/backend/alembic.ini:/app/alembic.ini
+      - ./share-recipe/backend/app:/app/app
+      - ./share-recipe/backend/alembic:/app/alembic
+      - ./share-recipe/backend/alembic.ini:/app/alembic.ini
       - ./media:/app/media
-      - ./share-recipe-frontend/backend/logs:/app/logs
+      - ./share-recipe/backend/logs:/app/logs
     depends_on:
       db:
         condition: service_healthy
@@ -24,7 +24,7 @@ services:
     command: sh -c "alembic upgrade head || exit 1; uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --log-level debug"
 
   frontend:
-    build: ./share-recipe-frontend
+    build: ./share-recipe
     container_name: recipe-frontend
     restart: unless-stopped
     ports:
@@ -40,7 +40,7 @@ services:
     container_name: recipe-db
     restart: unless-stopped
     env_file:
-      - ./share-recipe-frontend/backend/.env
+      - ./share-recipe/backend/.env
     ports:
       - "5432:5432"
     volumes:

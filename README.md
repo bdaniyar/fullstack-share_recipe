@@ -8,8 +8,8 @@ Fullstack recipe sharing platform combining:
 
 > This README covers BOTH frontend & backend. Each subfolder may also contain its own README for deeper details.
 
-![UI Screenshot 1](share-recipe-frontend/src/assets/Снимок%20экрана%202025-08-29%20в%2019.47.31.png)
-![UI Screenshot 2](share-recipe-frontend/src/assets/Снимок%20экрана%202025-08-29%20в%2021.25.57.png)
+![UI Screenshot 1](share-recipe/src/assets/Снимок%20экрана%202025-08-29%20в%2019.47.31.png)
+![UI Screenshot 2](share-recipe/src/assets/Снимок%20экрана%202025-08-29%20в%2021.25.57.png)
 
 ## Repositories
 | Repo | Purpose | Deploy |
@@ -66,7 +66,7 @@ Infra / Dev:
 
 ---
 ## Environment Variables
-Create `.env` in `share-recipe-frontend/backend/` . Example:
+Create `.env` in `share-recipe/backend/` . Example:
 ```
 # Core
 DATABASE_URL=postgresql+asyncpg://postgres:postgres@db:5432/share_recipe
@@ -118,7 +118,7 @@ Services started:
 
 Data persistence:
 - Postgres data: named volume `recipe-db-data`
-- Uploaded media: bind mount `./share-recipe-frontend/backend/media` -> `/app/media`
+- Uploaded media: bind mount `./share-recipe/backend/media` -> `/app/media`
 
 On container start backend runs: `alembic upgrade head` then launches Uvicorn.
 
@@ -128,14 +128,14 @@ On container start backend runs: `alembic upgrade head` then launches Uvicorn.
 2. Create `.env` (see above) in backend directory.
 3. Install backend deps:
 ```
-cd share-recipe-frontend/backend
+cd share-recipe/backend
 pip install -r requirements.txt
 alembic upgrade head
 uvicorn app.main:app --reload --port 8000
 ```
 4. Frontend:
 ```
-cd share-recipe-frontend
+cd share-recipe
 npm install
 npm run dev
 ```
@@ -145,7 +145,7 @@ npm run dev
 ## Migrations
 Create & apply:
 ```
-cd share-recipe-frontend/backend
+cd share-recipe/backend
 alembic revision -m "add_feature"
 alembic upgrade head
 ```
@@ -176,7 +176,7 @@ State JWT holds `code_verifier` + redirect target, expires in 5 minutes. After c
 ---
 ## Tests (Backend)
 ```
-cd share-recipe-frontend/backend
+cd share-recipe/backend
 pytest -q
 ```
 Configure test env variables (can point `DATABASE_URL` to a SQLite URI for faster local tests if supported by code) & disable external dependencies as needed.
@@ -184,7 +184,7 @@ Configure test env variables (can point `DATABASE_URL` to a SQLite URI for faste
 ---
 ## Deployment Guidance
 Frontend (Vercel recommended):
-- Deploy `share-recipe-frontend` directory
+- Deploy `share-recipe` directory
 - Set `NEXT_PUBLIC_API_BASE_URL` to deployed backend URL
 
 Backend (Railway / Render / Fly.io / Docker host):
